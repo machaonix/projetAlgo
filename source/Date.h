@@ -2,6 +2,7 @@
 #define __DATE_H__
 
 #include <stdio.h>
+#include "CodeErreur.h"
 
 typedef struct {
   int jour;

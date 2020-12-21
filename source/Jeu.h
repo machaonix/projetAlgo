@@ -24,13 +24,22 @@ void afficheJeu(Jeu* jeu, FILE* flux);
 Jeu nouvJeu(unsigned int id);
 
 //Fonction sur le tableau de Jeu
+void afficheTabJeu(Jeu* tJeu[], int nbElem, FILE* flux);
+//Flux=fichier pour sauvegarder ou Flux=STDOUT pour afficher en sortie standard
+int chargerTabJeu(Jeu* tJeu[], FILE* flux, int nbElemMax);
+
+//retourne la taille du tableau ou une erreur
 int retirerJeu(Jeu* tJeu[], int nbElem, unsigned int idJeu);
-int ajouterJeu(Jeu* tJeu[], int nbElem, Jeu jeu);
+int ajouterJeu(Jeu* tJeu[], int nbElem, Jeu jeu, int nbElemMax);
 
-int rechercherJeu(Jeu* tJeu[], int nbElem, unsigned idJeu);
+//retourne le rang du jeu trouvé ou NOT_FOUND
+int rechercherJeu(Jeu* tJeu[], int nbElem, unsigned int idJeu);
 
+//n'est pas fait pour etre utilisé par d'autres fonctions que triJeu
 void copyTab(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
-void fusionTabJeu(Jeu* tSource1[], unsigned int taille1, Jeu* tSource2[], unsigned int taille2, TriSur triSur, Jeu* tDest[]);
-int triJeu(Jeu* tJeux[], unsigned int taille, TriSur triSur);
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[]);
+
+//tri tJeu et retourne
+void triJeu(Jeu* tJeux[], unsigned int nbElem, TriSur triSur);
 
 #endif //__JEU_H__
