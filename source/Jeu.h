@@ -2,10 +2,9 @@
 #define __JEU_H__
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "CodeErreur.h"
-
-typedef enum {CONSTRUCTION, PLATEAU, TUILE, CARTE, LOGIQUE} TypeJeu;
 
 typedef enum {TRI_ID, TRI_NOM, TRI_TYPE, TRI_NB_EXEMPLAIRE_TOTAL, TRI_NB_EXEMPLAIRE_DISPO} TriSur;
 
@@ -13,7 +12,7 @@ typedef struct
 {
     unsigned int id;
     char nom[41];
-    TypeJeu type;
+    char type[15];
     unsigned int nbExemplaireTotal;
     unsigned int nbExemplaireDispo;
 } Jeu;
@@ -24,9 +23,10 @@ void afficheJeu(Jeu* jeu, FILE* flux);
 Jeu nouvJeu(unsigned int id);
 
 //Fonction sur le tableau de Jeu
-void afficheTabJeu(Jeu* tJeu[], int nbElem, FILE* flux);
 //Flux=fichier pour sauvegarder ou Flux=STDOUT pour afficher en sortie standard
-int chargerTabJeu(Jeu* tJeu[], FILE* flux, int nbElemMax);
+void afficheTabJeu(Jeu* tJeu[], int nbElem, FILE* flux);
+
+int chargerTabJeu(Jeu* tJeu[], char nomFichier[], int nbElemMax);
 
 //retourne la taille du tableau ou une erreur
 int retirerJeu(Jeu* tJeu[], int nbElem, unsigned int idJeu);
