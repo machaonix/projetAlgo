@@ -31,8 +31,8 @@ void afficheTabAdherant(Adherant tAdherant[], int nbElem);
 int insererAdherant(Adherant tAdherant[], int nbElem, Adherant ad);
 int supprimerAdherant(Adherant tAdherant[], int nbElem, Adherant ad);
 
-void decalageAGauche(Adherant tAdherant[], int debut, int nbElem);
-void decalageADroite(Adherant tAdherant[], int debut, int nbElem);
+void decalageAGaucheAdherant(Adherant tAdherant[], int debut, int nbElem);
+void decalageADroiteAdherant(Adherant tAdherant[], int debut, int nbElem);
 
 Bool checkInscriptionValide(Adherant ad);
 void renouvelerInscription(Adherant ad, Date nouvelleDate);
