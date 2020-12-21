@@ -2,6 +2,7 @@
 #define __DATE_H__
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "CodeErreur.h"
 
 typedef struct {
@@ -18,5 +19,8 @@ void afficherDate(Date date, FILE* flux);
 //                          positive si date1>date2
 //                          nulle    si date1==date2     
 int dateCmp(Date date1, Date date2);
+
+Date *plusPetiteDate(Date *date1, Date *date2);
+Date *plusGrandeDate(Date *date1, Date *date2);
 
 #endif //__DATE_H__

@@ -1,7 +1,7 @@
 #ifndef __TESTFONCTION_H__
 #define __TESTFONCTION_H__
 
-#include "Jeu.h"
+#include "Date.h"
 
 void testFonctionJeu(void);
 
