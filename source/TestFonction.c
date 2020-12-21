@@ -13,7 +13,7 @@ void testFonctionDate(void)
 		}
 	afficherDate(d1, stdout);
 }
-
+/*
 void testFonctionJeu(void)
 {
 	Jeu* tJeu[10];
@@ -28,4 +28,4 @@ void testFonctionJeu(void)
 	nbElements = retirerJeu(tJeu, nbElements, 1);
 	afficheTabJeu(tJeu, nbElements, stdout);
 	libererTabJeu(tJeu, &nbElements);
-}
+}*/

@@ -3,7 +3,7 @@
 
 #include "Date.h"
 
-void testFonctionJeu(void);
+//void testFonctionJeu(void);
 void testFonctionDate(void);
 
 #endif //__TESTFONCTION_H__
