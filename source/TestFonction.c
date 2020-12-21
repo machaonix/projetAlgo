@@ -4,8 +4,16 @@
 
 void testFonctionJeu(void)
 {
-	Jeu jeu;
+	Jeu* tJeu[10];
+	int nbElements;
 
-	jeu = nouvJeu(0);
-	afficheJeu(&jeu, stdout);
+	nbElements = chargerTabJeu(tJeu, "donnee/jeux.don", 10);
+	if (nbElements<0) return;
+
+	afficheTabJeu(tJeu, nbElements, stdout);
+	nbElements = ajouterJeu(tJeu, nbElements, nouvJeu(genIdJeu(tJeu, nbElements)), 10);
+	afficheTabJeu(tJeu, nbElements, stdout);
+	nbElements = retirerJeu(tJeu, nbElements, 1);
+	afficheTabJeu(tJeu, nbElements, stdout);
+	libererTabJeu(tJeu, &nbElements);
 }

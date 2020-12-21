@@ -27,7 +27,12 @@ Jeu nouvJeu(unsigned int id);
 void afficheTabJeu(Jeu* tJeu[], int nbElem, FILE* flux);
 
 int chargerTabJeu(Jeu* tJeu[], char nomFichier[], int nbElemMax);
+void libererTabJeu(Jeu* tJeu[], int* nbElem);
 
+unsigned int genIdJeu(Jeu* tJeu[], int nbElem);
+
+void decalageAGaucheJeu(Jeu* tJeu[], int debut, int nbElem);
+void decalageADroiteJeu(Jeu* tJeu[], int debut, int nbElem);
 //retourne la taille du tableau ou une erreur
 int retirerJeu(Jeu* tJeu[], int nbElem, unsigned int idJeu);
 int ajouterJeu(Jeu* tJeu[], int nbElem, Jeu jeu, int nbElemMax);
