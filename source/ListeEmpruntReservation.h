@@ -18,7 +18,8 @@ Bool listeER_estVide(ListeEmprunt liste); //TRUE si vide
 
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
-ListeER chargerListeEmprunResevarion(char nomDeFichier[]);
+ListeER chargerListeEmprunReservation(char nomDeFichier[]);
+
 
 void rechercherListeEmpruntReservation(ListeER liste, Element element); //plusieurs emprunts peuvent exister pour un même jeu
 

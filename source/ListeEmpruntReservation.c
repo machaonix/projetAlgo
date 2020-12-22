@@ -39,3 +39,39 @@ void afficherListeERJeu(ListeER liste, unsigned int idJeu)
     liste=liste->suiv;
   }
 }
+
+ListeER chargerListeEmprunReservation(char nomDeFichier[])
+{
+  Liste liste;
+  Element *lsuiv;
+  FILE *flux;
+  flux=fopen(nomDeFichier,"r");
+  if(flux==NULL)
+  {
+    fprintf(stderr, "Erreur %d: Problème d'ouverture du fichier %s\n",ERR_OUVERTURE_FICHIER,nomDeFichier);
+    return ERR_OUVERTURE_FICHIER;
+  }
+
+  liste=chargercreerMaillon(flux);
+
+  fclose(flux);
+  return liste;
+}
+
+*Element chargercreerMaillon(FILE *flux)
+{
+  Element *elem;
+  elem=(Element *)malloc(sizeof(Element));
+  if(elem==NULL)
+  {
+    fprintf(stderr, "Erreur %d: Erreur de malloc\n",ERR_ALLOCATION);
+    return ERR_ALLOCATION;
+  }
+
+  fscanf("%d%d%d",&(elem->empRes.id),&(elem->empRes.idJeu),&(elem->empRes.idEmprunter));
+  elem->empResdate=lireDate(flux)
+  if(!feof(flux))
+    elem->suiv=chargercreerMaillon(flux);
+
+  return elem;
+}
