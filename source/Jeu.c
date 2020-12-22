@@ -170,3 +170,95 @@ int ajouterJeu(Jeu* tJeu[], int nbElem, Jeu jeu, int nbElemMax)
 
 	return nbElem+1;
 }
+
+
+
+int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur)
+{
+	switch (triSur)
+	{
+		case TRI_ID:
+			return j1->id - j2->id;
+		
+		case TRI_NOM:
+			return strcmp(j1->nom, j2->nom);
+		
+		case TRI_TYPE:
+			return strcmp(j1->type, j2->type);
+		
+		case TRI_NB_EXEMPLAIRE_TOTAL:
+			return j1->nbExemplaireTotal - j2->nbExemplaireTotal;
+
+		case TRI_NB_EXEMPLAIRE_DISPO:
+			return j1->nbExemplaireDispo - j2->nbExemplaireDispo;
+		default:
+		{
+			fprintf(stderr, "Erreur: cas de comparaison non implementé\n");
+			exit(2);
+		}
+	}
+
+}
+
+void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[])
+{
+	for (unsigned int i = debut; i < fin; ++i)
+		tDest[i-debut] = tSource[i];
+}
+
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[])
+{
+	unsigned int nS1 = 0, nS2 = 0, nD = 0;
+	int cmp;
+	
+	while (nS1 < nbElem1 && nS2 < nbElem2)
+	{
+		cmp = jeuCmp(tSource1[nS1], tSource2[nS2], triSur);
+		if (cmp < 0)
+		{
+			tDest[nD] = tSource1[nS1];
+			++nD;
+			++nS1;
+		}
+		else //Les jeux sont uniques dans la liste donc le cas (cmp == 0) n'est pas sensé se presenter
+		{
+			tDest[nD] = tSource2[nS2];
+			++nD;
+			++nS2;
+		}
+	}
+
+	while (nS1 < nbElem1)
+	{
+		tDest[nD] = tSource1[nS1];
+		++nD;
+		++nS1;
+	}
+	
+	while (nS2 < nbElem2)
+	{
+		tDest[nD] = tSource2[nS2];
+		++nD;
+		++nS2;
+	}
+}
+
+//tri tJeu et retourne
+void triJeu(Jeu* tJeux[], unsigned int nbElem, TriSur triSur)
+{
+	unsigned int nb1 = nbElem/2;
+	unsigned int nb2 = nbElem - nb1;
+	Jeu* t1[nb1];
+	Jeu* t2[nb2];
+
+	if (nbElem <= 1)
+		return;
+
+	copyTabJeu(tJeux, 0, nb1, t1);
+	copyTabJeu(tJeux, nb1, nbElem, t2);
+
+	triJeu(t1, nb1, triSur);
+	triJeu(t2, nb2, triSur);
+
+	fusionTabJeu(t1, nb1, t2, nb2, triSur, tJeux);
+}

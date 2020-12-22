@@ -1,6 +1,6 @@
 #include "TestFonction.h"
 
-
+/*
 void testFonctionDate(void)
 {
 	Date d1 = {31, 12, 2020};
@@ -12,8 +12,8 @@ void testFonctionDate(void)
 			printf("%d\n", dateCmp(d1, d2));
 		}
 	afficherDate(d1, stdout);
-}
-/*
+}*/
+
 void testFonctionJeu(void)
 {
 	Jeu* tJeu[10];
@@ -25,7 +25,15 @@ void testFonctionJeu(void)
 	afficheTabJeu(tJeu, nbElements, stdout);
 	nbElements = ajouterJeu(tJeu, nbElements, nouvJeu(genIdJeu(tJeu, nbElements)), 10);
 	afficheTabJeu(tJeu, nbElements, stdout);
+	triJeu(tJeu, nbElements, TRI_NOM);
+	afficheTabJeu(tJeu, nbElements, stdout);
+	triJeu(tJeu, nbElements, TRI_ID);
+	afficheTabJeu(tJeu, nbElements, stdout);
+	triJeu(tJeu, nbElements, TRI_NB_EXEMPLAIRE_TOTAL);
+	afficheTabJeu(tJeu, nbElements, stdout);
+
+
 	nbElements = retirerJeu(tJeu, nbElements, 1);
 	afficheTabJeu(tJeu, nbElements, stdout);
 	libererTabJeu(tJeu, &nbElements);
-}*/
+}

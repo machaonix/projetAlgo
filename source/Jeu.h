@@ -41,7 +41,8 @@ int ajouterJeu(Jeu* tJeu[], int nbElem, Jeu jeu, int nbElemMax);
 int rechercherJeu(Jeu* tJeu[], int nbElem, unsigned int idJeu);
 
 //n'est pas fait pour etre utilisé par d'autres fonctions que triJeu
-void copyTab(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
+int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur);
+void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
 void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[]);
 
 //tri tJeu et retourne
