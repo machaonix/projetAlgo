@@ -2,7 +2,7 @@
 #define __TESTFONCTION_H__
 
 //#include "Date.h"
-#include "Jeu.h"
+#include "TableauJeu.h"
 
 void testFonctionJeu(void);
 //void testFonctionDate(void);

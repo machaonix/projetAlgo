@@ -16,24 +16,33 @@ void testFonctionDate(void)
 
 void testFonctionJeu(void)
 {
-	Jeu* tJeu[10];
-	int nbElements;
+	CodeErreur cErr;
+	TableauJeu* tabJeu = nouvTabJeu();
+	if (tabJeu == NULL)
+		return;
 
-	nbElements = chargerTabJeu(tJeu, "donnee/jeux.don", 10);
-	if (nbElements<0) return;
+	cErr = chargerTabJeu(tabJeu, "donnee/jeux.don");
+	if (cErr<0) return;
 
-	afficheTabJeu(tJeu, nbElements, stdout);
-	nbElements = ajouterJeu(tJeu, nbElements, nouvJeu(genIdJeu(tJeu, nbElements)), 10);
-	afficheTabJeu(tJeu, nbElements, stdout);
-	triJeu(tJeu, nbElements, TRI_NOM);
-	afficheTabJeu(tJeu, nbElements, stdout);
-	triJeu(tJeu, nbElements, TRI_ID);
-	afficheTabJeu(tJeu, nbElements, stdout);
-	triJeu(tJeu, nbElements, TRI_NB_EXEMPLAIRE_TOTAL);
-	afficheTabJeu(tJeu, nbElements, stdout);
+	afficheTabJeu(tabJeu, stdout);
+	cErr = ajouterJeu(tabJeu, nouvJeu(genIdJeu(tabJeu)));
+	if (cErr<0) return;
+	
+	afficheTabJeu(tabJeu, stdout);
 
+	triTabJeu(tabJeu, TRI_NOM);
 
-	nbElements = retirerJeu(tJeu, nbElements, 1);
-	afficheTabJeu(tJeu, nbElements, stdout);
-	libererTabJeu(tJeu, &nbElements);
+	
+	afficheTabJeu(tabJeu, stdout);
+	triTabJeu(tabJeu, TRI_ID);
+	
+	afficheTabJeu(tabJeu, stdout);
+	triTabJeu(tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
+	
+	afficheTabJeu(tabJeu, stdout);
+
+	cErr = retirerJeu(tabJeu, 1);
+	if (cErr<0) return;
+	afficheTabJeu(tabJeu, stdout);
+	libererTabJeu(tabJeu);
 }
