@@ -75,3 +75,50 @@ ListeER chargerListeEmprunReservation(char nomDeFichier[])
 
   return elem;
 }
+
+ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //retourne l'adresse d'un emprunt ou d'une reservation données par id
+{
+  while(liste->suiv!=NULL)
+  {
+    if(liste->empRes.id==id)
+    {
+      return liste;
+    }
+    liste=liste->suiv;
+  }
+    fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+    return NULL;
+}
+
+ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
+{
+  Element *elem;
+  elem=(Element *)malloc(sizeof(Element));
+  if(elem==NULL)
+  {
+    fprintf(stderr, "Erreur %d: Erreur de malloc\n",ERR_ALLOCATION);
+    return ERR_ALLOCATION;
+  }
+
+  elem->empRes=er;
+  elem->suiv=liste;
+  return elem;
+}
+
+ListeER insererEmpruntReservation(listeER liste, unsigned int id)
+{
+  Emprunt er;
+  while(liste->suiv!=NULL)
+  {
+    if(liste->empRes.id>id)
+    {
+      er=nouvEmpruntReservation(id);
+      liste=insererDevantEmpruntReservation(liste, er);
+      return liste;
+    }
+    liste=liste->suiv;
+  }
+  er=nouvEmpruntReservation(id);
+  liste=liste->suiv;
+  liste=insererDevantEmpruntReservation(liste,er);
+}
