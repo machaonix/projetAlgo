@@ -9,14 +9,14 @@
 
 #define PRIX_ADHERANT 15
 
-typedef enum {HOMME, FEMME} Civilite;
+typedef enum {HOMME, FEMME, INCONU} Civilite;
 
 typedef struct 
 {
 	unsigned int id;
 	Civilite civilite;
-	char nom[20];
-	char prenom[20];
+	char nom[22];
+	char prenom[22];
 	Date dateInscri;
 } Adherant;
 
