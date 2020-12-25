@@ -4,7 +4,7 @@
 Date lireDate(FILE* flux)
 {
 	Date d;
-	fscanf(flux, "%d/%d/%d", &(d.jour), &(d.mois), &(d.annee));
+	fscanf(flux, "%d/%d/%d%*c", &(d.jour), &(d.mois), &(d.annee));
 	return d;
 }
 //---------------------------------------------------------------------------------------------------------------------------------
