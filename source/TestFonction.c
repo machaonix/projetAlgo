@@ -1,16 +1,5 @@
 #include "TestFonction.h"
 
-
-
-void testFonctionJeu(void)
-{
-	// Jeu jeu;
-
-	// jeu = nouvJeu(0);
-	// afficheJeu(&jeu, stdout);
-	
-}
-
 void testFonctionDate(void)
 {
 	Date d1 = {31, 12, 2020};
@@ -36,4 +25,37 @@ void testFonctionAdherant(void)
 	Adherant ad = lireAdherant(f);
 	afficheAdherant(ad, stdout);
 	fclose(f);
+}
+
+void testFonctionJeu(void)
+{
+	CodeErreur cErr;
+	TableauJeu* tabJeu = nouvTabJeu();
+	if (tabJeu == NULL)
+		return;
+
+	cErr = chargerTabJeu(tabJeu, "donnee/jeux.don");
+	if (cErr<0) return;
+
+	afficheTabJeu(tabJeu, stdout);
+	cErr = ajouterJeu(tabJeu, nouvJeu(genIdJeu(tabJeu)));
+	if (cErr<0) return;
+	
+	afficheTabJeu(tabJeu, stdout);
+
+	triTabJeu(tabJeu, TRI_NOM);
+
+	
+	afficheTabJeu(tabJeu, stdout);
+	triTabJeu(tabJeu, TRI_ID);
+	
+	afficheTabJeu(tabJeu, stdout);
+	triTabJeu(tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
+	
+	afficheTabJeu(tabJeu, stdout);
+
+	cErr = retirerJeu(tabJeu, 1);
+	if (cErr<0) return;
+	afficheTabJeu(tabJeu, stdout);
+	libererTabJeu(tabJeu);
 }

@@ -10,7 +10,6 @@ void afficheJeu(Jeu* jeu, FILE* flux)
 Jeu nouvJeu(unsigned int id)
 {
 	Jeu jeu;
-	char choix = 'N';
 	jeu.id = id;
 
 	printf("Nom du jeu : ");
@@ -26,60 +25,44 @@ Jeu nouvJeu(unsigned int id)
 	fflush(stdout);
 	scanf("%d%*c", &(jeu.nbExemplaireTotal));
 
-	printf("\nSouhaitez vous integrer le jeu suivant (O/N) ?\n");
-	afficheJeu(&jeu, stdout);
-	fflush(stdout);
-	scanf("%c%*c", &choix);
-	if (choix == 'O')
-		return jeu;
-
 	return jeu;
 }
 
-void afficheTabJeu(Jeu* tJeu[], int nbElem, FILE* flux)
-{
-	if (flux == stdout)
-		printf("Id\tType\tExemplaires\tNom\n");
-	for (int i = 0; i<nbElem; ++i)
-		afficheJeu(Jeu[i], flux);
-}
 
 Jeu lireJeu(FILE* flux)
 {
 	Jeu jeu;
-	fscanf(flux, "%d%s%d", &(jeu.id), jeu.type, &(jeu.nbExemplaireTotal));
+	fscanf(flux, "%d%s%d%*c", &(jeu.id), jeu.type, &(jeu.nbExemplaireTotal));
 	fgets(jeu.nom, 41,flux);
 	jeu.nom[strlen(jeu.nom)-1] = '\0';
 	return jeu;
 }
 
-int chargerTabJeu(Jeu* tJeu[], char nomFichier[], int nbElemMax)
+
+
+int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur)
 {
-	FILE* flux;
-	Jeu jeu;
-	int i=0;
-
-	flux = fopen(nomFichier, "r");
-	if (!flux)
+	switch (triSur)
 	{
-		fprintf(stderr, "Erreur: ouverture fichier\n");
-		return ERR_OUVERTURE_FICHIER;
-	}
+		case TRI_ID:
+			return j1->id - j2->id;
+		
+		case TRI_NOM:
+			return strcmp(j1->nom, j2->nom);
+		
+		case TRI_TYPE:
+			return strcmp(j1->type, j2->type);
+		
+		case TRI_NB_EXEMPLAIRE_TOTAL:
+			return j1->nbExemplaireTotal - j2->nbExemplaireTotal;
 
-	jeu = lireJeu(flux);
-	while(!feof(flux))
-	{
-		if (i==nbElemMax)
+		case TRI_NB_EXEMPLAIRE_DISPO:
+			return j1->nbExemplaireDispo - j2->nbExemplaireDispo;
+		default:
 		{
-			fprintf(stderr, "Erreur: taille de tableau de jeu trop petite\n");
-			return ERR_OUT_OF_RANGE;
+			fprintf(stderr, "Erreur: cas de comparaison non implementé\n");
+			exit(2);
 		}
-
-		tJeu[i] = (Jeu*) malloc(sizeof(Jeu));
-		++i;
 	}
-
-	fclose(flux)
-
-	return i;
 }
+
