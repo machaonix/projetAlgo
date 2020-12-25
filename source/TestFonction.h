@@ -2,7 +2,9 @@
 #define __TESTFONCTION_H__
 
 #include "Date.h"
+#include "Adherant.h"
 
 void testFonctionJeu(void);
-
+void testFonctionDate(void);
+void testFonctionAdherant(void);
 #endif //__TESTFONCTION_H__
