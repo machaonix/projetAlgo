@@ -20,8 +20,11 @@ Jeu lireJeu(FILE* flux);
 
 //Flux=fichier pour sauvegarder ou Flux=STDOUT pour afficher en sortie standard
 void afficheJeu(Jeu* jeu, FILE* flux);
+
+//interactif
 Jeu nouvJeu(unsigned int id);
 
 int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur);
+void copyJeu(Jeu* jd, Jeu* js);
 
 #endif //__JEU_H__

@@ -20,29 +20,17 @@ void testFonctionJeu(void)
 	TableauJeu* tabJeu = nouvTabJeu();
 	if (tabJeu == NULL)
 		return;
-
 	cErr = chargerTabJeu(tabJeu, "donnee/jeux.don");
 	if (cErr<0) return;
 
-	afficheTabJeu(tabJeu, stdout);
-	cErr = ajouterJeu(tabJeu, nouvJeu(genIdJeu(tabJeu)));
+
+	cErr = ajouterJeuInteractif(tabJeu);
 	if (cErr<0) return;
-	
-	afficheTabJeu(tabJeu, stdout);
 
-	triTabJeu(tabJeu, TRI_NOM);
-
-	
 	afficheTabJeu(tabJeu, stdout);
-	triTabJeu(tabJeu, TRI_ID);
-	
-	afficheTabJeu(tabJeu, stdout);
-	triTabJeu(tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
-	
-	afficheTabJeu(tabJeu, stdout);
-
-	cErr = retirerJeu(tabJeu, 1);
+	fflush(stdout);
+	cErr = sauvegarderTabJeu(tabJeu, "donnee/jeux2.don");
 	if (cErr<0) return;
-	afficheTabJeu(tabJeu, stdout);
+
 	libererTabJeu(tabJeu);
 }

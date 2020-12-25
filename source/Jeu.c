@@ -19,11 +19,12 @@ Jeu nouvJeu(unsigned int id)
 
 	printf("\nType du jeu : ");
 	fflush(stdout);
-	scanf("%s", jeu.type);
+	scanf("%s%*c", jeu.type);
 
 	printf("\nNombre d'exemplaires : ");
 	fflush(stdout);
 	scanf("%d%*c", &(jeu.nbExemplaireTotal));
+	jeu.nbExemplaireDispo = jeu.nbExemplaireTotal;
 
 	return jeu;
 }
@@ -33,6 +34,8 @@ Jeu lireJeu(FILE* flux)
 {
 	Jeu jeu;
 	fscanf(flux, "%d%s%d%*c", &(jeu.id), jeu.type, &(jeu.nbExemplaireTotal));
+	jeu.nbExemplaireDispo = jeu.nbExemplaireTotal;
+
 	fgets(jeu.nom, 41,flux);
 	jeu.nom[strlen(jeu.nom)-1] = '\0';
 	return jeu;
@@ -64,5 +67,16 @@ int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur)
 			exit(2);
 		}
 	}
+}
+
+
+void copyJeu(Jeu* jd, Jeu* js)
+{
+	jd->id = js->id;
+	jd->nbExemplaireTotal = js->nbExemplaireTotal;
+	jd->nbExemplaireDispo = js->nbExemplaireDispo;
+	
+	strcpy(jd->nom, js->nom);
+	strcpy(jd->type, js->type);
 }
 
