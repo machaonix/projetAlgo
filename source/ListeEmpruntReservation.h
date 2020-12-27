@@ -30,4 +30,6 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er);
 ListeER supprimerEmpruntReservation(ListeER liste, Emprunt element);
 ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
+ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne NULL;
+
 #endif //__LISTEEMPRUNTRESERVATION_H__

@@ -107,18 +107,14 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
 
 ListeER insererEmpruntReservation(listeER liste, unsigned int id)
 {
-  Emprunt er;
-  while(liste->suiv!=NULL)
-  {
-    if(liste->empRes.id>id)
-    {
-      er=nouvEmpruntReservation(id);
-      liste=insererDevantEmpruntReservation(liste, er);
-      return liste;
-    }
-    liste=liste->suiv;
-  }
-  er=nouvEmpruntReservation(id);
+  
+}
+
+ListerER supprimerDevantEmpruntReservation(ListeER liste)
+{
+  Element *elem
+  elem = liste;
   liste=liste->suiv;
-  liste=insererDevantEmpruntReservation(liste,er);
+  free(elem);
+  return liste;
 }
