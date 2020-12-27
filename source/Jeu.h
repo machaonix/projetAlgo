@@ -16,12 +16,15 @@ typedef struct
     unsigned int nbExemplaireDispo;
 } Jeu;
 
-Jeu lireJeu(FILE* flux);
+Jeu* lireJeu(FILE* flux);
 
 //Flux=fichier pour sauvegarder ou Flux=STDOUT pour afficher en sortie standard
 void afficheJeu(Jeu* jeu, FILE* flux);
-Jeu nouvJeu(unsigned int id);
+
+//interactif
+Jeu* nouvJeu(unsigned int id);
 
 int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur);
+void copyJeu(Jeu* jd, Jeu* js);
 
 #endif //__JEU_H__

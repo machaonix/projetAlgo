@@ -7,21 +7,25 @@
 #include "CodeErreur.h"
 #include "Bool.h"
 
-#define TAILLE_MAX_TAB_JEU 100
+#define TAILLE_MAX_TAB_JEU 32
 
 typedef struct 
 {
 	unsigned int nbElement;
-	Jeu* jeux[TAILLE_MAX_TAB_JEU];
 	TriSur triSur;
+	Jeu* jeux[TAILLE_MAX_TAB_JEU];
 } TableauJeu;
 
-//retourne un pointeur sur un nouveau TableauJeu ou NULL si erreur
-TableauJeu* nouvTabJeu();
+//initialise les variables du tableau 
+void initTabJeu(TableauJeu* tabJeu);
 
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
+
 //retourne 0 ou un CodeErreur
 CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[]);
+CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
+
+
 void libererTabJeu(TableauJeu* tabJeu);
 
 //retourne le rang du jeu trouvé ou le rang d'insertion si non trouvé
@@ -39,7 +43,8 @@ CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu);
 
 //retourne 0 si l'ajout est fait
 //sinon retourne un CodeErreur 
-int ajouterJeu(TableauJeu* tabJeu, Jeu jeu);
+CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu);
+CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
 
 //les fonctions suivantes sont utilisé en interne par retirerJeu et ajouterJeu
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut);//ne libere pas la memoire

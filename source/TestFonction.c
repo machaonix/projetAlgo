@@ -13,46 +13,50 @@ void testFonctionDate(void)
 	afficherDate(d1, stdout);
 }
 */
-void testFonctionAdherant(void)
-{
-	unsigned int tMax = 10;
-	int nbElem = 0;
-	Adherant *tAd = (Adherant*) malloc(sizeof(Adherant)*tMax);
-	nbElem = chargerLesAdherants(tAd, &tMax, "../donnee/adherant.don");
-	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
-	free(tAd);
-}
-/*
+// void testFonctionAdherant(void)
+// {
+// 	unsigned int tMax = 10;
+// 	int nbElem = 0;
+// 	Adherant *tAd = (Adherant*) malloc(sizeof(Adherant)*tMax);
+// 	nbElem = chargerLesAdherants(tAd, &tMax, "../donnee/adherant.don");
+// 	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
+// 	free(tAd);
+// }
+
 void testFonctionJeu(void)
 {
 	CodeErreur cErr;
-	TableauJeu* tabJeu = nouvTabJeu();
-	if (tabJeu == NULL)
-		return;
+	TableauJeu tabJeu;
+	initTabJeu(&tabJeu);
 
-	cErr = chargerTabJeu(tabJeu, "donnee/jeux.don");
+	cErr = chargerTabJeu(&tabJeu, "donnee/jeux.don");
 	if (cErr<0) return;
 
-	afficheTabJeu(tabJeu, stdout);
-	cErr = ajouterJeu(tabJeu, nouvJeu(genIdJeu(tabJeu)));
+	afficheTabJeu(&tabJeu, stdout);
+	fflush(stdout);
+
+//ajout
+	cErr = ajouterJeuInteractif(&tabJeu);
 	if (cErr<0) return;
-	
-	afficheTabJeu(tabJeu, stdout);
+	afficheTabJeu(&tabJeu, stdout);
 
-	triTabJeu(tabJeu, TRI_NOM);
+//tri
+	triTabJeu(&tabJeu, TRI_NOM);
+	afficheTabJeu(&tabJeu, stdout);
+	triTabJeu(&tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
+	afficheTabJeu(&tabJeu, stdout);
+	triTabJeu(&tabJeu, TRI_ID);
+	afficheTabJeu(&tabJeu, stdout);
 
-	
-	afficheTabJeu(tabJeu, stdout);
-	triTabJeu(tabJeu, TRI_ID);
-	
-	afficheTabJeu(tabJeu, stdout);
-	triTabJeu(tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
-	
-	afficheTabJeu(tabJeu, stdout);
+//suppresion
+	retirerJeu(&tabJeu, 1);
+	afficheTabJeu(&tabJeu, stdout);
+	fflush(stdout);
 
-	cErr = retirerJeu(tabJeu, 1);
+
+//sauvegarde
+	cErr = sauvegarderTabJeu(&tabJeu, "donnee/jeux2.don");
 	if (cErr<0) return;
-	afficheTabJeu(tabJeu, stdout);
-	libererTabJeu(tabJeu);
+
+	libererTabJeu(&tabJeu);
 }
-*/
