@@ -16,8 +16,8 @@ typedef struct
 	Jeu* jeux[TAILLE_MAX_TAB_JEU];
 } TableauJeu;
 
-//retourne un pointeur sur un nouveau TableauJeu ou NULL si erreur
-TableauJeu* nouvTabJeu(void);
+//initialise les variables du tableau 
+void initTabJeu(TableauJeu* tabJeu);
 
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
 
@@ -45,8 +45,6 @@ CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu);
 //sinon retourne un CodeErreur 
 CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu);
 CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
-
-CodeErreur _allocAssignJeu(TableauJeu* tabJeu, Jeu* jeu, unsigned int rang);
 
 //les fonctions suivantes sont utilisé en interne par retirerJeu et ajouterJeu
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut);//ne libere pas la memoire

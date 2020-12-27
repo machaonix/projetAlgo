@@ -17,20 +17,22 @@ void testFonctionDate(void)
 void testFonctionJeu(void)
 {
 	CodeErreur cErr;
-	TableauJeu* tabJeu = nouvTabJeu();
-	if (tabJeu == NULL)
-		return;
-	cErr = chargerTabJeu(tabJeu, "donnee/jeux.don");
+	TableauJeu tabJeu;
+	initTabJeu(&tabJeu);
+
+	cErr = chargerTabJeu(&tabJeu, "donnee/jeux.don");
 	if (cErr<0) return;
 
-
-	cErr = ajouterJeuInteractif(tabJeu);
-	if (cErr<0) return;
-
-	afficheTabJeu(tabJeu, stdout);
+	afficheTabJeu(&tabJeu, stdout);
 	fflush(stdout);
-	cErr = sauvegarderTabJeu(tabJeu, "donnee/jeux2.don");
+
+	cErr = ajouterJeuInteractif(&tabJeu);
 	if (cErr<0) return;
 
-	libererTabJeu(tabJeu);
+	afficheTabJeu(&tabJeu, stdout);
+	fflush(stdout);
+	cErr = sauvegarderTabJeu(&tabJeu, "donnee/jeux2.don");
+	if (cErr<0) return;
+
+	libererTabJeu(&tabJeu);
 }

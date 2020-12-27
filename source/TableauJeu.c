@@ -1,19 +1,16 @@
 #include "TableauJeu.h"
 
 
-TableauJeu* nouvTabJeu()
+void initTabJeu(TableauJeu* tabJeu)
 {
-	TableauJeu* tabJeu;
-	tabJeu = (TableauJeu*) malloc(sizeof(TableauJeu*));
-	if (tabJeu == NULL)
+	for (int i = 0; i< TAILLE_MAX_TAB_JEU; ++i)
 	{
-		fprintf(stderr, "Erreur: malloc nouvTableau\n");
-		return NULL;
+		tabJeu->jeux[i] = NULL;
 	}
 	tabJeu->nbElement = 0;
 	tabJeu->triSur = TRI_NON_TRIE;
-	return tabJeu;
 }
+
 
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 {
@@ -32,11 +29,7 @@ void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 {
 	FILE* flux;
-	Jeu jeu;
-	CodeErreur cErr;
-
-	if (tabJeu == NULL)
-		tabJeu = nouvTabJeu();
+	Jeu* jeu;
 
 	if (tabJeu->nbElement != 0)
 		libererTabJeu(tabJeu);
@@ -61,22 +54,11 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 			fclose(flux);
 			return ERR_OUT_OF_RANGE;
 		}
-/*
-		tabJeu->jeux[tabJeu->nbElement] = (Jeu*) malloc(sizeof(Jeu));
-		if (tabJeu->jeux[tabJeu->nbElement] == NULL)
-		{
-			fprintf(stderr, "Erreur: probleme d'allocation\n");
-			fclose(flux);
-			return ERR_ALLOCATION;
-		}
-		copyJeu(tabJeu->jeux[tabJeu->nbElement], &jeu);
-		++tabJeu->nbElement;*/
-		cErr = _allocAssignJeu(tabJeu, &jeu, tabJeu->nbElement);
-		if (cErr != ERR_NO_ERR)
-		{
-			fclose(flux);
-			return cErr;
-		}
+
+		if (jeu == NULL) return ERR_ALLOCATION;
+
+		tabJeu->jeux[tabJeu->nbElement] = jeu;
+		tabJeu->nbElement++;
 		
 		jeu = lireJeu(flux);
 	}
@@ -213,18 +195,21 @@ CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 
 	_decalageADroiteJeu(tabJeu, rangInser);
 
-	return _allocAssignJeu(tabJeu, jeu, tabJeu->nbElement);
+	tabJeu->jeux[rangInser] = jeu;
+	tabJeu->nbElement++;
+
+	return ERR_NO_ERR;
 }
 
 CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 {
 	CodeErreur cErr;
 	char choix = 'a';
-	Jeu jeu = nouvJeu(genIdJeu(tabJeu));
-	
+	Jeu* jeu = nouvJeu(genIdJeu(tabJeu));
+	if (jeu == NULL) return ERR_ALLOCATION;
 
 	printf("\nSouhaitez vous ajouter le jeu suivant (O / N) : \n");
-	afficheJeu(&jeu, stdout);
+	afficheJeu(jeu, stdout);
 	printf("\n");
 	fflush(stdout);
 
@@ -236,7 +221,7 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 		{
 			case 'O':
 			{
-				cErr = ajouterJeu(tabJeu, &jeu);
+				cErr = ajouterJeu(tabJeu, jeu);
 				if (cErr == 0)
 					printf("Jeu ajouté\n");
 				fflush(stdout);
@@ -256,22 +241,6 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 	}
 
 		
-}
-
-
-CodeErreur _allocAssignJeu(TableauJeu* tabJeu, Jeu* jeu, unsigned int rang)
-{
-	tabJeu->jeux[rang] = (Jeu*) malloc(sizeof(Jeu));
-
-	if (tabJeu->jeux[rang] == NULL)
-	{
-		fprintf(stderr, "Erreur: probleme d'allocation\n");
-		return ERR_ALLOCATION;
-	}
-	copyJeu(tabJeu->jeux[rang], jeu);
-	++tabJeu->nbElement;
-
-	return ERR_NO_ERR;
 }
 
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut)
