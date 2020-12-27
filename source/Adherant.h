@@ -21,18 +21,31 @@ typedef struct
 } Adherant;
 
 Adherant lireAdherant(FILE* flux);
-void afficheAdherant(Adherant ad, FILE* flux);
+void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
 Adherant nouvAdherant(unsigned int id);
 
+
 //fonction sur tableau
-void afficheTabAdherant(Adherant tAdherant[], int nbElem);
+
+/*
+	Retour 		: NULL
+	arguments	:
+		tAdherant 	-> Un tableau d'adherant contenant les adherant de la ludoteque
+		nbElem 		-> Un entier repréentant le nombre d'adherant dans le tableau tAdherant
+		flux		-> Un FILE représantant la sortie sur la quelle écrire
+		entete 		-> Un boolean informant de la volonter d'afficher une entête ou non
+*/
+void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete);
 
 //retourne la taille du tableau ou un CodeErreur
-int insererAdherant(Adherant tAdherant[], int nbElem, Adherant ad);
-int supprimerAdherant(Adherant tAdherant[], int nbElem, Adherant ad);
+int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad);
 
-void decalageAGaucheAdherant(Adherant tAdherant[], int debut, int nbElem);
-void decalageADroiteAdherant(Adherant tAdherant[], int debut, int nbElem);
+void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
+void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
+int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad, CodeErreur* trouve);
+int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFichier[]);
+
 
 Bool checkInscriptionValide(Adherant ad);
 void renouvelerInscription(Adherant ad, Date nouvelleDate);
