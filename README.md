@@ -2,7 +2,10 @@
 
 ## TODO LIST
 
-* Définir les taches 
-* Se répartir les taches
-
-
+* Allan
+	* s'ocupe des adherants
+	* d'ocupe des dates
+* Martin
+	* s'ocuppe des jeux
+* Mathis
+	* s'occupe des listes

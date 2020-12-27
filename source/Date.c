@@ -4,15 +4,13 @@
 Date lireDate(FILE* flux)
 {
 	Date d;
-	fscanf(flux, "%d/%d/%d", &(d.jour), &(d.mois), &(d.annee));
+	fscanf(flux, "%d/%d/%d%*c", &(d.jour), &(d.mois), &(d.annee));
 	return d;
 }
 //---------------------------------------------------------------------------------------------------------------------------------
 void afficherDate(Date date, FILE* flux)
 {
-	if(flux == stdout)
-		printf("Jour/mois/année\n");
-	fprintf(flux, "%d/%d/%d\n", date.jour, date.mois, date.annee);
+	fprintf(flux, "%d/%d/%d", date.jour, date.mois, date.annee);
 }
 //---------------------------------------------------------------------------------------------------------------------------------
 int dateCmp(Date date1, Date date2)
