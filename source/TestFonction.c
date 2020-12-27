@@ -12,21 +12,17 @@ void testFonctionDate(void)
 		}
 	afficherDate(d1, stdout);
 }
-
-void testFonctionAdherant(void)
-{
-	FILE *f = fopen("../donnee/adherant.don", "r");
-	if(f == NULL)
-	{
-		fprintf(stderr, "Erreur dans l'ouverture du fichier d'adherant\n");
-		return;
-	}
-
-	Adherant ad = lireAdherant(f);
-	afficheAdherant(ad, stdout);
-	fclose(f);
-}
 */
+// void testFonctionAdherant(void)
+// {
+// 	unsigned int tMax = 10;
+// 	int nbElem = 0;
+// 	Adherant *tAd = (Adherant*) malloc(sizeof(Adherant)*tMax);
+// 	nbElem = chargerLesAdherants(tAd, &tMax, "../donnee/adherant.don");
+// 	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
+// 	free(tAd);
+// }
+
 void testFonctionJeu(void)
 {
 	CodeErreur cErr;
