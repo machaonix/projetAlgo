@@ -72,22 +72,16 @@ CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[])
 {
 	FILE* flux = NULL;
 
-	fprintf(stderr, "S1\n");fflush(stderr);
-
 	flux = fopen(nomFichier, "w");
-	fprintf(stderr, "S2\n");fflush(stderr);
 	if (flux == NULL)
 	{
 		fprintf(stderr, "Erreur: ouverture fichier\n");fflush(stderr);
 		return ERR_OUVERTURE_FICHIER;
 	}
-	fprintf(stderr, "S3\n");fflush(stderr);
 
 	afficheTabJeu(tabJeu, flux);
-	fprintf(stderr, "S4\n");fflush(stderr);
 
 	fclose(flux);
-	fprintf(stderr, "S5\n");fflush(stderr);
 
 	return ERR_NO_ERR;
 }
@@ -162,16 +156,36 @@ CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu)
 	Bool trouve;
 	unsigned int rang = rechercherIdJeu(tabJeu, idJeu, &trouve);
 	if (trouve == FALSE)
-	{
-		printf("Jeu non trouvé\n");
 		return ERR_NOT_FOUND;
-	}
 
 	free(tabJeu->jeux[rang]);
 	_decalageAGaucheJeu(tabJeu, rang);
 
 	--(tabJeu->nbElement);
 
+	return ERR_NO_ERR;
+}
+
+
+CodeErreur retirerJeuInteractif(TableauJeu* tabJeu)
+{
+	unsigned int idJeu;
+	CodeErreur cErr;
+
+	printf("Quel est l'Identifiant du jeu que vous souhaitez retirer ?\n");
+	fflush(stdout);
+	scanf("%d", &idJeu);
+
+	cErr = retirerJeu(tabJeu, idJeu);
+	if (cErr == ERR_NOT_FOUND)
+	{
+		printf("Jeu non trouvé\n");
+		fflush(stdout);
+		return ERR_OPERATION_INVALIDE;
+	}
+
+	printf("Jeu retiré\n");
+	fflush(stdout);
 	return ERR_NO_ERR;
 }
 

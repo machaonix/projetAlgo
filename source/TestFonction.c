@@ -41,7 +41,7 @@ void testFonctionJeu(void)
 
 //ajout
 	cErr = ajouterJeuInteractif(&tabJeu);
-	if (cErr<0) return;
+	if (cErr != ERR_NO_ERR) return;
 	afficheTabJeu(&tabJeu, stdout);
 
 //tri
@@ -53,14 +53,15 @@ void testFonctionJeu(void)
 	afficheTabJeu(&tabJeu, stdout);
 
 //suppresion
-	retirerJeu(&tabJeu, 1);
+	cErr = retirerJeuInteractif(&tabJeu);
+	if (cErr != ERR_NO_ERR) return;
 	afficheTabJeu(&tabJeu, stdout);
 	fflush(stdout);
 
 
 //sauvegarde
 	cErr = sauvegarderTabJeu(&tabJeu, "donnee/jeux2.don");
-	if (cErr<0) return;
+	if (cErr != ERR_NO_ERR) return;
 
 	libererTabJeu(&tabJeu);
 }

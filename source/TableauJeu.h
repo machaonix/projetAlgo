@@ -40,6 +40,7 @@ unsigned int genIdJeu(TableauJeu* tabJeu);
 
 //retourne 0 ou un CodeErreur
 CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu);
+CodeErreur retirerJeuInteractif(TableauJeu* tabJeu);
 
 //retourne 0 si l'ajout est fait
 //sinon retourne un CodeErreur 
