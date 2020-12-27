@@ -1,5 +1,5 @@
 #include "TestFonction.h"
-
+/*
 void testFonctionDate(void)
 {
 	Date d1 = {31, 12, 2020};
@@ -26,7 +26,7 @@ void testFonctionAdherant(void)
 	afficheAdherant(ad, stdout);
 	fclose(f);
 }
-
+*/
 void testFonctionJeu(void)
 {
 	CodeErreur cErr;
@@ -39,11 +39,26 @@ void testFonctionJeu(void)
 	afficheTabJeu(&tabJeu, stdout);
 	fflush(stdout);
 
+//ajout
 	cErr = ajouterJeuInteractif(&tabJeu);
 	if (cErr<0) return;
+	afficheTabJeu(&tabJeu, stdout);
 
+//tri
+	triTabJeu(&tabJeu, TRI_NOM);
+	afficheTabJeu(&tabJeu, stdout);
+	triTabJeu(&tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
+	afficheTabJeu(&tabJeu, stdout);
+	triTabJeu(&tabJeu, TRI_ID);
+	afficheTabJeu(&tabJeu, stdout);
+
+//suppresion
+	retirerJeu(&tabJeu, 1);
 	afficheTabJeu(&tabJeu, stdout);
 	fflush(stdout);
+
+
+//sauvegarde
 	cErr = sauvegarderTabJeu(&tabJeu, "donnee/jeux2.don");
 	if (cErr<0) return;
 
