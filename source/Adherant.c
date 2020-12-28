@@ -23,7 +23,7 @@ Adherant lireAdherant(FILE* flux)
 			adherantEnCourDeLecture.civilite = INCONU;
 			break;
 	}
-	
+
 	//lecture du nom et du prénom de l'adhérant
 	fscanf(flux, "%s%s%*c", adherantEnCourDeLecture.nom, adherantEnCourDeLecture.prenom);
 
@@ -79,7 +79,7 @@ int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMa
 
 	CodeErreur trouve;
 	int index = rechercherUnAdherant(tAdherant, nbElem, ad, &trouve);
-	
+
 	if(index == ERR_EXISTE_DEJA)
 	{
 		fprintf(stderr, "L'adherant %d existe deja.\n", ad->id);
@@ -140,7 +140,7 @@ int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad
 	return inf;
 }
 
-int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFichier[])
+int chargerLesAdherants(Adherant tAdherant[], unsigned int* tMax, char nomDuFichier[])
 {
 	unsigned int nbElem = 0;
 	Adherant tmp;
@@ -159,4 +159,16 @@ int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFich
 	}
 	fclose(flux);
 	return nbElem;
+}
+
+Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) {printf("%d\n", dateCmp(*dateDuJour, ad->dateInscri)); return dateCmp(*dateDuJour, ad->dateInscri) < 365;}
+
+void renouvelerInscription(Adherant* ad, Date* nouvelleDate)
+{
+	if(checkInscriptionValide(ad, nouvelleDate))
+		return;
+	ad->dateInscri.jour = nouvelleDate->jour;
+	ad->dateInscri.mois = nouvelleDate->mois;
+	ad->dateInscri.annee = nouvelleDate->annee;
+
 }

@@ -11,7 +11,7 @@
 
 typedef enum {HOMME, FEMME, INCONU} Civilite;
 
-typedef struct 
+typedef struct
 {
 	unsigned int id;
 	Civilite civilite;
@@ -24,7 +24,7 @@ typedef struct
 lireAdherant():
 
 	Retour 		: retourne un adherant contenant les information du fichier adherant.don
-	Arguments 	: 
+	Arguments 	:
 		flux -> Un pointeur de FILE représentant le fichier on sont enregistré les adherants
 */
 Adherant lireAdherant(FILE* flux);
@@ -40,7 +40,7 @@ afficheAdherant():
 void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
 
 /*
-
+- - - - - - - - - - - -  - - - - - - - - --
 */
 Adherant nouvAdherant(unsigned int id);
 
@@ -62,7 +62,7 @@ void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, B
 /*
 insererAdherant():
 	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
-	Arguments 	: 
+	Arguments 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
@@ -129,8 +129,25 @@ chargerLesAdherants():
 */
 int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFichier[]);
 
+/*
+checkInscriptionValide():
+	Retour		: retourne un boolean indiquant le validitée de l'inscription(si la differance entre la date du jour et la date d'insctiption est inferieur à 0)
+	Arguments	:
+		ad 			-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe)
+		dateDuJour	-> Une Date repréntant la date du jour
+	Finalitée	:
+		Validée une insctiption
+*/
+Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
 
-Bool checkInscriptionValide(Adherant ad);
-void renouvelerInscription(Adherant ad, Date nouvelleDate);
+/*
+renouvelerInscription():
+
+	Retour		: NULL
+	Arguments 	:
+		ad 				-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe et modifier ad)
+		nouvelleDate	-> Nouvelle date à assigner à ad (la valeur est passer par adresse pour alleger le programe)
+*/
+void renouvelerInscription(Adherant* ad, Date* nouvelleDate);
 
 #endif //__ADHERANT_H__
