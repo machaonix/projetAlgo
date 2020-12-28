@@ -12,8 +12,8 @@
 
 
 
-##Fonction d'utilisation du programme (et leurs dépandances) 
-//Permet de voir ou créer ces fonctions 
+## Fonction d'utilisation du programme (et leurs dépandances)
+//Permet de voir ou créer ces fonctions
 
 Charger les Fichiers (Adherant, ListeEmpruntReservation, TableauJeu)
 
