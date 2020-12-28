@@ -20,14 +20,35 @@ typedef struct
 	Date dateInscri;
 } Adherant;
 
+/*
+lireAdherant():
+
+	Retour 		: retourne un adherant contenant les information du fichier adherant.don
+	Arguments 	: 
+		flux -> Un pointeur de FILE représentant le fichier on sont enregistré les adherants
+*/
 Adherant lireAdherant(FILE* flux);
+
+/*
+afficheAdherant():
+	Retour 		: NULL
+	Arguments 	:
+		ad 			-> Un adherant à afficher
+		flux		-> Un pointeur de FILE qui représente la sortie de l'affichage
+		entete 		-> Valeur booleanne indiquant l'affichage d'une entête ou non
+*/
 void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
+
+/*
+
+*/
 Adherant nouvAdherant(unsigned int id);
 
 
 //fonction sur tableau
 
 /*
+afficheTabAdherant():
 	Retour 		: NULL
 	arguments	:
 		tAdherant 	-> Un tableau d'adherant contenant les adherant de la ludoteque
@@ -37,13 +58,75 @@ Adherant nouvAdherant(unsigned int id);
 */
 void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete);
 
-//retourne la taille du tableau ou un CodeErreur
+
+/*
+insererAdherant():
+	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
+	Arguments 	: 
+		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
+		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
+*/
 int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+
+/*
+supprimerAdherant():
+	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
+	Arguments 	:
+		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
+*/
 int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad);
 
+/*
+decalageAGaucheAdherant()
+	Retour		: Null
+	Arguments 	:
+		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
+		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+	Finalitée 	:
+		"déplacer" les valeur de tAdherant en décremantant leurs indexs à partir de début jusqu'à nbElem dans l'optique de supprimer une valeur dans tAdherant
+*/
 void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
+
+/*
+decalageADroiteAdherant()
+	Retour		: Null
+	Arguments 	:
+		tAdherant	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
+		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+	Finalitée 	:
+		"déplacer" les valeur de tAdherant en incremantant leurs indexs à partir de début jusqu'à nbElem dans l'optique d'ajouter une nouvelle valeur dans tAdherant
+*/
 void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
+
+/*
+rechercherUnAdherant():
+	Retour 		: index de l'element si ad a était trouvé ou l'index d'inserssion si ad n'a pas était trouvé
+	Arguments 	:
+		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+		ad 			-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe)
+		trouve 		-> Un CodeErreur passé par addresse (deux valeur possible : ERR_NOT_FOUND | ERR_EXISTE_DEJA)
+	Finalitée :
+		Retrouver un Adherant dans un tAdherant (trié) par recherche dichotomique
+*/
 int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad, CodeErreur* trouve);
+
+/*
+chargerLesAdherants():
+	Retour 		: retourne le nombre d'élément(s) stocké dans nomDuFichier
+	Arguments 	:
+		tAdherant 		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		tMax 			-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
+		nomDuFichier	-> Une chaine de caractere représentant le chemain du fichier stockant les Adherant
+	Finalitée 	:
+		Lire le fichier contenant les Adherant pour les stocker dans la mémoire centrale
+*/
 int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFichier[]);
 
 
