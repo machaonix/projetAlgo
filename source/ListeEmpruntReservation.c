@@ -58,7 +58,7 @@ ListeER chargerListeEmprunReservation(char nomDeFichier[])
   return liste;
 }
 
-*Element chargercreerMaillon(FILE *flux)
+Element* chargercreerMaillon(FILE *flux)
 {
   Element *elem;
   elem=(Element *)malloc(sizeof(Element));

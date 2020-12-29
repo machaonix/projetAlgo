@@ -14,13 +14,13 @@ typedef struct element
 //Pour les fonctions communes ListeER sera utilise
 
 ListeER listeER_Vide(void); //Créer une nouvelle liste
-Bool listeER_estVide(ListeEmprunt liste); //TRUE si vide
+Bool listeER_estVide(ListeER liste); //TRUE si vide
 
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
 ListeER chargerListeEmprunReservation(char nomDeFichier[]);
 // Retourne une liste
-*Element chargercreerMaillon(FILE *flux); // Retourne un pointeur vers l'élément suivant (défini element.suiv)
+Element* chargercreerMaillon(FILE *flux); // Retourne un pointeur vers l'élément suivant (défini element.suiv)
 
 ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 

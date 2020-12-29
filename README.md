@@ -29,3 +29,19 @@ Renouveler adherant (Adherant)
 Lister le catalogue de jeux (TableauJeu)
 
 Lister les adherants ayant des emprunts en retard (Adherant, ListeEmpruntReservation)
+
+
+## Variables dans la fonction globale (de ce que j'ai vu des fonctions de test)
+
+Pour jeu:
+	TableauJeu tabJeu
+	CodeErreur cErr
+
+Pour adherant:
+	unsigned int nbMaxAdherant
+	int nbAdherant
+	Adherant* tabAdherant
+
+Pour emprunt
+	ListeEmprunt listeEmprunt
+	ListeReservation listeReservation
