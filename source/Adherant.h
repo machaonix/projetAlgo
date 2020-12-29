@@ -40,7 +40,10 @@ afficheAdherant():
 void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
 
 /*
-- - - - - - - - - - - -  - - - - - - - - --
+nouvAdherant():
+	Retour		: Un Adherant construit dans la fonction
+	Arguments	:
+		id			-> Un entier positif représantant l'identifiant du nouvel utilisateur
 */
 Adherant nouvAdherant(unsigned int id);
 
@@ -149,5 +152,7 @@ renouvelerInscription():
 		nouvelleDate	-> Nouvelle date à assigner à ad (la valeur est passer par adresse pour alleger le programe)
 */
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate);
+
+CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[]);
 
 #endif //__ADHERANT_H__

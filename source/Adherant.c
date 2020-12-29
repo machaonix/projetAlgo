@@ -54,9 +54,9 @@ void afficheAdherant(Adherant ad, FILE* flux, Bool entete)
 	}
 
 	//affichage du reste des attributs de l'adhérant (nopm, prénom, date d'inscription)
-	printf("%s\t%s\t", ad.nom, ad.prenom);
+	fprintf(flux, "%s\t%s\t", ad.nom, ad.prenom);
 	afficherDate(ad.dateInscri, flux);
-	printf("\n");
+	fprintf(flux, "\n");
 }
 
 void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete)
@@ -65,6 +65,63 @@ void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, B
 		printf("ID  CIVILITÉE\tNOM\tPRENOM\tDate\n");
 	for(unsigned int i=0; i<nbElem; ++i)
 		afficheAdherant(tAdherant[i], flux, FALSE);
+}
+
+Adherant nouvAdherant(unsigned int id)
+{
+	Adherant tmp;
+	char* espace = NULL;
+	char civilite;
+	tmp.id = id;
+
+	//Traitement du prénom
+
+	printf("Saisir le prenom\n>>>");// scanf("%s%*c", tmp.prenom);
+	fgets(tmp.prenom, 21, stdin);
+	tmp.prenom[strlen(tmp.prenom)-1] = '\0';
+	espace = strchr(tmp.prenom, ' ');
+	while(espace != NULL)//tant qu'il y a des espaces dans le prénom, les remplacer par des '-'
+	{
+		*espace = '-';
+	 	espace = strchr(tmp.prenom, ' ');
+	}
+	printf("prenom : %s\n", tmp.prenom);
+
+
+	//Traitement du nom
+	printf("Saisir le nom\n>>>");// scanf("%s%*c", tmp.nom);
+	fgets(tmp.nom, 21, stdin);
+	tmp.nom[strlen(tmp.nom)-1] = '\0';
+	espace = strchr(tmp.nom, ' ');
+	while(espace != NULL)//tant qu'il y a des espaces dans le nom, les remplacer par des '-'
+	{
+	 	*espace = '-';
+	 	espace = strchr(tmp.nom, ' ');
+	}
+	printf("nom : %s\n", tmp.nom);
+
+
+	//Traitement de la Civilitée
+	do
+	{
+		printf("Civilitée(H/F)\t: ");
+		scanf("%c%*c", &civilite);
+		printf("civilite : %d | H = %d\n", civilite, 'H');
+	}
+	while(civilite != 'F' && civilite != 'H');
+	if(civilite == 'F')
+		tmp.civilite = FEMME;
+	else
+		tmp.civilite = HOMME;
+
+
+	//Traitement de la date d'inscription
+	printf("Saisir la date du jour:\n");
+	printf("Jour\t: "); scanf("%d%*c", &(tmp.dateInscri.jour));
+	printf("Mois\t: "); scanf("%d%*c", &(tmp.dateInscri.mois));
+	printf("Année\t: ");scanf("%d%*c", &(tmp.dateInscri.annee));
+
+	return tmp;
 }
 
 int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
@@ -161,7 +218,7 @@ int chargerLesAdherants(Adherant tAdherant[], unsigned int* tMax, char nomDuFich
 	return nbElem;
 }
 
-Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) {printf("%d\n", dateCmp(*dateDuJour, ad->dateInscri)); return dateCmp(*dateDuJour, ad->dateInscri) < 365;}
+Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) {return dateCmp(*dateDuJour, ad->dateInscri) < 365;}
 
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate)
 {
@@ -171,4 +228,14 @@ void renouvelerInscription(Adherant* ad, Date* nouvelleDate)
 	ad->dateInscri.mois = nouvelleDate->mois;
 	ad->dateInscri.annee = nouvelleDate->annee;
 
+}
+
+CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[])
+{
+	FILE* flux = fopen(nomDuFichier, "w");
+	if(flux == NULL)
+		return ERR_OUVERTURE_FICHIER;
+	afficheTabAdherant(tAdherant, nbElem, flux, FALSE);
+
+	return ERR_NO_ERR;
 }
