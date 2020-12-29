@@ -17,12 +17,20 @@ void testFonctionAdherant(void)
 {
 	unsigned int tMax = 10;
 	int nbElem = 0;
-	Adherant *tAd = (Adherant*) malloc(sizeof(Adherant)*tMax);
+	Adherant* tAd = (Adherant*) malloc(sizeof(Adherant)*tMax);
+	Adherant enPlus;
 	Date uneDate = {29, 1, 2021};
 	nbElem = chargerLesAdherants(tAd, &tMax, "../donnee/adherant.don");
 	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
 
-	printf("Valide %d\n", checkInscriptionValide(&tAd[0], &uneDate));
+	printf(" - - - - - - - -  - - - - - - - - - - - - - -\n");
+
+	enPlus = nouvAdherant(404);
+	nbElem = insererAdherant(tAd, nbElem, &tMax, &enPlus);
+
+	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
+	sauvegarderAdherant(tAd, nbElem, "../donnee/adherant.don");
+	//printf("Valide %d\n", checkInscriptionValide(&tAd[0], &uneDate));
 	free(tAd);
 }
 
