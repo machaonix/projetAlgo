@@ -107,14 +107,47 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
 
 ListeER insererEmpruntReservation(listeER liste, unsigned int id)
 {
-  
+  Emprunt er;
+  if(liste->empRes.id==id)
+  {
+    fprintf(stderr, "Erreur %d: l'id %d existe déjà\n",ERR_EXISTE_DEJA,id);
+    return liste;
+  } else if (liste->empRes.id<id)
+    liste->suiv=insererEmpruntReservation(liste->suiv,id);
+  er=nouvEmpruntReservation(id);
+  liste=insererDevantEmpruntReservation(liste,er);
+  return liste;
 }
 
-ListerER supprimerDevantEmpruntReservation(ListeER liste)
+ListeER supprimerDevantEmpruntReservation(ListeER liste)
 {
   Element *elem
   elem = liste;
   liste=liste->suiv;
   free(elem);
   return liste;
+}
+
+listeER supprimerEmpruntReservation(listeER liste, unsigned int id)
+{
+  if(liste->empRes.id==id)
+  {
+    liste=supprimerDevantEmpruntReservation(liste);
+    return liste;
+  } else if (liste->empRes.id==NULL)
+  {
+    fprintf(stderr,"Erreur %d: Id introuvable\n",ERR_NOT_FOUND);
+    return liste;
+  }
+  liste->suiv=supprimerEmpruntReservation(liste->suiv,id);
+  return liste;
+}
+
+ListeER supprimerListe(listeER liste)
+{
+  if(liste==NULL)
+    return NULL;
+  liste=supprimerListe(liste->suiv);
+  free(liste);
+  return NULL;
 }

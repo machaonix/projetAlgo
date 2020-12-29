@@ -27,7 +27,7 @@ ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 ListeER insererEmpruntReservation(ListeER liste, Emprunt element);
 ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er);
 
-ListeER supprimerEmpruntReservation(ListeER liste, Emprunt element);
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id);
 ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne NULL;
