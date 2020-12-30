@@ -1,6 +1,7 @@
 #include "TestFonction.h"
-/*
-void testFonctionDate(void)
+
+#ifdef TEST_DATE
+void testFonction(void) //Date
 {
 	Date d1 = {31, 12, 2020};
 	Date d2 = {1, 1, 2020};
@@ -12,9 +13,11 @@ void testFonctionDate(void)
 		}
 	afficherDate(d1, stdout);
 }
-*/
-/*
-void testFonctionAdherant(void)
+#endif //TEST_DATE
+
+
+#ifdef TEST_ADHERANT
+void testFonction(void) //Adherant
 {
 	unsigned int tMax = 10;
 	int nbElem = 0;
@@ -34,9 +37,10 @@ void testFonctionAdherant(void)
 	//printf("Valide %d\n", checkInscriptionValide(&tAd[0], &uneDate));
 	free(tAd);
 }
-*/
+#endif //TEST_ADHERANT
 
- void testFonctionJeu(void)
+#ifdef TEST_JEU
+ void testFonction(void) //Jeu
  {
  	CodeErreur cErr;
  	TableauJeu tabJeu;
@@ -74,3 +78,5 @@ void testFonctionAdherant(void)
 
  	libererTabJeu(&tabJeu);
  }
+#endif //TEST_JEU
+

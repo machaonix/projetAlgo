@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	testFonctionJeu();
-	//testFonctionAdherant();
+	testFonction();
+
 	return 0;
 }
