@@ -13,6 +13,7 @@ void testFonctionDate(void)
 	afficherDate(d1, stdout);
 }
 */
+/*
 void testFonctionAdherant(void)
 {
 	unsigned int tMax = 10;
@@ -33,42 +34,43 @@ void testFonctionAdherant(void)
 	//printf("Valide %d\n", checkInscriptionValide(&tAd[0], &uneDate));
 	free(tAd);
 }
+*/
 
-// void testFonctionJeu(void)
-// {
-// 	CodeErreur cErr;
-// 	TableauJeu tabJeu;
-// 	initTabJeu(&tabJeu);
-//
-// 	cErr = chargerTabJeu(&tabJeu, "donnee/jeux.don");
-// 	if (cErr<0) return;
-//
-// 	afficheTabJeu(&tabJeu, stdout);
-// 	fflush(stdout);
-//
-// //ajout
-// 	cErr = ajouterJeuInteractif(&tabJeu);
-// 	if (cErr != ERR_NO_ERR) return;
-// 	afficheTabJeu(&tabJeu, stdout);
-//
-// //tri
-// 	triTabJeu(&tabJeu, TRI_NOM);
-// 	afficheTabJeu(&tabJeu, stdout);
-// 	triTabJeu(&tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
-// 	afficheTabJeu(&tabJeu, stdout);
-// 	triTabJeu(&tabJeu, TRI_ID);
-// 	afficheTabJeu(&tabJeu, stdout);
-//
-// //suppresion
-// 	cErr = retirerJeuInteractif(&tabJeu);
-// 	if (cErr != ERR_NO_ERR) return;
-// 	afficheTabJeu(&tabJeu, stdout);
-// 	fflush(stdout);
-//
-//
-// //sauvegarde
-// 	cErr = sauvegarderTabJeu(&tabJeu, "donnee/jeux2.don");
-// 	if (cErr != ERR_NO_ERR) return;
-//
-// 	libererTabJeu(&tabJeu);
-// }
+ void testFonctionJeu(void)
+ {
+ 	CodeErreur cErr;
+ 	TableauJeu tabJeu;
+ 	initTabJeu(&tabJeu);
+
+ 	cErr = chargerTabJeu(&tabJeu, "donnee/jeux.don");
+ 	if (cErr<0) return;
+
+ 	afficheTabJeu(&tabJeu, stdout);
+ 	fflush(stdout);
+
+ //ajout
+ 	cErr = ajouterJeuInteractif(&tabJeu);
+ 	if (cErr != ERR_NO_ERR) return;
+ 	afficheTabJeu(&tabJeu, stdout);
+
+ //tri
+ 	triTabJeu(&tabJeu, TRI_NOM);
+ 	afficheTabJeu(&tabJeu, stdout);
+ 	triTabJeu(&tabJeu, TRI_NB_EXEMPLAIRE_TOTAL);
+ 	afficheTabJeu(&tabJeu, stdout);
+ 	triTabJeu(&tabJeu, TRI_ID);
+ 	afficheTabJeu(&tabJeu, stdout);
+
+ //suppresion
+ 	cErr = retirerJeuInteractif(&tabJeu);
+ 	if (cErr != ERR_NO_ERR) return;
+ 	afficheTabJeu(&tabJeu, stdout);
+ 	fflush(stdout);
+
+
+ //sauvegarde
+ 	cErr = sauvegarderTabJeu(&tabJeu, "donnee/jeux2.don");
+ 	if (cErr != ERR_NO_ERR) return;
+
+ 	libererTabJeu(&tabJeu);
+ }

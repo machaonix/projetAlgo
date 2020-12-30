@@ -172,7 +172,7 @@ CodeErreur retirerJeuInteractif(TableauJeu* tabJeu)
 	unsigned int idJeu;
 	CodeErreur cErr;
 
-	printf("Quel est l'Identifiant du jeu que vous souhaitez retirer ?\n");
+	printf("\nQuel est l'Identifiant du jeu que vous souhaitez retirer ? ");
 	fflush(stdout);
 	scanf("%d", &idJeu);
 

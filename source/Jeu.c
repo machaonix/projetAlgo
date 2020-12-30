@@ -9,12 +9,7 @@ void afficheJeu(Jeu* jeu, FILE* flux)
 
 Jeu* nouvJeu(unsigned int id)
 {
-	Jeu* jeu = (Jeu*) malloc(sizeof(Jeu));
-	if (jeu == NULL)
-	{
-		fprintf(stderr, "Erreur: Allocation\n");
-		return NULL;
-	}
+	Jeu* jeu = allocJeu();
 
 	jeu->id = id;
 
@@ -38,12 +33,7 @@ Jeu* nouvJeu(unsigned int id)
 
 Jeu* lireJeu(FILE* flux)
 {
-	Jeu* jeu = (Jeu*) malloc(sizeof(Jeu));
-	if (jeu == NULL)
-	{
-		fprintf(stderr, "Erreur: Allocation\n");
-		return NULL;
-	}
+	Jeu* jeu = allocJeu();
 
 	fscanf(flux, "%d%s%d%*c", &(jeu->id), jeu->type, &(jeu->nbExemplaireTotal));
 	jeu->nbExemplaireDispo = jeu->nbExemplaireTotal;
@@ -53,7 +43,16 @@ Jeu* lireJeu(FILE* flux)
 	return jeu;
 }
 
-
+Jeu* allocJeu(void)
+{
+	Jeu* jeu = (Jeu*) malloc(sizeof(Jeu));
+	if (jeu == NULL)
+	{
+		fprintf(stderr, "Erreur: Allocation\n");
+		return NULL;
+	}
+	return jeu;
+}
 
 int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur)
 {
