@@ -1,6 +1,14 @@
 #include "TableauJeu.h"
 
 
+/*
+		initTabJeu
+Description :
+	Initialise les attributs du TableauJeu passé en paramètre
+
+Argument :
+	TableauJeu* tabJeu -> un pointeur sur le tableau à initialiser
+*/
 void initTabJeu(TableauJeu* tabJeu)
 {
 	for (int i = 0; i< TAILLE_MAX_TAB_JEU; ++i)
@@ -11,7 +19,15 @@ void initTabJeu(TableauJeu* tabJeu)
 	tabJeu->triSur = TRI_NON_TRIE;
 }
 
+/*
+		afficheTabJeu
+Description :
+	Ecrit tout les jeux du tableau sur le flux de sortie donné et une entête si le flux est la sortie standard
 
+Arguments :
+	TableauJeu* tabJeu -> Le tableau contenant les jeux à afficher
+	FILE* flux -> Le flux de sortie ou écrire
+*/
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 {
 	unsigned int i;
@@ -25,7 +41,19 @@ void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 	}
 }
 
+/*
+		chargerTabJeu
+Description : 
+	Charge dans le tableau de jeux les jeux présents dans le fichier dont le nom est passé en argument
 
+Valeur de retour :
+	Si erreur -> le code erreur correspondant
+	Sinon -> ERR_NO_ERR
+
+Arguments : 
+	TableauJeu* tabJeu -> Le tableau dans lequel charger le fichier
+	char nomFichier[] -> Le chemin du fichier à charger
+*/
 CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 {
 	FILE* flux;
@@ -55,7 +83,11 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 			return ERR_OUT_OF_RANGE;
 		}
 
-		if (jeu == NULL) return ERR_ALLOCATION;
+		if (jeu == NULL) 
+		{
+			fclose(flux);
+			return ERR_ALLOCATION;
+		}
 
 		tabJeu->jeux[tabJeu->nbElement] = jeu;
 		tabJeu->nbElement++;
@@ -65,9 +97,22 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 
 	fclose(flux);
 
-	return 0;
+	return ERR_NO_ERR;
 }
 
+/*
+		sauvegarderTabJeu
+Description : 
+	Sauvegarde le tableau de jeu dans un fichier
+
+Valeur de retour :
+	Si erreur -> le code erreur correspondant
+	Sinon -> ERR_NO_ERR
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau a sauvegarder
+	char nomFichier[] -> Le chemin du fichier crée/ecraser pour sauvegarder le tableau
+*/
 CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[])
 {
 	FILE* flux = NULL;
@@ -86,6 +131,14 @@ CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[])
 	return ERR_NO_ERR;
 }
 
+/*
+		libererTabJeu
+Description :
+	Libere la mémoire allouée par un tableau de jeu
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau à liberer
+*/
 void libererTabJeu(TableauJeu* tabJeu)
 {
 	for (unsigned int i = 0; i<tabJeu->nbElement; ++i)
@@ -96,7 +149,19 @@ void libererTabJeu(TableauJeu* tabJeu)
 	tabJeu->nbElement = 0;
 }
 
+/*
+		jeuDisponible
+Description :
+	Indique si un jeu est disponible ou non
 
+Valeur de retour :
+	Si le jeu existe et à un nombre d'exemplaire > 0 -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau dans lequel le jeu est stocké
+	unsigned int id -> l'identifiant du jeu en question
+*/
 Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
 {
 	Bool trouve;
@@ -107,6 +172,19 @@ Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
 	return FALSE;
 }
 
+/*
+		rechercherIdJeu
+Description :
+	Recherche un jeu par son Identifiant dans un tableau de jeu
+
+Valeur de retour :
+	-> Le rang d'insertion ou le rang ou le jeu est
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau de jeu où rechercher
+	unsigned int idJeu -> L'identifiant recherché
+	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
+*/
 unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
 {
 	int rang;
@@ -125,7 +203,20 @@ unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouv
 	return _rechercherIdJeu_TabTriId(tabJeu, idJeu, trouve);
 }
 
+/*
+		_rechercherIdJeu_TabNonTrie
+Description :
+	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
+	Elle recherche un identifiant dans un tableau de jeu non trié en itérant sur tout les elements
 
+Valeur de retour :
+	Si trouvé -> le rang du jeu
+	Sinon -> ERR_NOT_FOUND
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
+	unsigned int idJeu -> L'identifiant à rechercher
+*/
 int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu)
 {
 	unsigned int i;
@@ -136,6 +227,21 @@ int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu)
 }
 
 
+/*
+		_rechercherIdJeu_TabTriId
+Description :
+	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
+	Elle recherche un identifiant dans un tableau de jeu trié par identifiant par dichotomie
+
+Valeur de retour :
+	Si trouvé -> le rang du jeu
+	Sinon -> le rang d'insertion
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
+	unsigned int idJeu -> L'identifiant à rechercher
+	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
+*/
 unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
 {
 	unsigned int inf = 0, sup = tabJeu->nbElement-1;
@@ -221,6 +327,9 @@ CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 
 	tabJeu->jeux[rangInser] = jeu;
 	tabJeu->nbElement++;
+
+	if (tabJeu->triSur != TRI_ID)
+		tabJeu->triSur = TRI_NON_TRIE;
 
 	return ERR_NO_ERR;
 }
