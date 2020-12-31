@@ -31,7 +31,7 @@ Adherant lireAdherant(FILE* flux);
 
 /*
 afficheAdherant():
-	Retour 		: NULL
+	Retour 		: void
 	Arguments 	:
 		ad 			-> Un adherant à afficher
 		flux		-> Un pointeur de FILE qui représente la sortie de l'affichage
@@ -52,7 +52,7 @@ Adherant nouvAdherant(unsigned int id);
 
 /*
 afficheTabAdherant():
-	Retour 		: NULL
+	Retour 		: void
 	arguments	:
 		tAdherant 	-> Un tableau d'adherant contenant les adherant de la ludoteque
 		nbElem 		-> Un entier repréentant le nombre d'adherant dans le tableau tAdherant
@@ -87,7 +87,7 @@ int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad);
 
 /*
 decalageAGaucheAdherant()
-	Retour		: Null
+	Retour		: void
 	Arguments 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
@@ -99,7 +99,7 @@ void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 
 /*
 decalageADroiteAdherant()
-	Retour		: Null
+	Retour		: void
 	Arguments 	:
 		tAdherant	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
@@ -148,7 +148,7 @@ Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
 /*
 renouvelerInscription():
 
-	Retour		: NULL
+	Retour		: void
 	Arguments 	:
 		ad 				-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe et modifier ad)
 		nouvelleDate	-> Nouvelle date à assigner à ad (la valeur est passer par adresse pour alleger le programe)
