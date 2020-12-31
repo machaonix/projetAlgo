@@ -41,10 +41,11 @@ void afficherListeERJeu(ListeER liste, unsigned int idJeu)
   }
 }
 
-ListeER chargerListeEmpruntReservation(char nomDeFichier[])
+ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb)
 {
-  ListeER liste=listeER_Vide(),origin;  //liste permettra de naviger dans la liste pour la création de la liste, origin est le pointeur sur le premier element de la
+  ListeER liste=listeER_Vide(),origin=listeER_Vide();  //liste permettra de naviger dans la liste pour la création de la liste, origin est le pointeur sur le premier element de la
   FILE *flux;
+  int i;
   flux=fopen(nomDeFichier,"r");
   if(flux==NULL)
   {
@@ -52,20 +53,23 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[])
     return NULL;
   }
 
-  liste=(Element *)malloc(sizeof(Element));
-  origin=liste;
-  fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
-
-  while(!feof(flux))
+  fscanf(flux,"%d",nb);
+  if(*nb>0)
   {
-    liste->empRes.date=lireDate(flux);
-    liste->suiv=(Element *)malloc(sizeof(Element));
-    liste=liste->suiv;
-
+    liste=(ListeER)malloc(sizeof(Element));
+    origin=liste;
     fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
+    liste->empRes.date=lireDate(flux);
+    liste->suiv=NULL;
   }
-  free(liste);
-  liste=NULL;
+  for(i=2;i<=*nb;i++)
+  {
+    liste->suiv=(ListeER)malloc(sizeof(Element));
+    liste=liste->suiv;
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
+    liste->empRes.date=lireDate(flux);
+    liste->suiv=NULL;
+  }
   fclose(flux);
   return origin;
 }

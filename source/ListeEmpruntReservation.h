@@ -18,7 +18,7 @@ Bool listeER_estVide(ListeER liste); //TRUE si vide
 
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
-ListeER chargerListeEmpruntReservation(char nomDeFichier[]);
+ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb);
 
 ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
