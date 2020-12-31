@@ -1,9 +1,10 @@
-#include "listeEmpruntReservation.h"
+#include "ListeEmpruntReservation.h"
 #include "EmpruntReservation.h"
 
 ListeER listeER_Vide(void) //Créer une nouvelle liste
 {
   ListeER liste;
+  liste=NULL;
   return liste;
 }
 
@@ -16,9 +17,9 @@ Bool listeER_estVide(ListeER liste)
 
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux)
 {
-  if(flux==STDOUT)
+  if(flux==stdout)
   {
-      printf("Id\tIdJeu\tIdAdherant\tDate d'emprunt\n");
+      printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt\n");
   }
 
   while(listeER_estVide(liste)!=TRUE)
@@ -30,55 +31,48 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux)
 
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
-  printf("Id\tIdJeu\tIdAdherant\tDate d'emprunt\n");
+  printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt\n");
 
-  while(listeER_estVide(liste)!=TRUE)
+  while(liste!=NULL)
   {
     if(idJeu==(liste->empRes).idJeu)
-      afficherEmpruntReservation(&(liste->empRes),STDOUT);
+      afficherEmpruntReservation(&(liste->empRes),stdout);
     liste=liste->suiv;
   }
 }
 
-ListeER chargerListeEmprunReservation(char nomDeFichier[])
+ListeER chargerListeEmpruntReservation(char nomDeFichier[])
 {
-  Liste liste;
-  Element *lsuiv;
+  ListeER liste=listeER_Vide(),origin;  //liste permettra de naviger dans la liste pour la création de la liste, origin est le pointeur sur le premier element de la
   FILE *flux;
   flux=fopen(nomDeFichier,"r");
   if(flux==NULL)
   {
     fprintf(stderr, "Erreur %d: Problème d'ouverture du fichier %s\n",ERR_OUVERTURE_FICHIER,nomDeFichier);
-    return ERR_OUVERTURE_FICHIER;
+    return NULL;
   }
 
-  liste=chargercreerMaillon(flux);
+  liste=(Element *)malloc(sizeof(Element));
+  origin=liste;
+  fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
 
-  fclose(flux);
-  return liste;
-}
-
-Element* chargercreerMaillon(FILE *flux)
-{
-  Element *elem;
-  elem=(Element *)malloc(sizeof(Element));
-  if(elem==NULL)
+  while(!feof(flux))
   {
-    fprintf(stderr, "Erreur %d: Erreur de malloc\n",ERR_ALLOCATION);
-    return ERR_ALLOCATION;
+    liste->empRes.date=lireDate(flux);
+    liste->suiv=(Element *)malloc(sizeof(Element));
+    liste=liste->suiv;
+
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
   }
-
-  fscanf("%d%d%d",&(elem->empRes.id),&(elem->empRes.idJeu),&(elem->empRes.idEmprunter));
-  elem->empResdate=lireDate(flux)
-  if(!feof(flux))
-    elem->suiv=chargercreerMaillon(flux);
-
-  return elem;
+  free(liste);
+  liste=NULL;
+  fclose(flux);
+  return origin;
 }
 
 ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //retourne l'adresse d'un emprunt ou d'une reservation données par id
 {
-  while(liste->suiv!=NULL)
+  while(liste->suiv!=NULL && liste->empRes.id)
   {
     if(liste->empRes.id==id)
     {
@@ -90,6 +84,17 @@ ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //reto
     return NULL;
 }
 
+unsigned int rechercherIdLibre(ListeER liste)
+{
+  unsigned int x=0;
+  while(liste->empRes.id==x)
+  {
+    x+=1;
+    liste=liste->suiv;
+  }
+  return x;
+}
+
 ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
 {
   Element *elem;
@@ -97,7 +102,7 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
   if(elem==NULL)
   {
     fprintf(stderr, "Erreur %d: Erreur de malloc\n",ERR_ALLOCATION);
-    return ERR_ALLOCATION;
+    return liste;
   }
 
   elem->empRes=er;
@@ -105,12 +110,12 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
   return elem;
 }
 
-ListeER insererEmpruntReservation(listeER liste, unsigned int id)
+ListeER insererEmpruntReservation(ListeER liste, unsigned int id)
 {
   Emprunt er;
   if(liste->empRes.id==id)
   {
-    fprintf(stderr, "Erreur %d: l'id %d existe déjà\n",ERR_EXISTE_DEJA,id);
+    fprintf(stderr, "Erreur %d: l'id %u existe déjà\n",ERR_EXISTE_DEJA,id);
     return liste;
   } else if (liste->empRes.id<id)
     liste->suiv=insererEmpruntReservation(liste->suiv,id);
@@ -121,20 +126,20 @@ ListeER insererEmpruntReservation(listeER liste, unsigned int id)
 
 ListeER supprimerDevantEmpruntReservation(ListeER liste)
 {
-  Element *elem
-  elem = liste;
+  ListeER elem;
+  elem=liste;
   liste=liste->suiv;
   free(elem);
   return liste;
 }
 
-listeER supprimerEmpruntReservation(listeER liste, unsigned int id)
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id)
 {
   if(liste->empRes.id==id)
   {
     liste=supprimerDevantEmpruntReservation(liste);
     return liste;
-  } else if (liste->empRes.id==NULL)
+  } else if (liste->suiv==NULL)
   {
     fprintf(stderr,"Erreur %d: Id introuvable\n",ERR_NOT_FOUND);
     return liste;
@@ -143,7 +148,7 @@ listeER supprimerEmpruntReservation(listeER liste, unsigned int id)
   return liste;
 }
 
-ListeER supprimerListe(listeER liste)
+ListeER supprimerListe(ListeER liste)
 {
   if(liste==NULL)
     return NULL;
