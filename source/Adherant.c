@@ -75,8 +75,7 @@ Adherant nouvAdherant(unsigned int id)
 	tmp.id = id;
 
 	//Traitement du prénom
-
-	printf("Saisir le prenom\n>>>");// scanf("%s%*c", tmp.prenom);
+	printf("Saisir le prenom\n>>>");
 	fgets(tmp.prenom, 21, stdin);
 	tmp.prenom[strlen(tmp.prenom)-1] = '\0';
 	espace = strchr(tmp.prenom, ' ');
@@ -85,11 +84,10 @@ Adherant nouvAdherant(unsigned int id)
 		*espace = '-';
 	 	espace = strchr(tmp.prenom, ' ');
 	}
-	printf("prenom : %s\n", tmp.prenom);
 
 
 	//Traitement du nom
-	printf("Saisir le nom\n>>>");// scanf("%s%*c", tmp.nom);
+	printf("Saisir le nom\n>>>");
 	fgets(tmp.nom, 21, stdin);
 	tmp.nom[strlen(tmp.nom)-1] = '\0';
 	espace = strchr(tmp.nom, ' ');
@@ -98,7 +96,6 @@ Adherant nouvAdherant(unsigned int id)
 	 	*espace = '-';
 	 	espace = strchr(tmp.nom, ' ');
 	}
-	printf("nom : %s\n", tmp.nom);
 
 
 	//Traitement de la Civilitée
@@ -106,7 +103,6 @@ Adherant nouvAdherant(unsigned int id)
 	{
 		printf("Civilitée(H/F)\t: ");
 		scanf("%c%*c", &civilite);
-		printf("civilite : %d | H = %d\n", civilite, 'H');
 	}
 	while(civilite != 'F' && civilite != 'H');
 	if(civilite == 'F')
@@ -124,31 +120,29 @@ Adherant nouvAdherant(unsigned int id)
 	return tmp;
 }
 
-int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
+int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
 {
-	if(nbElem == *tMax)
+	if(nbElem >= *tMax-1)
 	{
 		*tMax = *tMax+10;
-		tAdherant = realloc(tAdherant, sizeof(Adherant)*(*tMax));
-		if(tAdherant == NULL)
+		Adherant *tmp = *tAdherant;
+		*tAdherant = (Adherant*) malloc(sizeof(Adherant)*(*tMax));
+		copieTabAdherant(tmp, nbElem, *tAdherant, *tMax);
+		free(tmp);
+		if(*tAdherant == NULL)
 			return ERR_ALLOCATION;
 	}
 
 	CodeErreur trouve;
-	int index = rechercherUnAdherant(tAdherant, nbElem, ad, &trouve);
+	int index = rechercherUnAdherant(*tAdherant, nbElem, ad, &trouve);
 
 	if(index == ERR_EXISTE_DEJA)
 	{
 		fprintf(stderr, "L'adherant %d existe deja.\n", ad->id);
 		return nbElem;
 	}
-
-	decalageADroiteAdherant(tAdherant, index, nbElem);
-	tAdherant[index] = *ad;
-	// printf("->\n");
-	// for(int i=0; i<index; ++i)
-	// 	printf("%d\n", tAdherant[index].id);
-
+	decalageADroiteAdherant(*tAdherant, index, nbElem);
+	(*tAdherant)[index] = *ad;
 	return nbElem+1;
 }
 
@@ -197,7 +191,7 @@ int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad
 	return inf;
 }
 
-int chargerLesAdherants(Adherant tAdherant[], unsigned int* tMax, char nomDuFichier[])
+int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[])
 {
 	unsigned int nbElem = 0;
 	Adherant tmp;
@@ -208,11 +202,11 @@ int chargerLesAdherants(Adherant tAdherant[], unsigned int* tMax, char nomDuFich
 	tmp = lireAdherant(flux);
 	while(!feof(flux))
 	{
-		insererAdherant(tAdherant, nbElem, tMax, &tmp);
+		if(insererAdherant(tAdherant, nbElem, tMax, &tmp) == ERR_ALLOCATION)
+			printf("Pb d'allocation dynamique lors du chargement\n");
 		++nbElem;
 
 		tmp = lireAdherant(flux);
-
 	}
 	fclose(flux);
 	return nbElem;
@@ -237,5 +231,15 @@ CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char n
 		return ERR_OUVERTURE_FICHIER;
 	afficheTabAdherant(tAdherant, nbElem, flux, FALSE);
 
+	return ERR_NO_ERR;
+}
+
+CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2)
+{
+	if(nbElem1 > tMax2)
+		return ERR_OUT_OF_RANGE;
+
+	for(unsigned int i=0; i<nbElem1; ++i)
+		tAdherant2[i] = tAdherant1[i];
 	return ERR_NO_ERR;
 }

@@ -19,21 +19,22 @@ void testFonction(void) //Date
 #ifdef TEST_ADHERANT
 void testFonction(void) //Adherant
 {
-	unsigned int tMax = 10;
+	unsigned int tMax = 2;
 	int nbElem = 0;
 	Adherant* tAd = (Adherant*) malloc(sizeof(Adherant)*tMax);
 	Adherant enPlus;
-	Date uneDate = {29, 1, 2021};
-	nbElem = chargerLesAdherants(tAd, &tMax, "../donnee/adherant.don");
+	//Date uneDate = {29, 1, 2021};
+	nbElem = chargerLesAdherants(&tAd, &tMax, "../donnee/adherant.don");
 	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
 
 	printf(" - - - - - - - -  - - - - - - - - - - - - - -\n");
 
-	enPlus = nouvAdherant(404);
-	nbElem = insererAdherant(tAd, nbElem, &tMax, &enPlus);
+	enPlus = nouvAdherant(42);
+	nbElem = insererAdherant(&tAd, nbElem, &tMax, &enPlus);
+
 
 	afficheTabAdherant(tAd, nbElem, stdout, TRUE);
-	sauvegarderAdherant(tAd, nbElem, "../donnee/adherant.don");
+	//sauvegarderAdherant(tAd, nbElem, "../donnee/adherant.don");
 	//printf("Valide %d\n", checkInscriptionValide(&tAd[0], &uneDate));
 	free(tAd);
 }
@@ -79,4 +80,3 @@ void testFonction(void) //Adherant
  	libererTabJeu(&tabJeu);
  }
 #endif //TEST_JEU
-
