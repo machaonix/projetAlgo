@@ -12,7 +12,10 @@ Arguments :
 */
 void afficheJeu(Jeu* jeu, FILE* flux)
 {
-	fprintf(flux, "%d\t%s\t%d\t%s", jeu->id, jeu->type, jeu->nbExemplaireTotal, jeu->nom);
+	if (flux == stdout)
+		fprintf(flux, "%d\t%s\t%d\t%d\t%s", jeu->id, jeu->type, jeu->nbExemplaireTotal, jeu->nbExemplaireDispo, jeu->nom);
+	else
+		fprintf(flux, "%d\t%s\t%d\t%s", jeu->id, jeu->type, jeu->nbExemplaireTotal, jeu->nom);
 }
 
 

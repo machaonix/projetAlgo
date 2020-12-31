@@ -25,6 +25,7 @@ void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
 CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 
+Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id);
 
 void libererTabJeu(TableauJeu* tabJeu);
 

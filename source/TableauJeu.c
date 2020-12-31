@@ -16,7 +16,7 @@ void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 {
 	unsigned int i;
 	if (flux == stdout)
-		printf("\nId\tType\tNombre\tNom\n");
+		printf("\nId\tType\tNombre\tDispo\tNom\n");
 	
 	for (i = 0; i<tabJeu->nbElement; ++i)
 	{
@@ -96,6 +96,16 @@ void libererTabJeu(TableauJeu* tabJeu)
 	tabJeu->nbElement = 0;
 }
 
+
+Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
+{
+	Bool trouve;
+	unsigned int rang = rechercherIdJeu(tabJeu, id, &trouve);
+	if (trouve)
+		if (tabJeu->jeux[rang]->nbExemplaireDispo>0)
+			return TRUE;
+	return FALSE;
+}
 
 unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
 {
