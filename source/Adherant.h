@@ -66,12 +66,14 @@ void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, B
 insererAdherant():
 	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
 	Arguments 	:
-		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		tAdherant 	-> Un poiteur du tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
-		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
+		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal d'Adherant de la ludoteque (la taille physique de tAdherant)
 		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
 */
-int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+
+//Adherant* insererAdherant(Adherant tAdherant[], unsigned int* nbElem, unsigned int *tMax, Adherant* ad);
 
 /*
 supprimerAdherant():
@@ -124,13 +126,13 @@ int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad
 chargerLesAdherants():
 	Retour 		: retourne le nombre d'élément(s) stocké dans nomDuFichier
 	Arguments 	:
-		tAdherant 		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		tAdherant 		-> Un poiteur du tableau d'Adherant contenant tout les Adherant de la ludoteque
 		tMax 			-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
 		nomDuFichier	-> Une chaine de caractere représentant le chemain du fichier stockant les Adherant
 	Finalitée 	:
 		Lire le fichier contenant les Adherant pour les stocker dans la mémoire centrale
 */
-int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFichier[]);
+int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[]);
 
 /*
 checkInscriptionValide():
@@ -154,5 +156,7 @@ renouvelerInscription():
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate);
 
 CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[]);
+
+CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
 #endif //__ADHERANT_H__
