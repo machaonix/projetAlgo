@@ -16,7 +16,7 @@ typedef struct element
 ListeER listeER_Vide(void); //Créer une nouvelle liste
 Bool listeER_estVide(ListeER liste); //TRUE si vide
 
-void afficherListeEmpruntReservation(ListeER liste, FILE* flux);
+void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
 ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb);
 

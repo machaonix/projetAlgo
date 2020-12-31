@@ -15,13 +15,15 @@ Bool listeER_estVide(ListeER liste)
   return FALSE;
 }
 
-void afficherListeEmpruntReservation(ListeER liste, FILE* flux)
+void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
   if(flux==stdout)
   {
       printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt\n");
+  } else
+  {
+    printf("%d\n",nb);
   }
-
   while(listeER_estVide(liste)!=TRUE)
   {
     afficherEmpruntReservation(&(liste->empRes),flux);
