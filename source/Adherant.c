@@ -77,8 +77,10 @@ Adherant nouvAdherant(unsigned int id)
 	//Traitement du prénom
 	printf("Saisir le prenom\n>>>");
 	fgets(tmp.prenom, 21, stdin);
+
 	tmp.prenom[strlen(tmp.prenom)-1] = '\0';
 	espace = strchr(tmp.prenom, ' ');
+
 	while(espace != NULL)//tant qu'il y a des espaces dans le prénom, les remplacer par des '-'
 	{
 		*espace = '-';
@@ -89,8 +91,10 @@ Adherant nouvAdherant(unsigned int id)
 	//Traitement du nom
 	printf("Saisir le nom\n>>>");
 	fgets(tmp.nom, 21, stdin);
+
 	tmp.nom[strlen(tmp.nom)-1] = '\0';
 	espace = strchr(tmp.nom, ' ');
+
 	while(espace != NULL)//tant qu'il y a des espaces dans le nom, les remplacer par des '-'
 	{
 	 	*espace = '-';
@@ -122,6 +126,7 @@ Adherant nouvAdherant(unsigned int id)
 
 int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
 {
+	//Si le tableau est trop petit, l'agrandir de 10 espaces memoires
 	if(nbElem >= *tMax-1)
 	{
 		*tMax = *tMax+10;
@@ -135,14 +140,16 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 
 	CodeErreur trouve;
 	int index = rechercherUnAdherant(*tAdherant, nbElem, ad, &trouve);
-
 	if(index == ERR_EXISTE_DEJA)
 	{
 		fprintf(stderr, "L'adherant %d existe deja.\n", ad->id);
 		return nbElem;
 	}
+
+	//Inserssion de l'Adherant
 	decalageADroiteAdherant(*tAdherant, index, nbElem);
 	(*tAdherant)[index] = *ad;
+
 	return nbElem+1;
 }
 
@@ -156,6 +163,7 @@ int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad)
 		return nbElem;
 	}
 
+	//suppression de l'Adherant de possistion index
 	decalageAGaucheAdherant(tAdherant, index, nbElem);
 	return nbElem-1;
 }
@@ -199,6 +207,8 @@ int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFic
 	if(flux == NULL)
 		return ERR_OUVERTURE_FICHIER;
 
+	//Temps que le currseur n'est pas a la fin du fichier,
+	//convertire la ligne en cours de lecture en Adherant
 	tmp = lireAdherant(flux);
 	while(!feof(flux))
 	{
@@ -216,6 +226,7 @@ Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) {return dateCmp(*dat
 
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate)
 {
+	//Juste une réaffectation si l'inscription n'est pas valide
 	if(checkInscriptionValide(ad, nouvelleDate))
 		return;
 	ad->dateInscri.jour = nouvelleDate->jour;
@@ -229,13 +240,19 @@ CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char n
 	FILE* flux = fopen(nomDuFichier, "w");
 	if(flux == NULL)
 		return ERR_OUVERTURE_FICHIER;
+
+	//Écrire le Tableau comportant tout les Adherants (trié) dans le fichier nomDuFichier
 	afficheTabAdherant(tAdherant, nbElem, flux, FALSE);
+
+	fclose(flux);
 
 	return ERR_NO_ERR;
 }
 
 CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2)
 {
+	//Si le tableau à copier comporte plus d'element que la taille maximum du tableauqui reçoit les données,
+	//Alors, on retourne une erreur de type OUT OF RANGE
 	if(nbElem1 > tMax2)
 		return ERR_OUT_OF_RANGE;
 
