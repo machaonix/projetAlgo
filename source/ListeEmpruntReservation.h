@@ -20,15 +20,18 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
 ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb);
 
-ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
+Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
 
-ListeER insererEmpruntReservation(ListeER liste, unsigned int id);
+ListeER insererEmpruntReservation(ListeER liste, unsigned int id, int *nb);
+//Il faut vérifier si on peux bien emprunter le jeu;
 ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er);
 
-ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id);
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb);
 ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne NULL;
+
+//void sauvegarder(ListeER liste, char nomDeFichier[], int nb);
 
 #endif //__LISTEEMPRUNTRESERVATION_H__

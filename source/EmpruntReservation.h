@@ -18,6 +18,7 @@ EmpruntReservation lireEmpruntReservation(FILE* flux);
 void afficherEmpruntReservation(EmpruntReservation *Empruntreservation, FILE* flux);
 // *EmpruntReservation -> pointeur sur une structure pour que ça soit moins lourd
 // FILE* flux -> permet de spécifier un fichier ou STDOUT pour la sortie standard
+// ATTENTION: elle ne traite pas l'erreur si un emprunt n'est pas bon
 
 //interactif
 EmpruntReservation nouvEmpruntReservation(unsigned int id);

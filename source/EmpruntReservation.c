@@ -20,7 +20,7 @@ EmpruntReservation nouvEmpruntReservation(unsigned int id)
 {
   EmpruntReservation er;
   er.id=id;
-  printf("Quel est l'identifiant du jeu emprunté: ");
+  printf("Quel est l'identifiant du jeu emprunté/reservé: ");
   scanf("%d",&(er.idJeu));
 
   printf("Quel est l'identifiant du membre: ");

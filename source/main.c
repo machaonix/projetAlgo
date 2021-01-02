@@ -1,9 +1,11 @@
 #include "TestFonction.h"
+#include "TestER.h"
 
 
 int main(void)
 {
-	testFonction();
-
+	testER();
+	//testFonctionAdherant();
+	//testFonctionJeu();
 	return 0;
 }

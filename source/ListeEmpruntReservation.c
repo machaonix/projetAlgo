@@ -33,7 +33,7 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
-  printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt\n");
+  printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt/de reservation\n");
 
   while(liste!=NULL)
   {
@@ -64,7 +64,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb)
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
-  for(i=2;i<=*nb;i++)
+  for(i=2;i<=(*nb);i++)
   {
     liste->suiv=(ListeER)malloc(sizeof(Element));
     liste=liste->suiv;
@@ -76,9 +76,9 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb)
   return origin;
 }
 
-ListeER rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //retourne l'adresse d'un emprunt ou d'une reservation données par id
+Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //retourne l'adresse d'un emprunt ou d'une reservation données par id
 {
-  while(liste->suiv!=NULL && liste->empRes.id)
+  while(liste!=NULL && liste->empRes.id<=id)
   {
     if(liste->empRes.id==id)
     {
@@ -96,6 +96,8 @@ unsigned int rechercherIdLibre(ListeER liste)
   while(liste->empRes.id==x)
   {
     x+=1;
+    if(liste->suiv==NULL)
+      break;
     liste=liste->suiv;
   }
   return x;
@@ -116,17 +118,26 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
   return elem;
 }
 
-ListeER insererEmpruntReservation(ListeER liste, unsigned int id)
+ListeER insererEmpruntReservation(ListeER liste, unsigned int id,int *nb)
 {
   Emprunt er;
-  if(liste->empRes.id==id)
-  {
-    fprintf(stderr, "Erreur %d: l'id %u existe déjà\n",ERR_EXISTE_DEJA,id);
-    return liste;
-  } else if (liste->empRes.id<id)
-    liste->suiv=insererEmpruntReservation(liste->suiv,id);
+  printf("Debug A\n");
+  if(liste!=NULL)
+    if(liste->empRes.id==id)
+    {
+      fprintf(stderr, "Erreur %d: l'id %u existe déjà\n",ERR_EXISTE_DEJA,id);
+      return liste;
+    } else if (liste->empRes.id<id)
+    {
+      liste->suiv=insererEmpruntReservation(liste->suiv,id,nb);
+      return liste;
+    }
+  printf("Debug B\n");
   er=nouvEmpruntReservation(id);
   liste=insererDevantEmpruntReservation(liste,er);
+  *nb+=1;
+
+  printf("\nId/reservation insérer avec l'Id: %u\n\n",id);
   return liste;
 }
 
@@ -139,18 +150,21 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste)
   return liste;
 }
 
-ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id)
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
 {
+
   if(liste->empRes.id==id)
   {
     liste=supprimerDevantEmpruntReservation(liste);
+    *nb=(*nb)-1;
     return liste;
   } else if (liste->suiv==NULL)
   {
     fprintf(stderr,"Erreur %d: Id introuvable\n",ERR_NOT_FOUND);
     return liste;
   }
-  liste->suiv=supprimerEmpruntReservation(liste->suiv,id);
+  liste->suiv=supprimerEmpruntReservation(liste->suiv,id,nb);
+  *nb-=1;
   return liste;
 }
 
@@ -162,3 +176,5 @@ ListeER supprimerListe(ListeER liste)
   free(liste);
   return NULL;
 }
+
+//void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
