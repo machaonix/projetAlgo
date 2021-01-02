@@ -152,7 +152,36 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste)
 
 ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
 {
-
+  ListeER origin=listeER_Vide();
+  origin=liste;
+  if(origin==NULL)
+  {
+    fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+    return origin;
+  }
+  if(liste->empRes.id==id)
+  {
+    origin=supprimerDevantEmpruntReservation(origin);
+    *nb-=1;
+    return origin;
+  }
+  while(liste->suiv!=NULL)
+  {
+    if(liste->suiv->empRes.id==id)
+    {
+      liste->suiv=supprimerDevantEmpruntReservation(liste->suiv);
+      *nb-=1;
+      return origin;
+    }
+    liste=liste->suiv;
+  }
+  if(liste->empRes.id==id)
+  {
+    liste=supprimerDevantEmpruntReservation(liste);
+    *nb-=1;
+  }
+  fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+  return origin;
 }
 
 ListeER supprimerListe(ListeER liste)
@@ -171,7 +200,7 @@ void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
   if(flux==NULL)
   {
     fprintf(stderr, "Erreur %d: Problème d'ouverture du fichier %s\n",ERR_OUVERTURE_FICHIER,nomDeFichier);
-    return NULL;
+    exit(ERR_OUVERTURE_FICHIER);
   }
 
   fprintf(flux, "%d\n",nb);
