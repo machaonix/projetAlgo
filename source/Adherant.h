@@ -31,7 +31,7 @@ Adherant lireAdherant(FILE* flux);
 
 /*
 afficheAdherant():
-	Retour 		: NULL
+	Retour 		: void
 	Arguments 	:
 		ad 			-> Un adherant à afficher
 		flux		-> Un pointeur de FILE qui représente la sortie de l'affichage
@@ -52,7 +52,7 @@ Adherant nouvAdherant(unsigned int id);
 
 /*
 afficheTabAdherant():
-	Retour 		: NULL
+	Retour 		: void
 	arguments	:
 		tAdherant 	-> Un tableau d'adherant contenant les adherant de la ludoteque
 		nbElem 		-> Un entier repréentant le nombre d'adherant dans le tableau tAdherant
@@ -66,12 +66,14 @@ void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, B
 insererAdherant():
 	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
 	Arguments 	:
-		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		tAdherant 	-> Un poiteur du tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
-		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
+		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal d'Adherant de la ludoteque (la taille physique de tAdherant)
 		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
 */
-int insererAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+
+//Adherant* insererAdherant(Adherant tAdherant[], unsigned int* nbElem, unsigned int *tMax, Adherant* ad);
 
 /*
 supprimerAdherant():
@@ -85,7 +87,7 @@ int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad);
 
 /*
 decalageAGaucheAdherant()
-	Retour		: Null
+	Retour		: void
 	Arguments 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
@@ -97,7 +99,7 @@ void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 
 /*
 decalageADroiteAdherant()
-	Retour		: Null
+	Retour		: void
 	Arguments 	:
 		tAdherant	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
@@ -124,13 +126,13 @@ int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad
 chargerLesAdherants():
 	Retour 		: retourne le nombre d'élément(s) stocké dans nomDuFichier
 	Arguments 	:
-		tAdherant 		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		tAdherant 		-> Un poiteur du tableau d'Adherant contenant tout les Adherant de la ludoteque
 		tMax 			-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
 		nomDuFichier	-> Une chaine de caractere représentant le chemain du fichier stockant les Adherant
 	Finalitée 	:
 		Lire le fichier contenant les Adherant pour les stocker dans la mémoire centrale
 */
-int chargerLesAdherants(Adherant tAdherant[], unsigned int *tMax, char nomDuFichier[]);
+int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[]);
 
 /*
 checkInscriptionValide():
@@ -146,7 +148,7 @@ Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
 /*
 renouvelerInscription():
 
-	Retour		: NULL
+	Retour		: void
 	Arguments 	:
 		ad 				-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe et modifier ad)
 		nouvelleDate	-> Nouvelle date à assigner à ad (la valeur est passer par adresse pour alleger le programe)
@@ -154,5 +156,7 @@ renouvelerInscription():
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate);
 
 CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[]);
+
+CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
 #endif //__ADHERANT_H__

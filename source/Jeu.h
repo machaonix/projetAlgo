@@ -27,4 +27,6 @@ Jeu* nouvJeu(unsigned int id);
 int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur);
 void copyJeu(Jeu* jd, Jeu* js);
 
+Jeu* allocJeu(void);
+
 #endif //__JEU_H__
