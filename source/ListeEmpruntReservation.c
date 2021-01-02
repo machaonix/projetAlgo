@@ -153,19 +153,6 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste)
 ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
 {
 
-  if(liste->empRes.id==id)
-  {
-    liste=supprimerDevantEmpruntReservation(liste);
-    *nb=(*nb)-1;
-    return liste;
-  } else if (liste->suiv==NULL)
-  {
-    fprintf(stderr,"Erreur %d: Id introuvable\n",ERR_NOT_FOUND);
-    return liste;
-  }
-  liste->suiv=supprimerEmpruntReservation(liste->suiv,id,nb);
-  *nb-=1;
-  return liste;
 }
 
 ListeER supprimerListe(ListeER liste)
@@ -177,4 +164,16 @@ ListeER supprimerListe(ListeER liste)
   return NULL;
 }
 
-//void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
+void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
+{
+  FILE *flux;
+  flux=fopen(nomDeFichier,"w");
+  if(flux==NULL)
+  {
+    fprintf(stderr, "Erreur %d: Problème d'ouverture du fichier %s\n",ERR_OUVERTURE_FICHIER,nomDeFichier);
+    return NULL;
+  }
+
+  fprintf(flux, "%d\n",nb);
+  afficherListeEmpruntReservation(liste,flux,nb);
+}

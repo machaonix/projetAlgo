@@ -32,6 +32,6 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne NULL;
 
-//void sauvegarder(ListeER liste, char nomDeFichier[], int nb);
+void sauvegarder(ListeER liste, char nomDeFichier[], int nb);
 
 #endif //__LISTEEMPRUNTRESERVATION_H__
