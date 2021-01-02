@@ -22,7 +22,7 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
       printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt\n");
   } else
   {
-    printf("%d\n",nb);
+    fprintf(flux,"%d\n",nb);
   }
   while(listeER_estVide(liste)!=TRUE)
   {
@@ -118,10 +118,12 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
   return elem;
 }
 
-ListeER insererEmpruntReservation(ListeER liste, unsigned int id,int *nb)
+ListeER insererEmpruntReservation(ListeER liste, int *nb, TableauJeu* tabJeu)
 {
+  unsigned int id; //Premier Id libre dans la liste;
+  Bool jeu_libre;
   Emprunt er;
-  printf("Debug A\n");
+
   if(liste!=NULL)
     if(liste->empRes.id==id)
     {
@@ -132,8 +134,14 @@ ListeER insererEmpruntReservation(ListeER liste, unsigned int id,int *nb)
       liste->suiv=insererEmpruntReservation(liste->suiv,id,nb);
       return liste;
     }
-  printf("Debug B\n");
+
+  id_libre=rechercherIdLibre(libre);
+
   er=nouvEmpruntReservation(id);
+  if(jeuDisponible(tabJeu,er.id)==FALSE)
+  {
+    fprinf("Erreur %d: il n'y a plus d'exemplaire disponible\n",ERR_OPERATION_INVALIDE);
+  }
   liste=insererDevantEmpruntReservation(liste,er);
   *nb+=1;
 
@@ -202,7 +210,5 @@ void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
     fprintf(stderr, "Erreur %d: Problème d'ouverture du fichier %s\n",ERR_OUVERTURE_FICHIER,nomDeFichier);
     exit(ERR_OUVERTURE_FICHIER);
   }
-
-  fprintf(flux, "%d\n",nb);
   afficherListeEmpruntReservation(liste,flux,nb);
 }

@@ -23,7 +23,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb);
 Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
 
-ListeER insererEmpruntReservation(ListeER liste, unsigned int id, int *nb);
+ListeER insererEmpruntReservation(ListeER liste, int *nb);
 //Il faut vérifier si on peux bien emprunter le jeu;
 ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er);
 
