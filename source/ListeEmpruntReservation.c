@@ -327,14 +327,15 @@ Arguments :
   char nomDeFichier[] -> chemin (relatif) du fichier dans lequelle sauvegarder la liste.
   int nb -> nombre d'élémement dans la liste.
 */
-void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
+CodeErreur sauvegarder(ListeER liste, char nomDeFichier[],int nb)
 {
   FILE *flux;
   flux=fopen(nomDeFichier,"w");
   if(flux==NULL)
   {
     fprintf(stderr, "Erreur %d: Problème d'ouverture du fichier %s\n",ERR_OUVERTURE_FICHIER,nomDeFichier);
-    exit(ERR_OUVERTURE_FICHIER);
+    return ERR_OUVERTURE_FICHIER;
   }
   afficherListeEmpruntReservation(liste,flux,nb);
+  return ERR_NO_ERR;
 }
