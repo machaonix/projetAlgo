@@ -1,5 +1,5 @@
-#ifndef __JEU_H__
-#define __JEU_H__
+#ifndef _JEU_H_
+#define _JEU_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,4 +29,4 @@ void copyJeu(Jeu* jd, Jeu* js);
 
 Jeu* allocJeu(void);
 
-#endif //__JEU_H__
+#endif //_JEU_H_

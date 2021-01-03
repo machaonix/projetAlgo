@@ -1,6 +1,5 @@
-#ifndef __TESTFONCTION_H__
-#define __TESTFONCTION_H__
-
+#ifndef _TESTFONCTION_H_
+#define _TESTFONCTION_H_
 
 #ifdef TEST_DATE
 #include "Date.h"
@@ -17,4 +16,4 @@
 
 void testFonction(void);
 
-#endif //__TESTFONCTION_H__
+#endif //_TESTFONCTION_H_

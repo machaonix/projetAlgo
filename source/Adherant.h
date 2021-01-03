@@ -1,5 +1,5 @@
-#ifndef __ADHERANT_H__
-#define __ADHERANT_H__
+#ifndef _ADHERANT_H_
+#define _ADHERANT_H_
 
 #include <string.h>
 #include <stdio.h>
@@ -192,4 +192,4 @@ copieTabAdherant():
 */
 CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
-#endif //__ADHERANT_H__
+#endif //_ADHERANT_H_

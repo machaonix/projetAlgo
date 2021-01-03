@@ -4,7 +4,8 @@
 
 int main(void)
 {
-	testER();
+	Ludotheque();
+	//testER();
 	//testFonctionAdherant();
 	//testFonctionJeu();
 	return 0;

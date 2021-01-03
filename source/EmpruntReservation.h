@@ -1,5 +1,5 @@
-#ifndef __EmpruntReservation_H__
-#define __EmpruntReservation_H__
+#ifndef _EmpruntReservation_H_
+#define _EmpruntReservation_H_
 
 #include <stdio.h>
 #include "Date.h"
@@ -21,4 +21,4 @@ void afficherEmpruntReservation(EmpruntReservation *Empruntreservation, FILE* fl
 //interactif
 EmpruntReservation nouvEmpruntReservation(unsigned int id);
 
-#endif //__EmpruntReservation_H__
+#endif //_EmpruntReservation_H_
