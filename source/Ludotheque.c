@@ -23,37 +23,44 @@ void afficheMenu(void)
 void Ludotheque(void)
 {
 	TableauJeu tabJeu;
-	int tMaxAdherant = 5, indexAdherant, idAdherantTmp;
 	Adherant *tAdherant;
+	unsigned int tMaxAdherant = 5;
 	int nbElemAdhearant;
 	ListeER liste_Emprunt=listeER_Vide(),liste_Reservation=listeER_Vide();
 	int nb_Emprunt,nb_Reservation;
-	char reponceDuMenu;
-	float montantRemis;
-	Date dateTmp;
+	unsigned int reponceDuMenu;
 	Bool lance = TRUE;
-	CodeErreur cErr, trouveAdherant;
+	CodeErreur cErr;
 	Adherant adherantTmp;
 	
 	char choix;
 	
+	fprintf(stderr, "\n1\n");fflush(stderr);
 	//initialisation et chargement
 	initTabJeu(&tabJeu);
  	cErr = chargerTabJeu(&tabJeu, "donnee/jeux.don");
  	if (cErr != ERR_NO_ERR) return;
+	fprintf(stderr, "\n1 Jeux ok\n");fflush(stderr);
 
-	tMaxAdherant = chargerLesAdherants(&tAdherant, &tMaxAdherant, "donnee/adherant.don");
-	if(tMaxAdherant < 0) return;
+	tAdherant = (Adherant*) malloc(sizeof(Adherant)*tMaxAdherant);
+	nbElemAdhearant = chargerLesAdherants(&tAdherant, &tMaxAdherant, "donnee/adherant.don");
+	if(nbElemAdhearant < 0) return;
+	fprintf(stderr, "\n1 Adherant ok\n");fflush(stderr);
 	
 	liste_Emprunt=chargerListeEmpruntReservation("donnee/emprunts.don",&nb_Emprunt);
+	fprintf(stderr, "\n1 Emprunt ok\n");fflush(stderr);
   	liste_Reservation=chargerListeEmpruntReservation("donnee/reservations.don",&nb_Reservation);
+	fprintf(stderr, "\n1 reservations ok\n");fflush(stderr);
 	
+	fprintf(stderr, "\n2\n");fflush(stderr);
 	//Menu
 	while(lance)
 	{
 		afficheMenu();
 		printf("\n>>>"); 
-		scanf("%d%*c", &reponceDuMenu);
+		fflush(stdout);
+		scanf("%u%*c", &reponceDuMenu);
+
 		switch(reponceDuMenu)
 		{
 			case CHOIX_RESERVER://////////////////////////////////////////////////////////
@@ -66,7 +73,7 @@ void Ludotheque(void)
 			case CHOIX_RETOUR_JEU://////////////////////////////////////////////////////////
 				break;
 			case CHOIX_AFFICHE_JEU:
-				afficheTabJeu(&tabJeu);
+				afficheTabJeu(&tabJeu, stdout);
 				break;
 			case CHOIX_TRIER_JEU:
 				triTabJeuInteractif(&tabJeu);
@@ -80,19 +87,7 @@ void Ludotheque(void)
 					printf("Une erreur a eu lieux lors de l'enregistrement : %d\n", nbElemAdhearant);
 				break;
 			case CHOIX_RENOUV_ADHERANT:
-				printf("Saisir l'ID d'un adherant\n>>>"); scanf("%d%*c", &idAdherantTmp);
-				indexAdherant = rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherantTmp, &trouveAdherant);
-				printf("Montant remis\n>>>"); scanf("%f%*d%*c", &montantRemis);
-				if(montantRemis < PRIX_ADHERANT)
-				{
-					printf("Le montant remis n'est pas sufissant, il manque %.2f€ (prix : %.2f€)", PRIX_ADHERANT-montantRemis, PRIX_ADHERANT);
-					break;
-				}
-				printf("Saisir la date du jour:\n");
-				printf("Jour\t: "); scanf("%d%*c", &(dateTmp.jour));
-				printf("Mois\t: "); scanf("%d%*c", &(dateTmp.mois));
-				printf("Année\t: ");scanf("%d%*c", &(dateTmp.annee));
-				renouvelerInscription(&(tAdherant[indexAdherant]), dateTmp);
+				GLOBAL_RenouvellerAdherant(tAdherant, nbElemAdhearant);
 				break;
 			case CHOIX_AFFICHE_ADHERANT:
 				afficheTabAdherant(tAdherant, nbElemAdhearant, stdout, TRUE);
@@ -114,10 +109,12 @@ void Ludotheque(void)
 				break;
 			case CHOIX_QUITTER:
 				printf("Souhaitez vous sauvegarder avant de quitter (O/N) ? : ");
+				fflush(stdout);
 				scanf("%c%*c", &choix);
 				while (choix != 'O' && choix != 'N')
 				{
 					printf("Veuillez par O ou par N : ");
+					fflush(stdout);
 					scanf("%c%*c", &choix);
 				}
 				if (choix == 'O')
@@ -132,6 +129,31 @@ void Ludotheque(void)
 	}
 }
 
+
+void GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
+{
+	unsigned int idAdherantTmp, indexAdherant;
+	float montantRemis;
+	Date dateTmp;
+	Bool trouveAdherant;
+
+
+	printf("Saisir l'ID d'un adherant\n>>>"); 
+	scanf("%u%*c", &idAdherantTmp);
+	indexAdherant = rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherantTmp, &trouveAdherant);
+	printf("Montant remis\n>>>"); 
+	scanf("%f%*d%*c", &montantRemis);
+	if(montantRemis < PRIX_ADHERANT)
+	{
+		printf("Le montant remis n'est pas sufissant, il manque %.2f€ (prix : %.2f€)", PRIX_ADHERANT-montantRemis, PRIX_ADHERANT);
+		return;
+	}
+
+	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
+	dateTmp = lireDate(stdin);
+	
+	renouvelerInscription(&(tAdherant[indexAdherant]), &dateTmp);
+}
 
 void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt)
 {
@@ -154,6 +176,10 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 
 	rechercherIdJeu(tabJeu, idJeu, &trouve);
 
-	
-	afficherListeERJeu(liste, idjeu);
+	if (trouve == FALSE)
+	{
+		printf("Le jeu d'id %u n'existe pas.\n", idJeu);
+		return;
+	}
+	afficherListeERJeu(liste, idJeu);
 }

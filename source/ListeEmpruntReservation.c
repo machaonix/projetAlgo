@@ -206,32 +206,17 @@ Arguments :
 */
 ListeER insererEmpruntReservation(ListeER liste, int *nb, EmpruntReservation er)
 {
-  /*unsigned int id; //Premier Id libre dans la liste;
-  Bool jeu_libre;
-  Emprunt er;*/
-
   if(liste!=NULL)
-    /*if(liste->empRes.id==id)
+    if (liste->empRes.id<er.id)
     {
-      fprintf(stderr, "Erreur %d: l'id %u existe déjà\n",ERR_EXISTE_DEJA,id);
-      return liste;
-    } else */if (liste->empRes.id<id)
-    {
-      liste->suiv=insererEmpruntReservation(liste->suiv,id,nb);
+      liste->suiv=insererEmpruntReservation(liste->suiv, nb, er);
       return liste;
     }
 
-  /*id=rechercherIdLibre(liste);
-
-  er=nouvEmpruntReservation(id);
-  if(jeuDisponible(tabJeu,er.id)==FALSE)
-  {
-    fprinf("Erreur %d: il n'y a plus d'exemplaire disponible\n",ERR_OPERATION_INVALIDE);
-  }*/
   liste=insererDevantEmpruntReservation(liste,er);
   *nb+=1;
 
-  printf("\nId/reservation insérer avec l'Id: %u\n\n",id);
+  printf("\nId/reservation insérer avec l'Id: %u\n\n",er.id);
   return liste;
 }
 
@@ -327,7 +312,7 @@ Arguments :
   char nomDeFichier[] -> chemin (relatif) du fichier dans lequelle sauvegarder la liste.
   int nb -> nombre d'élémement dans la liste.
 */
-CodeErreur sauvegarder(ListeER liste, char nomDeFichier[],int nb)
+CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
 {
   FILE *flux;
   flux=fopen(nomDeFichier,"w");

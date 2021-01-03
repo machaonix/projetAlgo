@@ -126,6 +126,7 @@ Adherant nouvAdherant(unsigned int id)
 
 int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
 {
+	Bool trouve;
 	//Si le tableau est trop petit, l'agrandir de 10 espaces memoires
 	if(nbElem >= *tMax)
 	{
@@ -138,9 +139,8 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 			return ERR_ALLOCATION;
 	}
 
-	CodeErreur trouve;
-	int index = rechercherUnAdherant(*tAdherant, nbElem, ad->id, &trouve);
-	if(index == ERR_EXISTE_DEJA)
+	unsigned int index = rechercherUnAdherant(*tAdherant, nbElem, ad->id, &trouve);
+	if(trouve == TRUE)
 	{
 		fprintf(stderr, "L'adherant %d existe deja.\n", ad->id);
 		return nbElem;
@@ -155,9 +155,9 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 
 int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad)
 {
-	CodeErreur trouve;
-	int index = rechercherUnAdherant(tAdherant, nbElem, ad->id, &trouve);
-	if(trouve == ERR_NOT_FOUND)
+	Bool trouve;
+	unsigned int index = rechercherUnAdherant(tAdherant, nbElem, ad->id, &trouve);
+	if(trouve == FALSE)
 	{
 		fprintf(stderr, "L'adherant %d n'existe pas.\n", ad->id);
 		return nbElem;
@@ -180,12 +180,12 @@ void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 		tAdherant[i] = tAdherant[i-1];
 }
 
-int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, CodeErreur* trouve)
+unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, Bool* trouve)
 {
 	int inf=0, sup=nbElem-1;
 	int mil;
 
-	*trouve = ERR_NOT_FOUND;
+	*trouve = FALSE;
 	while(inf <= sup)
 	{
 		mil = (inf+sup) / 2;
@@ -195,7 +195,7 @@ int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int
 			inf = mil+1;
 	}
 	if(tAdherant[inf].id == id)
-		*trouve = ERR_EXISTE_DEJA;
+		*trouve = TRUE;
 	return inf;
 }
 

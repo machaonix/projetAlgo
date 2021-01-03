@@ -14,6 +14,8 @@ void afficheMenu(void);
 
 void Ludotheque(void);
 
+void GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant);
+
 void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
 
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation);
