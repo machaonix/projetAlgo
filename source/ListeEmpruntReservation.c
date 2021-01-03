@@ -178,7 +178,7 @@ Arguments :
   ListeER liste -> liste dans laquelle on insère l'élément.
   Emprunt er -> élément qu'on insère.
 */
-ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
+ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er)
 {
   Element *elem;
   elem=(Element *)malloc(sizeof(Element));
@@ -197,32 +197,33 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
 /*
     insererEmpruntReservation
 Description :
-  Demande et insère un emprunt ou une reservation dans une liste.
+  Insère un emprunt ou une reservation dans une liste.
 
 Arguments :
   ListeER liste -> liste dans laquelle on insère l'élément.
   int *nb -> pointeur sur le nombre d'élément dans la liste.
+  EmpruntReservation er -> emprunt ou reservation à insérer (id compris dans er)
 */
-ListeER insererEmpruntReservation(ListeER liste, int *nb, Emprunt er, int id)
+ListeER insererEmpruntReservation(ListeER liste, int *nb, EmpruntReservation er)
 {
   /*unsigned int id; //Premier Id libre dans la liste;
   Bool jeu_libre;
   Emprunt er;*/
 
   if(liste!=NULL)
-    if(liste->empRes.id==id)
+    /*if(liste->empRes.id==id)
     {
       fprintf(stderr, "Erreur %d: l'id %u existe déjà\n",ERR_EXISTE_DEJA,id);
       return liste;
-    } else if (liste->empRes.id<id)
+    } else */if (liste->empRes.id<id)
     {
       liste->suiv=insererEmpruntReservation(liste->suiv,id,nb);
       return liste;
     }
 
-  id=rechercherIdLibre(liste);
+  /*id=rechercherIdLibre(liste);
 
-  /*er=nouvEmpruntReservation(id);
+  er=nouvEmpruntReservation(id);
   if(jeuDisponible(tabJeu,er.id)==FALSE)
   {
     fprinf("Erreur %d: il n'y a plus d'exemplaire disponible\n",ERR_OPERATION_INVALIDE);

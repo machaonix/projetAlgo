@@ -38,11 +38,11 @@ void afficherEmpruntReservation(EmpruntReservation *er, FILE* flux)
     nouvEmpruntReservation
 Description :
   Créer un emprunt ou une reservation, en demandant les informations de l'emprunt à l'utilisateur.
-  
+
 Arguments :
   unsigned int id -> identifiant de l'emprunt ou de la reservation
 */
-EmpruntReservation nouvEmpruntReservation(unsigned int id)
+/*EmpruntReservation nouvEmpruntReservation(unsigned int id)
 {
   EmpruntReservation er;
   er.id=id;
@@ -56,4 +56,4 @@ EmpruntReservation nouvEmpruntReservation(unsigned int id)
   er.date=lireDate(stdin);
 
   return er;
-}
+}*/
