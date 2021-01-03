@@ -13,7 +13,7 @@ void afficheMenu(void)
 	printf("%d)\tNouvel adherant\n", CHOIX_NOUV_ADHERANT);
 	printf("%d)\tRenouveler un abonement\n", CHOIX_RENOUV_ADHERANT);
 	printf("%d)\tAfficher liste des adherants\n", CHOIX_AFFICHE_ADHERANT);
-	printf("%d)\tAfficher liste des emprunts en cours\n", CHOIX_EMPRUNTER);
+	printf("%d)\tAfficher liste des emprunts en cours\n", CHOIX_AFFICHE_EMPRUNT);
 	printf("%d)\tAfficher liste des reservations en cours\n", CHOIX_AFFICHE_RESERVATION);
 	printf("%d)\tAfficher la liste des reservations pour un jeu\n", CHOIX_AFFICHE_RESERVATION_JEU);
 	printf("%d)\tSauvegarder\n", CHOIX_SAUVEGARDER);
