@@ -127,7 +127,7 @@ Adherant nouvAdherant(unsigned int id)
 int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
 {
 	//Si le tableau est trop petit, l'agrandir de 10 espaces memoires
-	if(nbElem >= *tMax-1)
+	if(nbElem >= *tMax)
 	{
 		*tMax = *tMax+10;
 		Adherant *tmp = *tAdherant;

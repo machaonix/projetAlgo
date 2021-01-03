@@ -25,7 +25,9 @@ lireAdherant():
 
 	Retour 		: retourne un adherant contenant les information du fichier adherant.don
 	Arguments 	:
-		flux -> Un pointeur de FILE représentant le fichier on sont enregistré les adherants
+		flux -> Un pointeur de FILE en mode lecture représentant le fichier on sont enregistré les adherants
+	Finalitée 	:
+		Lire un Adherant dans un flux
 */
 Adherant lireAdherant(FILE* flux);
 
@@ -34,8 +36,10 @@ afficheAdherant():
 	Retour 		: void
 	Arguments 	:
 		ad 			-> Un adherant à afficher
-		flux		-> Un pointeur de FILE qui représente la sortie de l'affichage
+		flux		-> Un pointeur de FILE en mode écriture qui représente la sortie de l'affichage
 		entete 		-> Valeur booleanne indiquant l'affichage d'une entête ou non
+	Finalitée 	:
+		Afficher un Adherant
 */
 void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
 
@@ -44,20 +48,24 @@ nouvAdherant():
 	Retour		: Un Adherant construit dans la fonction
 	Arguments	:
 		id			-> Un entier positif représantant l'identifiant du nouvel utilisateur
+	Finalitée	:
+		Créer un nouvel Adherant
+
 */
 Adherant nouvAdherant(unsigned int id);
 
 
 //fonction sur tableau
-
 /*
 afficheTabAdherant():
 	Retour 		: void
 	arguments	:
 		tAdherant 	-> Un tableau d'adherant contenant les adherant de la ludoteque
 		nbElem 		-> Un entier repréentant le nombre d'adherant dans le tableau tAdherant
-		flux		-> Un FILE représantant la sortie sur la quelle écrire
+		flux		-> Un pointeur de FILE en mode écriture représantant la sortie sur la quelle écrire
 		entete 		-> Un boolean informant de la volonter d'afficher une entête ou non
+	Finalitée	:
+		Afficher tout les Adhérants
 */
 void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete);
 
@@ -70,10 +78,10 @@ insererAdherant():
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal d'Adherant de la ludoteque (la taille physique de tAdherant)
 		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
+	Finalitée	:
+		Ajouter un Adherant dans un tableau dynamiquement alloué
 */
 int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
-
-//Adherant* insererAdherant(Adherant tAdherant[], unsigned int* nbElem, unsigned int *tMax, Adherant* ad);
 
 /*
 supprimerAdherant():
@@ -82,6 +90,8 @@ supprimerAdherant():
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
+	Finalitée	:
+		Supprimer un Adherant
 */
 int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad);
 
@@ -152,11 +162,34 @@ renouvelerInscription():
 	Arguments 	:
 		ad 				-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe et modifier ad)
 		nouvelleDate	-> Nouvelle date à assigner à ad (la valeur est passer par adresse pour alleger le programe)
+	Finalitée	:
+		Faire qu'un Adherant soit valide
 */
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate);
 
+/*
+sauvegarderAdherant():
+	Retour		: ERR_OUVERTURE_FICHIER | ERR_NO_ERR
+	Arguments	:
+		tAdherant		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		nbElem 			-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+		nomDuFichier	-> Chemain vers un fichier pour y stocker les Adherants
+	Finalitée:
+		Enregister les Adherant
+*/
 CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[]);
 
+/*
+copieTabAdherant():
+	Retour		: ERR_OUT_OF_RANGE | ERR_NO_ERR
+	Arguments	:
+		tAdherant1		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		nbElem1			-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+		tAdherant2		-> Un tableau d'Adherant ou vont être copié les élements de tAdherant1
+		tMax2 			-> Un entier positif représentant la taille physique de tAdherant2
+	Finalitée	:
+		Copier les elements d'un tableau dans un autre
+*/
 CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
 #endif //__ADHERANT_H__
