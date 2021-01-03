@@ -39,7 +39,7 @@ Description :
 Arguments :
   ListeER liste -> liste à afficher.
   FILE* flux -> flux de destination (stdout ou un fichier).
-  int nb -> nombre d'élement dans la liste, inscrit au début d'un fichier.
+  int nb -> nombre d'élement dans la liste, inscrit au début d'un fichier. (n'est pas affiché sur stdout)
 */
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
