@@ -327,7 +327,7 @@ Arguments :
   char nomDeFichier[] -> chemin (relatif) du fichier dans lequelle sauvegarder la liste.
   int nb -> nombre d'élémement dans la liste.
 */
-CodeErreur sauvegarder(ListeER liste, char nomDeFichier[],int nb)
+CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
 {
   FILE *flux;
   flux=fopen(nomDeFichier,"w");
