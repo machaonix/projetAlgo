@@ -203,11 +203,11 @@ Arguments :
   ListeER liste -> liste dans laquelle on insère l'élément.
   int *nb -> pointeur sur le nombre d'élément dans la liste.
 */
-ListeER insererEmpruntReservation(ListeER liste, int *nb, TableauJeu* tabJeu)
+ListeER insererEmpruntReservation(ListeER liste, int *nb, Emprunt er, int id)
 {
-  unsigned int id; //Premier Id libre dans la liste;
+  /*unsigned int id; //Premier Id libre dans la liste;
   Bool jeu_libre;
-  Emprunt er;
+  Emprunt er;*/
 
   if(liste!=NULL)
     if(liste->empRes.id==id)
@@ -220,13 +220,13 @@ ListeER insererEmpruntReservation(ListeER liste, int *nb, TableauJeu* tabJeu)
       return liste;
     }
 
-  id_libre=rechercherIdLibre(libre);
+  id=rechercherIdLibre(liste);
 
-  er=nouvEmpruntReservation(id);
+  /*er=nouvEmpruntReservation(id);
   if(jeuDisponible(tabJeu,er.id)==FALSE)
   {
     fprinf("Erreur %d: il n'y a plus d'exemplaire disponible\n",ERR_OPERATION_INVALIDE);
-  }
+  }*/
   liste=insererDevantEmpruntReservation(liste,er);
   *nb+=1;
 
