@@ -45,7 +45,7 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
   if(flux==stdout)
   {
-      printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt\n");
+      printf("Id\tIdJeu\tIdEmprunter\tDate\n");
   } else
   {
     fprintf(flux,"%d\n",nb);
@@ -69,7 +69,7 @@ Arguments :
 */
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
-  printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt/de reservation\n");
+  printf("Id\tIdJeu\tIdEmprunter\tDate\n");
 
   while(liste!=NULL)
   {
