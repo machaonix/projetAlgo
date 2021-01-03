@@ -1,5 +1,5 @@
-#ifndef _LISTEEMPRUNTRESERVATION_H_
-#define _LISTEEMPRUNTRESERVATION_H_
+#ifndef HG_LISTEEMPRUNTRESERVATION_H
+#define HG_LISTEEMPRUNTRESERVATION_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,4 +34,4 @@ ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne N
 
 void sauvegarder(ListeER liste, char nomDeFichier[], int nb);
 
-#endif //_LISTEEMPRUNTRESERVATION_H_
+#endif //HG_LISTEEMPRUNTRESERVATION_H

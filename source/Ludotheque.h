@@ -1,5 +1,5 @@
-#ifndef _LUDOTEQHE_H_
-#define _LUDOTEQHE_H_
+#ifndef HG_LUDOTEQHE_H
+#define LUDOTEQHE_H
 
 #include <stdio.h>
 #include "TableauJeu.h"
@@ -19,4 +19,4 @@ void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int n
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation);
 
 
-#endif //_LUDOTEQHE_H_
+#endif //HG_LUDOTEQHE_H

@@ -1,5 +1,5 @@
-#ifndef _DATE_H_
-#define _DATE_H_
+#ifndef HG_DATE_H
+#define HG_DATE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,4 +65,4 @@ plusGrandeDate():
 */
 Date *plusGrandeDate(Date *date1, Date *date2);
 
-#endif //_DATE_H_
+#endif //HG_DATE_H
