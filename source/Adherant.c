@@ -139,7 +139,7 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 	}
 
 	CodeErreur trouve;
-	int index = rechercherUnAdherant(*tAdherant, nbElem, ad, &trouve);
+	int index = rechercherUnAdherant(*tAdherant, nbElem, ad->id, &trouve);
 	if(index == ERR_EXISTE_DEJA)
 	{
 		fprintf(stderr, "L'adherant %d existe deja.\n", ad->id);
@@ -156,7 +156,7 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad)
 {
 	CodeErreur trouve;
-	int index = rechercherUnAdherant(tAdherant, nbElem, ad, &trouve);
+	int index = rechercherUnAdherant(tAdherant, nbElem, ad->id, &trouve);
 	if(trouve == ERR_NOT_FOUND)
 	{
 		fprintf(stderr, "L'adherant %d n'existe pas.\n", ad->id);
@@ -180,7 +180,7 @@ void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 		tAdherant[i] = tAdherant[i-1];
 }
 
-int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad, CodeErreur* trouve)
+int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, CodeErreur* trouve)
 {
 	int inf=0, sup=nbElem-1;
 	int mil;
@@ -189,12 +189,12 @@ int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad
 	while(inf <= sup)
 	{
 		mil = (inf+sup) / 2;
-		if(ad->id <= tAdherant[mil].id)
+		if(id <= tAdherant[mil].id)
 			sup = mil-1;
 		else
 			inf = mil+1;
 	}
-	if(tAdherant[inf].id == ad->id)
+	if(tAdherant[inf].id == id)
 		*trouve = ERR_EXISTE_DEJA;
 	return inf;
 }

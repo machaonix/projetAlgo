@@ -125,12 +125,12 @@ rechercherUnAdherant():
 	Arguments 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
-		ad 			-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe)
+		id 			-> Un id d'Adherant a rechercher
 		trouve 		-> Un CodeErreur passé par addresse (deux valeur possible : ERR_NOT_FOUND | ERR_EXISTE_DEJA)
 	Finalitée :
 		Retrouver un Adherant dans un tAdherant (trié) par recherche dichotomique
 */
-int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad, CodeErreur* trouve);
+int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, CodeErreur* trouve);
 
 /*
 chargerLesAdherants():
