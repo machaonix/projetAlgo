@@ -1,6 +1,12 @@
 #include "ListeEmpruntReservation.h"
 #include "EmpruntReservation.h"
 
+
+/*
+    listeER_Vide
+Description :
+  Creer une liste vide.
+*/
 ListeER listeER_Vide(void) //Créer une nouvelle liste
 {
   ListeER liste;
@@ -8,6 +14,15 @@ ListeER listeER_Vide(void) //Créer une nouvelle liste
   return liste;
 }
 
+
+/*
+    listeER_estVide
+Description :
+  Vérifie si une liste est vide (TRUE si elle est vide, FALSE si elle ne l'est pas).
+
+Arguments :
+  listeER liste -> liste à vérifier.
+*/
 Bool listeER_estVide(ListeER liste)
 {
   if(liste==NULL)
@@ -15,6 +30,17 @@ Bool listeER_estVide(ListeER liste)
   return FALSE;
 }
 
+
+/*
+    afficherListeEmpruntReservation
+Description :
+  Afficher une liste dans un flux.
+
+Arguments :
+  ListeER liste -> liste à afficher.
+  FILE* flux -> flux de destination (stdout ou un fichier).
+  int nb -> nombre d'élement dans la liste, inscrit au début d'un fichier.
+*/
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
   if(flux==stdout)
@@ -31,6 +57,16 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
   }
 }
 
+
+/*
+    afficherListeERJeu
+Description :
+  Affiche les élément d'une liste qui concerne un jeu (passé par idJeu).
+
+Arguments :
+  ListeER liste -> liste dans laquelle sont les éléments à afficher.
+  unsigned int idJeu -> identifiant du jeu dont on souhaite voir les emprunts ou reservations
+*/
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
   printf("Id\tIdJeu\tIdEmprunter\tDate d'emprunt/de reservation\n");
@@ -43,6 +79,16 @@ void afficherListeERJeu(ListeER liste, unsigned int idJeu)
   }
 }
 
+
+/*
+    chargerListeEmpruntReservation
+Description :
+  Charge une liste avec le contenu d'un fichier.
+
+Arguments :
+  char nomDeFichier[] -> chemin (relatif) du fichier à charger.
+  int *nb -> pointeur sur le nombre d'élément dans le fichier.
+*/
 ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb)
 {
   ListeER liste=listeER_Vide(),origin=listeER_Vide();  //liste permettra de naviger dans la liste pour la création de la liste, origin est le pointeur sur le premier element de la
@@ -76,6 +122,16 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb)
   return origin;
 }
 
+
+/*
+    rechercherListeEmpruntReservation
+Description :
+  Rechercher un emprunt ou une reservation dans une liste donnée.
+
+Arguments :
+  ListeER liste -> liste dans laquelle effectuer la recherche.
+  unsigned int id -> id de l'élément qu'on recherche.
+*/
 Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //retourne l'adresse d'un emprunt ou d'une reservation données par id
 {
   while(liste!=NULL && liste->empRes.id<=id)
@@ -90,6 +146,15 @@ Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //ret
     return NULL;
 }
 
+
+/*
+    rechercherIdLibre
+Description :
+  Rechercher le premier identifiant inutilisé dans la liste. Pour garder une liste trié par identifiant des emprunts/reservations.
+
+Arguments :
+  ListeER liste -> liste dans laquelle chercher un identifiant libre.
+*/
 unsigned int rechercherIdLibre(ListeER liste)
 {
   unsigned int x=0;
@@ -103,6 +168,16 @@ unsigned int rechercherIdLibre(ListeER liste)
   return x;
 }
 
+
+/*
+    insererDevantEmpruntReservation
+Description :
+   Insère un élément au début de la liste.
+
+Arguments :
+  ListeER liste -> liste dans laquelle on insère l'élément.
+  Emprunt er -> élément qu'on insère.
+*/
 ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
 {
   Element *elem;
@@ -118,6 +193,16 @@ ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er)
   return elem;
 }
 
+
+/*
+    insererEmpruntReservation
+Description :
+  Demande et insère un emprunt ou une reservation dans une liste.
+
+Arguments :
+  ListeER liste -> liste dans laquelle on insère l'élément.
+  int *nb -> pointeur sur le nombre d'élément dans la liste.
+*/
 ListeER insererEmpruntReservation(ListeER liste, int *nb, TableauJeu* tabJeu)
 {
   unsigned int id; //Premier Id libre dans la liste;
@@ -149,6 +234,15 @@ ListeER insererEmpruntReservation(ListeER liste, int *nb, TableauJeu* tabJeu)
   return liste;
 }
 
+
+/*
+    supprimerDevantEmpruntReservation
+Description :
+  Supprimer le premier élément d'une liste.
+
+Arguments :
+  ListeER liste -> liste dans laquelle on supprime l'élément.
+*/
 ListeER supprimerDevantEmpruntReservation(ListeER liste)
 {
   ListeER elem;
@@ -158,6 +252,17 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste)
   return liste;
 }
 
+
+/*
+    supprimerEmpruntReservation
+Description :
+  Supprime un emprunt ou une reservation donné d'une liste.
+
+Arguments :
+  ListeER liste -> liste dans laquelle on supprime l'élément.
+  unsigned int id -> identifiant de l'emprunt ou de la reservation à supprimer.
+  int *nb -> pointeur sur le nombre d'élément dans la liste.
+*/
 ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
 {
   ListeER origin=listeER_Vide();
@@ -192,6 +297,15 @@ ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
   return origin;
 }
 
+
+/*
+    supprimerListe
+Description :
+  Supprime une liste entière.
+
+Arguments :
+  ListeER liste -> liste à supprimer.
+*/
 ListeER supprimerListe(ListeER liste)
 {
   if(liste==NULL)
@@ -201,6 +315,17 @@ ListeER supprimerListe(ListeER liste)
   return NULL;
 }
 
+
+/*
+    sauvegarder
+Description :
+  Sauvegarde une liste dans un fichier.
+
+Arguments :
+  ListeER liste -> liste à supprimer.
+  char nomDeFichier[] -> chemin (relatif) du fichier dans lequelle sauvegarder la liste.
+  int nb -> nombre d'élémement dans la liste.
+*/
 void sauvegarder(ListeER liste, char nomDeFichier[],int nb)
 {
   FILE *flux;
