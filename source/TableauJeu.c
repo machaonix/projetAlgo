@@ -266,7 +266,19 @@ unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, B
 }
 
 
+/*
+		retirerJeu
+Description :
+	Retire le jeu correspondant à l'id donné du tableau de jeux
 
+Valeur de retour :
+	Si pas d'erreur -> ERR_NO_ERR
+	Sinon -> Le code erreur correspondant
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau duquel on veut retirer le jeu
+	unsigned int idJeu -> L'identifiant du jeu que l'on veut retirer
+*/
 CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu)
 {
 	Bool trouve;
@@ -282,7 +294,19 @@ CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu)
 	return ERR_NO_ERR;
 }
 
+/*
+		retirerJeuInteractif
+Description :
+	Fonction interactive permettant de retirer un jeu du tableau
+	Appelle la fonction retirerJeu
 
+Valeur de retour :
+	Si pas d'erreur -> ERR_NO_ERR
+	Sinon -> Le code erreur correspondant
+	
+Arguments :
+	TableauJeu* tabJeu -> Le tableau duquel on veut retirer le jeu
+*/
 CodeErreur retirerJeuInteractif(TableauJeu* tabJeu)
 {
 	unsigned int idJeu;
@@ -305,6 +329,21 @@ CodeErreur retirerJeuInteractif(TableauJeu* tabJeu)
 	return ERR_NO_ERR;
 }
 
+
+
+/*
+		ajouterJeu
+Description :
+	Ajoute le jeu donné au tableau de jeux
+
+Valeur de retour :
+	Si pas d'erreur -> ERR_NO_ERR
+	Sinon -> Le code erreur correspondant
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau auquel on veut ajouter le jeu
+	Jeu* jeu -> Le jeu que l'on veut ajouter
+*/
 CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 {
 	Bool trouve;
@@ -334,6 +373,20 @@ CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 	return ERR_NO_ERR;
 }
 
+
+/*
+		ajouterJeuInteractif
+Description :
+	Fonction interactive permettant d'aujouter un jeu au tableau
+	Appelle la fonction ajouterJeu
+
+Valeur de retour :
+	Si pas d'erreur -> ERR_NO_ERR
+	Sinon -> Le code erreur correspondant
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau auquel on veut ajouter le jeu
+*/
 CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 {
 	CodeErreur cErr;
@@ -371,17 +424,36 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 				break;
 			}
 		}
-	}
-
-		
+	}	
 }
 
+/*
+		_decalageAGaucheJeu
+Description :
+	/!\ Cette fonction n'a pas vocation à être utilisée par des fonctions exterieurs à ce fichier car cette fontion ne fait pas de verification de bon fonctionnement /!\
+	Decale vers la "gauche" les jeux du tableau en ecrasant le jeu du rang debut
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau a "décaler"
+	unsigned int debut -> le rang a partir duquel décaler
+*/
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut)
 {
 	for (unsigned int i = debut; i < tabJeu->nbElement-1; ++i)
 		tabJeu->jeux[i] = tabJeu->jeux[i+1];
 }
 
+
+/*
+		_decalageADroiteJeu
+Description :
+	/!\ Cette fonction n'a pas vocation à être utilisée par des fonctions exterieurs à ce fichier car cette fontion ne fait pas de verification de bon fonctionnement/!\
+	Decale vers la "droite" les jeux du tableau
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau a "décaler"
+	unsigned int debut -> le rang a partir duquel décaler
+*/
 void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut)
 {
 	unsigned int i;
@@ -389,7 +461,18 @@ void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut)
 		tabJeu->jeux[i] = tabJeu->jeux[i-1];
 }
 
+/*
+		genIdJeu
+Description :
+	Recherche et retourne un identifiant non utilisé
+	Cette fonction considere qu'il existe au moins un identifiant libre
 
+Valeur de retour : 
+	Retourne un identifiant libre
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau pour lequel trouver un identifiant libre
+*/
 unsigned int genIdJeu(TableauJeu* tabJeu)
 {
 	Bool trouve;
@@ -400,6 +483,7 @@ unsigned int genIdJeu(TableauJeu* tabJeu)
 		return tabJeu->nbElement;
 	}
 	
+	//si il existe un jeu avec l'identifiant egal au nombre d'elements, un des identifiants inferieur est libre
 	rechercherIdJeu(tabJeu, i, &trouve);
 
 	while (trouve == TRUE)
@@ -411,15 +495,44 @@ unsigned int genIdJeu(TableauJeu* tabJeu)
 }
 
 
-//tri tabJeu selon triSur
+/*
+		triTabJeu
+Description :
+	Tri le tableau de jeu en fonction de triSur
+	Encapsule la fonction _triJeu
+
+Arguments :
+	TableauJeu* tabJeu -> Tableau à trier
+	TriSur triSur -> Maniere de trier
+*/
 void triTabJeu(TableauJeu* tabJeu, TriSur triSur)
 {
+	if (triSur == TRI_NON_TRIE)
+	{
+		fprintf(stderr, "Erreur operation invalide : trier avec TRI_NON_TRIE\n");
+		exit(-ERR_OPERATION_INVALIDE);
+	}
+
+	if (tabJeu->triSur == triSur)
+		return;
+
 	_triJeu(tabJeu->jeux, tabJeu->nbElement, triSur);
 
 	tabJeu->triSur = triSur;
 }
 
 
+/*
+		_triJeu
+Description :
+	/!\ Cette fonction utilise un tableau de jeu nu, ne pas l'utiliser directement -> passer par triTabJeu et utilisez un TableauJeu /!\
+	Tri le tableau de jeu en fonction de triSur
+
+Arguments :
+	Jeu* tJeu[] -> Tableau à trier
+	unsigned int nbElement -> nombre d'element du tableau
+	TriSur triSur -> Maniere de trier
+*/
 void _triJeu(Jeu* tJeu[], unsigned int nbElement, TriSur triSur)
 {
 	unsigned int nb1 = nbElement/2;
@@ -440,13 +553,37 @@ void _triJeu(Jeu* tJeu[], unsigned int nbElement, TriSur triSur)
 }
 
 
+/*
+		copyTabJeu
+Description :
+	/!\ Cette fonction utilise un tableau de jeu nu, ne pas l'utiliser directement /!\
+	Copie la partie du tableau source designé dans le tableau de destination
 
+Arguments :
+	Jeu* tSource[] -> tableau source
+	unsigned int debut -> rang de début de la copie (inclu)
+	unsigned int fin -> rang d'arret de la copie (exclu)
+	Jeu* tDest[] -> tableau de destination
+*/
 void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[])
 {
 	for (unsigned int i = debut; i < fin; ++i)
 		tDest[i-debut] = tSource[i];
 }
 
+/*
+		fusionTabJeu
+Description :
+	Fusionne les tableaux sources dans le tableau destination en respectant l'ordre indiqué par triSur
+
+Arguments :
+	Jeu* tSource1[] -> Tableau source 1
+	unsigned int nbElem1 -> nombre d'elements du tableau source 1
+	Jeu* tSource2[] -> Tableau source 2
+	unsigned int nbElem2 -> nombre d'elements du tableau source 2
+	TriSur triSur -> Maniere de determiner l'ordre des jeux
+	Jeu* tDest[] -> Tableau de destination
+*/
 void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[])
 {
 	unsigned int nS1 = 0, nS2 = 0, nD = 0;
@@ -461,7 +598,7 @@ void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsign
 			++nD;
 			++nS1;
 		}
-		else //Les jeux sont uniques dans la liste donc le cas (cmp == 0) n'est pas sensé se presenter
+		else
 		{
 			tDest[nD] = tSource2[nS2];
 			++nD;
