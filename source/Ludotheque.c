@@ -166,8 +166,6 @@ Bool GLOBAL_Reserver(ListeReservation* liste_Reservation, unsigned int* nb_Reser
 	fflush(stdout);
   	scanf("%u%*c",&(reservation.idJeu));
 
-	printf("Id jeu entre");
-	fflush(stdout);
 	rechercherIdJeu(tabJeu, reservation.idJeu, &trouve);
   	if (trouve == FALSE)
   	{
@@ -176,19 +174,9 @@ Bool GLOBAL_Reserver(ListeReservation* liste_Reservation, unsigned int* nb_Reser
   		return FALSE;
   	}
 
-	printf("Id jeu entre");
-	fflush(stdout);
-
   	reservation.id = rechercherIdLibre(*liste_Reservation);
 
-	printf("Id jeu entre");
-	fflush(stdout);
-
 	*liste_Reservation = insererEmpruntReservation(*liste_Reservation, nb_Reservation, reservation);
-	afficherListeEmpruntReservation(*liste_Reservation, stdout, *nb_Reservation);
-
-	printf("Id jeu entre");
-	fflush(stdout);
 
 	return TRUE;
 }
