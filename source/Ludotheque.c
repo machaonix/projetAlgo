@@ -10,6 +10,7 @@ void afficheMenu(void)
 	printf("%d)\tRetour jeu\n", CHOIX_RETOUR_JEU);
 	printf("%d)\tAfficher liste des jeux\n", CHOIX_AFFICHE_JEU);
 	printf("%d)\tTrier les jeux\n", CHOIX_TRIER_JEU);
+	printf("%d)\tAjouter un jeux\n", CHOIX_AJOUTER_JEU);
 	printf("%d)\tNouvel adherant\n", CHOIX_NOUV_ADHERANT);
 	printf("%d)\tRenouveler un abonement\n", CHOIX_RENOUV_ADHERANT);
 	printf("%d)\tAfficher liste des adherants\n", CHOIX_AFFICHE_ADHERANT);
@@ -74,6 +75,9 @@ void Ludotheque(void)
 				break;
 			case CHOIX_TRIER_JEU:
 				triTabJeuInteractif(&tabJeu);
+				break;
+			case CHOIX_AJOUTER_JEU:
+				ajouterJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_NOUV_ADHERANT:
 				GLOBAL_NouvelAdherant(tAdherant, &nbElemAdhearant, &tMaxAdherant);
