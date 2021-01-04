@@ -89,11 +89,11 @@ Arguments :
   char nomDeFichier[] -> chemin (relatif) du fichier à charger.
   int *nb -> pointeur sur le nombre d'élément dans le fichier.
 */
-ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb)
+ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
 {
   ListeER liste=listeER_Vide(),origin=listeER_Vide();  //liste permettra de naviger dans la liste pour la création de la liste, origin est le pointeur sur le premier element de la
   FILE *flux;
-  int i;
+  unsigned int i;
   flux=fopen(nomDeFichier,"r");
   if(flux==NULL)
   {
@@ -158,10 +158,10 @@ Arguments :
 unsigned int rechercherIdLibre(ListeER liste)
 {
   unsigned int x=0;
-  while(liste->empRes.id==x)
+  while(liste != NULL)
   {
     x+=1;
-    if(liste->suiv==NULL)
+    if(liste->empRes.id!=x)
       break;
     liste=liste->suiv;
   }
@@ -204,7 +204,7 @@ Arguments :
   int *nb -> pointeur sur le nombre d'élément dans la liste.
   EmpruntReservation er -> emprunt ou reservation à insérer (id compris dans er)
 */
-ListeER insererEmpruntReservation(ListeER liste, int *nb, EmpruntReservation er)
+ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReservation er)
 {
   if(liste!=NULL)
     if (liste->empRes.id<er.id)
