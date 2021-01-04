@@ -31,9 +31,6 @@ void Ludotheque(void)
 	unsigned int reponceDuMenu;
 	Bool lance = TRUE;
 	CodeErreur cErr;
-	Adherant adherantTmp;
-	
-	char choix;
 	
 	fprintf(stderr, "\n1\n");fflush(stderr);
 	//initialisation et chargement
@@ -63,7 +60,7 @@ void Ludotheque(void)
 
 		switch(reponceDuMenu)
 		{
-			case CHOIX_RESERVER://////////////////////////////////////////////////////////
+			case CHOIX_RESERVER:
 
 				break;
 			case CHOIX_ANNULER_RESERVATION://////////////////////////////////////////////////////////
@@ -79,12 +76,7 @@ void Ludotheque(void)
 				triTabJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_NOUV_ADHERANT:
-				adherantTmp = nouvAdherant(tAdherant[nbElemAdhearant-1].id+1);
-				nbElemAdhearant = insererAdherant(&tAdherant, nbElemAdhearant, &tMaxAdherant, &adherantTmp);
-				if(nbElemAdhearant >= 0)
-					printf("Nouvel adherant enregistrer avec succès\n");
-				else
-					printf("Une erreur a eu lieux lors de l'enregistrement : %d\n", nbElemAdhearant);
+				GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, &tMaxAdherant);
 				break;
 			case CHOIX_RENOUV_ADHERANT:
 				GLOBAL_RenouvellerAdherant(tAdherant, nbElemAdhearant);
@@ -108,16 +100,7 @@ void Ludotheque(void)
 				GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				break;
 			case CHOIX_QUITTER:
-				printf("Souhaitez vous sauvegarder avant de quitter (O/N) ? : ");
-				fflush(stdout);
-				scanf("%c%*c", &choix);
-				while (choix != 'O' && choix != 'N')
-				{
-					printf("Veuillez par O ou par N : ");
-					fflush(stdout);
-					scanf("%c%*c", &choix);
-				}
-				if (choix == 'O')
+				if (UTILE_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
 					GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				lance = FALSE;
 				break;
@@ -129,6 +112,57 @@ void Ludotheque(void)
 	}
 }
 
+//ListeER insererEmpruntReservation(ListeER liste, int *nb, EmpruntReservation er);
+void GLOBAL_Reserver(ListeReservation liste_Reservation, unsigned int nb_Reservation, TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant, unsigned int* tMaxAdherant)
+{
+	Reservation reservation;
+	Bool trouve;
+
+
+	printf("Quel est l'identifiant de l'adherant: ");
+	fflush(stdout);
+  	scanf("%u",&(reservation.idEmprunter));
+
+  	rechercherUnAdherant(tAdherant, nbElemAdhearant, reservation.idEmprunter, &trouve);
+  	if (trouve == FALSE)
+  	{
+  		if(UTILE_Choix_O_N("Identifiant d'adherant non attribué, souhaitez vous créer un nouvel adherant"))
+  		{
+  			GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, tMaxAdherant);
+  		}
+
+  	}
+
+
+	printf("Quel est l'identifiant du jeu à reserver: ");
+	fflush(stdout);
+  	scanf("%u",&(reservation.idJeu));
+
+	rechercherIdJeu(tabJeu, reservation.idJeu, &trouve);
+  	if (trouve == FALSE)
+  	{
+  		printf("Cette identifiant n'est pas attribué\n");
+  		return;
+  	}
+
+
+
+
+	liste_Reservation = insererEmpruntReservation(liste_Reservation, &nb_Reservation, reservation);
+}
+
+
+void GLOBAL_NouvelAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant, unsigned int* tMaxAdherant)
+{
+	Adherant adherantTmp;
+
+	adherantTmp = nouvAdherant(tAdherant[nbElemAdhearant-1].id+1);
+	nbElemAdhearant = insererAdherant(&tAdherant, nbElemAdhearant, tMaxAdherant, &adherantTmp);
+	if(nbElemAdhearant >= 0)
+		printf("Nouvel adherant enregistrer avec succès\n");
+	else
+		printf("Une erreur a eu lieux lors de l'enregistrement : %d\n", nbElemAdhearant);
+}
 
 void GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
 {
@@ -183,3 +217,23 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 	}
 	afficherListeERJeu(liste, idJeu);
 }
+
+
+
+Bool UTILE_Choix_O_N(char message[])
+{
+	char choix;
+	printf("%s (O/N) ? : ", message);
+	fflush(stdout);
+	scanf("%c%*c", &choix);
+	while (choix != 'O' && choix != 'N')
+	{
+		printf("Veuillez par O ou par N : ");
+		fflush(stdout);
+		scanf("%c%*c", &choix);
+	}
+	if (choix == 'O')
+		return TRUE;
+	return FALSE;
+}
+
