@@ -2,7 +2,7 @@
 
 void testER()
 {
-  int nb_Emprunt,nb_Reservation,id_libre;
+  int nb_Emprunt,nb_Reservation;
   ListeER liste_Emprunt=listeER_Vide(),liste_Reservation=listeER_Vide();
 
   liste_Emprunt=chargerListeEmpruntReservation("donnee/emprunts.don",&nb_Emprunt);
