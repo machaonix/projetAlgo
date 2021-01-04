@@ -18,12 +18,12 @@ Bool listeER_estVide(ListeER liste); //TRUE si vide
 
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
-ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb);
+ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
 
 Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
 
-ListeER insererEmpruntReservation(ListeER liste, int *nb, EmpruntReservation er);
+ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReservation er);
 //Il faut vérifier si on peux bien emprunter le jeu;
 ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
 

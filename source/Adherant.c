@@ -76,6 +76,7 @@ Adherant nouvAdherant(unsigned int id)
 
 	//Traitement du prénom
 	printf("Saisir le prenom\n>>>");
+	fflush(stdout);
 	fgets(tmp.prenom, 21, stdin);
 
 	tmp.prenom[strlen(tmp.prenom)-1] = '\0';
@@ -90,6 +91,7 @@ Adherant nouvAdherant(unsigned int id)
 
 	//Traitement du nom
 	printf("Saisir le nom\n>>>");
+	fflush(stdout);
 	fgets(tmp.nom, 21, stdin);
 
 	tmp.nom[strlen(tmp.nom)-1] = '\0';
@@ -106,6 +108,7 @@ Adherant nouvAdherant(unsigned int id)
 	do
 	{
 		printf("Civilitée(H/F)\t: ");
+		fflush(stdout);
 		scanf("%c%*c", &civilite);
 	}
 	while(civilite != 'F' && civilite != 'H');
@@ -116,10 +119,10 @@ Adherant nouvAdherant(unsigned int id)
 
 
 	//Traitement de la date d'inscription
-	printf("Saisir la date du jour:\n");
-	printf("Jour\t: "); scanf("%d%*c", &(tmp.dateInscri.jour));
-	printf("Mois\t: "); scanf("%d%*c", &(tmp.dateInscri.mois));
-	printf("Année\t: ");scanf("%d%*c", &(tmp.dateInscri.annee));
+	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
+	fflush(stdout);
+	tmp.dateInscri = lireDate(stdin);
+
 
 	return tmp;
 }
@@ -222,7 +225,10 @@ int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFic
 	return nbElem;
 }
 
-Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) {return dateCmp(*dateDuJour, ad->dateInscri) < 365;}
+Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) 
+{
+	return dateCmp(*dateDuJour, ad->dateInscri) < 365;
+}
 
 void renouvelerInscription(Adherant* ad, Date* nouvelleDate)
 {
