@@ -1,6 +1,6 @@
-#ifndef __BOOL_H__
-#define __BOOL_H__
+#ifndef HG_BOOL_H
+#define HG_BOOL_H
 
 typedef enum {FALSE, TRUE}Bool;
 
-#endif//__BOOL_H__
+#endif//HG_BOOL_H

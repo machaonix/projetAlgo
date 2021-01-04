@@ -1,5 +1,5 @@
-#ifndef __TABLEAUJEU_H__
-#define __TABLEAUJEU_H__
+#ifndef HG_TABLEAUJEU_H
+#define HG_TABLEAUJEU_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -55,6 +55,7 @@ void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
 
 
 //tri tJeu et retourne
+void triTabJeuInteractif(TableauJeu* tabJeu);
 void triTabJeu(TableauJeu* tabJeu, TriSur triSur);
 
 
@@ -63,4 +64,4 @@ void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest
 void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[]);
 void _triJeu(Jeu* tSource[], unsigned int nbElem, TriSur triSur);
 
-#endif //__TABLEAUJEU_H__
+#endif //HG_TABLEAUJEU_H

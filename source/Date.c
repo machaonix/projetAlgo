@@ -10,7 +10,7 @@ Date lireDate(FILE* flux)
 //---------------------------------------------------------------------------------------------------------------------------------
 void afficherDate(Date date, FILE* flux)
 {
-	fprintf(flux, "%d/%d/%d", date.jour, date.mois, date.annee);
+	fprintf(flux, "%02d/%02d/%d", date.jour, date.mois, date.annee);
 }
 //---------------------------------------------------------------------------------------------------------------------------------
 int dateCmp(Date date1, Date date2)

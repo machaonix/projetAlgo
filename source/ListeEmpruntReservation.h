@@ -1,5 +1,5 @@
-#ifndef __LISTEEMPRUNTRESERVATION_H__
-#define __LISTEEMPRUNTRESERVATION_H__
+#ifndef HG_LISTEEMPRUNTRESERVATION_H
+#define HG_LISTEEMPRUNTRESERVATION_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -23,15 +23,15 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[],int *nb);
 Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id);
 unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
 
-ListeER insererEmpruntReservation(ListeER liste, int *nb);
+ListeER insererEmpruntReservation(ListeER liste, int *nb, EmpruntReservation er);
 //Il faut vérifier si on peux bien emprunter le jeu;
-ListeER insererDevantEmpruntReservation(ListeER liste, Emprunt er);
+ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
 
 ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb);
 ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne NULL;
 
-void sauvegarder(ListeER liste, char nomDeFichier[], int nb);
+CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
 
-#endif //__LISTEEMPRUNTRESERVATION_H__
+#endif //HG_LISTEEMPRUNTRESERVATION_H

@@ -1,10 +1,10 @@
-#include "TestFonction.h"
-#include "TestER.h"
+#include "Ludotheque.h"
 
 
 int main(void)
 {
-	testER();
+	Ludotheque();
+	//testER();
 	//testFonctionAdherant();
 	//testFonctionJeu();
 	return 0;

@@ -495,6 +495,46 @@ unsigned int genIdJeu(TableauJeu* tabJeu)
 }
 
 
+
+void triTabJeuInteractif(TableauJeu* tabJeu)
+{
+	TriSur triSur;
+	Bool boucle = TRUE;
+//TRI_NON_TRIE ,TRI_ID, TRI_NOM, TRI_TYPE, TRI_NB_EXEMPLAIRE_TOTAL, TRI_NB_EXEMPLAIRE_DISPO
+	printf("Par quel element voulez vous trier ?\n");
+	printf("%d\tLes identifiants\n", TRI_ID);
+	printf("%d\tLes noms\n", TRI_NOM);
+	printf("%d\tLes categories\n", TRI_TYPE);
+	printf("%d\tLe nombre d'exemplaires total\n", TRI_NB_EXEMPLAIRE_TOTAL);
+	printf("%d\tLe nombre d'exemplaires disponibles\n", TRI_NB_EXEMPLAIRE_DISPO);
+	fflush(stdout);
+	scanf("%d%*c", (int*)&triSur);
+
+	while (boucle)
+	{
+		switch (triSur)
+		{
+			case TRI_ID:
+			case TRI_NOM:
+			case TRI_TYPE:
+			case TRI_NB_EXEMPLAIRE_TOTAL:
+			case TRI_NB_EXEMPLAIRE_DISPO:
+			{
+				triTabJeu(tabJeu, triSur);
+				boucle = FALSE;
+				break;
+			}
+			default:
+			{
+				printf("Veuillez indiquer un element valide : ");
+				fflush(stdout);
+				scanf("%d%*c", (int*)&triSur);
+				break;
+			}
+		}
+	}
+}
+
 /*
 		triTabJeu
 Description :

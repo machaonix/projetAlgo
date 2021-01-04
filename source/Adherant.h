@@ -1,5 +1,5 @@
-#ifndef __ADHERANT_H__
-#define __ADHERANT_H__
+#ifndef HG_ADHERANT_H
+#define HG_ADHERANT_H
 
 #include <string.h>
 #include <stdio.h>
@@ -125,12 +125,12 @@ rechercherUnAdherant():
 	Arguments 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
-		ad 			-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe)
-		trouve 		-> Un CodeErreur passé par addresse (deux valeur possible : ERR_NOT_FOUND | ERR_EXISTE_DEJA)
+		id 			-> Un id d'Adherant a rechercher
+		trouve 		-> Un Bool passé par addresse (Si TRUE, adherant trouve sinon non)
 	Finalitée :
 		Retrouver un Adherant dans un tAdherant (trié) par recherche dichotomique
 */
-int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad, CodeErreur* trouve);
+unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, Bool* trouve);
 
 /*
 chargerLesAdherants():
@@ -192,4 +192,4 @@ copieTabAdherant():
 */
 CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
-#endif //__ADHERANT_H__
+#endif //HG_ADHERANT_H
