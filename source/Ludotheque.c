@@ -2,7 +2,7 @@
 
 
 void afficheMenu(void)
-{	
+{
 	printf("\n\tMenu :\n");
 	printf("%d)\tAnnuler une reservation\n", CHOIX_ANNULER_RESERVATION);
 	printf("%d)\tEmprunter un jeu\n", CHOIX_EMPRUNTER);
@@ -31,7 +31,8 @@ void Ludotheque(void)
 	unsigned int reponceDuMenu;
 	Bool lance = TRUE;
 	CodeErreur cErr;
-	
+	Date dateDuJour;
+
 	fprintf(stderr, "\n1\n");fflush(stderr);
 	//initialisation et chargement
 	initTabJeu(&tabJeu);
@@ -43,19 +44,23 @@ void Ludotheque(void)
 	nbElemAdhearant = chargerLesAdherants(&tAdherant, &tMaxAdherant, "donnee/adherant.don");
 	if(nbElemAdhearant < 0) return;
 	fprintf(stderr, "\n1 Adherant ok\n");fflush(stderr);
-	
+
 	liste_Emprunt=chargerListeEmpruntReservation("donnee/emprunts.don",&nb_Emprunt);
 	fprintf(stderr, "\n1 Emprunt ok\n");fflush(stderr);
   	liste_Reservation=chargerListeEmpruntReservation("donnee/reservations.don",&nb_Reservation);
 	fprintf(stderr, "\n1 reservations ok\n");fflush(stderr);
-	
+
 	UTILE_InitNbJeuDispo(liste_Emprunt,&tabJeu);
 	fprintf(stderr, "\n2\n");fflush(stderr);
+
+	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
+	fflush(stdout);
+	dateDuJour = lireDate(stdin);
 	//Menu
 	while(lance)
 	{
 		afficheMenu();
-		printf("\n>>>"); 
+		printf("\n>>>");
 		fflush(stdout);
 		scanf("%u%*c", &reponceDuMenu);
 
@@ -64,7 +69,7 @@ void Ludotheque(void)
 			case CHOIX_ANNULER_RESERVATION://////////////////////////////////////////////////////////
 				break;
 			case CHOIX_EMPRUNTER:
-				GLOBAL_Emprunter(&liste_Reservation, &nb_Reservation, &liste_Emprunt, &nb_Emprunt, &tabJeu, &tAdherant, &nbElemAdhearant, &tMaxAdherant);
+				GLOBAL_Emprunter(&liste_Reservation, &nb_Reservation, &liste_Emprunt, &nb_Emprunt, &tabJeu, &tAdherant, &nbElemAdhearant, &tMaxAdherant, dateDuJour);
 				break;
 			case CHOIX_RETOUR_JEU://////////////////////////////////////////////////////////
 				break;
@@ -78,7 +83,7 @@ void Ludotheque(void)
 				ajouterJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_NOUV_ADHERANT:
-				GLOBAL_NouvelAdherant(&tAdherant, &nbElemAdhearant, &tMaxAdherant, NULL);
+				GLOBAL_NouvelAdherant(&tAdherant, &nbElemAdhearant, &tMaxAdherant, NULL, dateDuJour);
 				break;
 			case CHOIX_RENOUV_ADHERANT:
 				GLOBAL_RenouvellerAdherant(tAdherant, nbElemAdhearant);
@@ -109,7 +114,7 @@ void Ludotheque(void)
 			default:
 				printf("Instruction Invalide\n");
 				break;
-			
+
 		}
 	}
 
@@ -122,10 +127,10 @@ void Ludotheque(void)
 }
 
 
-Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant)
+Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
 {
 	EmpruntReservation er;
-	
+
 	ListeER** liste;
 	unsigned int** nb_elem;
 
@@ -133,15 +138,14 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	unsigned int rangAdherant;
 	unsigned int rangJeu;
 
-
-  	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
-  	fflush(stdout);
-	er.date = lireDate(stdin);
+	er.date.jour = dateDuJour.jour;
+	er.date.mois = dateDuJour.mois;
+	er.date.annee = dateDuJour.annee;
 
 
 	if(UTILE_Choix_O_N("Est-ce un nouvel adherant"))
 	{
-		if(!GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, tMaxAdherant, &rangAdherant))
+		if(!GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, tMaxAdherant, &rangAdherant, dateDuJour))
 		{
 			printf("Reservation avortée\n");
 			return FALSE;
@@ -203,7 +207,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   		nb_elem = &nb_Emprunt;
 
 
-  		tabJeu->jeux[rangJeu]->nbExemplaireDispo -= 1; 
+  		tabJeu->jeux[rangJeu]->nbExemplaireDispo -= 1;
   	}
   	else
   	{
@@ -227,12 +231,12 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 }
 
 
-Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant)
+Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
 {
 	Adherant adherantTmp;
 	Bool trouve;
 
-	adherantTmp = nouvAdherant((*tAdherant)[*nbElemAdhearant-1].id+1);
+	adherantTmp = nouvAdherant(rechercherIDAdherantLibre(*tAdherant, *nbElemAdhearant), dateDuJour);
 	*nbElemAdhearant = insererAdherant(tAdherant, *nbElemAdhearant, tMaxAdherant, &adherantTmp);
 	if(*nbElemAdhearant >= 0)
 	{
@@ -257,11 +261,11 @@ Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdheara
 	Bool trouveAdherant;
 
 
-	printf("Saisir l'ID d'un adherant\n>>>"); 
+	printf("Saisir l'ID d'un adherant\n>>>");
 	fflush(stdout);
 	scanf("%u%*c", &idAdherantTmp);
 	indexAdherant = rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherantTmp, &trouveAdherant);
-	printf("Montant remis\n>>>"); 
+	printf("Montant remis\n>>>");
 	fflush(stdout);
 	scanf("%f%*c", &montantRemis);
 	if(montantRemis < PRIX_ADHERANT)
@@ -273,7 +277,7 @@ Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdheara
 	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
 	fflush(stdout);
 	dateTmp = lireDate(stdin);
-	
+
 	renouvelerInscription(&(tAdherant[indexAdherant]), &dateTmp);
 
 	return TRUE;
@@ -296,7 +300,7 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 	if (isReservation)
 		printf("reservations : ");
 	else
-		printf("emprunts : ");		
+		printf("emprunts : ");
 	scanf("%u", &idJeu);
 
 	rechercherIdJeu(tabJeu, idJeu, &trouve);
@@ -346,4 +350,3 @@ void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
 		liste_Emprunt = liste_Emprunt->suiv;
 	}
 }
-
