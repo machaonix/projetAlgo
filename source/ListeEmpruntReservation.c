@@ -158,10 +158,10 @@ Arguments :
 unsigned int rechercherIdLibre(ListeER liste)
 {
   unsigned int x=0;
-  while(liste != NULL)
+  while(liste->empRes.id==x)
   {
     x+=1;
-    if(liste->empRes.id!=x)
+    if(liste->suiv==NULL)
       break;
     liste=liste->suiv;
   }
