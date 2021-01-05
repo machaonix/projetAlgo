@@ -165,7 +165,7 @@ unsigned int rechercherIdLibre(ListeER liste)
       break;
     liste=liste->suiv;
   }
-  return x;
+  return x+1;
 }
 
 

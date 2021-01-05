@@ -4,7 +4,6 @@
 void afficheMenu(void)
 {	
 	printf("\n\tMenu :\n");
-	printf("%d)\tReserver un jeu\n", CHOIX_RESERVER);
 	printf("%d)\tAnnuler une reservation\n", CHOIX_ANNULER_RESERVATION);
 	printf("%d)\tEmprunter un jeu\n", CHOIX_EMPRUNTER);
 	printf("%d)\tRetour jeu\n", CHOIX_RETOUR_JEU);
@@ -25,7 +24,7 @@ void Ludotheque(void)
 {
 	TableauJeu tabJeu;
 	Adherant *tAdherant;
-	unsigned int tMaxAdherant = 5;
+	unsigned int tMaxAdherant = 2;
 	int nbElemAdhearant;
 	ListeER liste_Emprunt=listeER_Vide(),liste_Reservation=listeER_Vide();
 	unsigned int nb_Emprunt,nb_Reservation;
@@ -50,6 +49,7 @@ void Ludotheque(void)
   	liste_Reservation=chargerListeEmpruntReservation("donnee/reservations.don",&nb_Reservation);
 	fprintf(stderr, "\n1 reservations ok\n");fflush(stderr);
 	
+	UTILE_InitNbJeuDispo(liste_Emprunt,&tabJeu);
 	fprintf(stderr, "\n2\n");fflush(stderr);
 	//Menu
 	while(lance)
@@ -61,12 +61,10 @@ void Ludotheque(void)
 
 		switch(reponceDuMenu)
 		{
-			case CHOIX_RESERVER:
-				GLOBAL_Reserver(&liste_Reservation, &nb_Reservation, &tabJeu, tAdherant, &nbElemAdhearant, &tMaxAdherant);
-				break;
 			case CHOIX_ANNULER_RESERVATION://////////////////////////////////////////////////////////
 				break;
-			case CHOIX_EMPRUNTER://////////////////////////////////////////////////////////
+			case CHOIX_EMPRUNTER:
+				GLOBAL_Emprunter(&liste_Reservation, &nb_Reservation, &liste_Emprunt, &nb_Emprunt, &tabJeu, &tAdherant, &nbElemAdhearant, &tMaxAdherant);
 				break;
 			case CHOIX_RETOUR_JEU://////////////////////////////////////////////////////////
 				break;
@@ -80,7 +78,7 @@ void Ludotheque(void)
 				ajouterJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_NOUV_ADHERANT:
-				GLOBAL_NouvelAdherant(tAdherant, &nbElemAdhearant, &tMaxAdherant);
+				GLOBAL_NouvelAdherant(&tAdherant, &nbElemAdhearant, &tMaxAdherant, NULL);
 				break;
 			case CHOIX_RENOUV_ADHERANT:
 				GLOBAL_RenouvellerAdherant(tAdherant, nbElemAdhearant);
@@ -124,53 +122,73 @@ void Ludotheque(void)
 }
 
 
-Bool GLOBAL_Reserver(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, TableauJeu* tabJeu, Adherant tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant)
+Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant)
 {
-	Reservation reservation;
+	EmpruntReservation er;
+	
+	ListeER** liste;
+	unsigned int** nb_elem;
+
 	Bool trouve;
 	unsigned int rangAdherant;
+	unsigned int rangJeu;
 
-
-
-	printf("Quel est l'identifiant de l'adherant: ");
-	fflush(stdout);
-  	scanf("%u%*c",&(reservation.idEmprunter));
-
-  	rangAdherant = rechercherUnAdherant(tAdherant, *nbElemAdhearant, reservation.idEmprunter, &trouve);
-  	if (trouve == FALSE)
-  	{
-  		if(UTILE_Choix_O_N("Identifiant d'adherant non attribué, souhaitez vous créer un nouvel adherant"))
-  		{
-  			if(!GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, tMaxAdherant))
-  			{
-  				printf("Reservation avortée\n");
-  				return FALSE;
-  			}
-  		}
-  	}
 
   	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
   	fflush(stdout);
-	reservation.date = lireDate(stdin);
+	er.date = lireDate(stdin);
 
-  	if (checkInscriptionValide(&(tAdherant[rangAdherant]), &reservation.date) == FALSE)
-  	{
-  		if(UTILE_Choix_O_N("Cet adherant n'a plus une insciption valide, voulez vous renouveller son abonement"))
-  		{
-  			if(!GLOBAL_RenouvellerAdherant(tAdherant, *nbElemAdhearant))
-  			{
-  				printf("Reservation avortée\n");
-  				return FALSE;
-  			}
-  		}
-  	}
+
+	if(UTILE_Choix_O_N("Est-ce un nouvel adherant"))
+	{
+		if(!GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, tMaxAdherant, &rangAdherant))
+		{
+			printf("Reservation avortée\n");
+			return FALSE;
+		}
+		er.idEmprunter = (*tAdherant)[rangAdherant].id;
+	}
+	else
+	{
+		printf("Quel est l'identifiant de l'adherant: ");
+		fflush(stdout);
+	  	scanf("%u%*c",&(er.idEmprunter));
+
+	  	rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idEmprunter, &trouve);
+	  	if (trouve == FALSE)
+	  	{
+	  		printf("Veuillez donner un id valable : ");
+	  		fflush(stdout);
+	  		scanf("%u%*c",&(er.idEmprunter));
+
+	  		rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idEmprunter, &trouve);
+	  	}
+
+	  	if (checkInscriptionValide(&((*tAdherant)[rangAdherant]), &er.date) == FALSE)
+	  	{
+	  		if(UTILE_Choix_O_N("Cet adherant n'a plus une insciption valide, voulez vous renouveller son abonement"))
+	  		{
+	  			if(!GLOBAL_RenouvellerAdherant(*tAdherant, *nbElemAdhearant))
+	  			{
+	  				printf("Reservation avortée\n");
+	  				return FALSE;
+	  			}
+	  		}
+	  		else
+	  		{
+	  			printf("Reservation avortée\n");
+	  			return FALSE;
+	  		}
+	  	}
+	}
+	//id adherant valable
 
 
 	printf("Quel est l'identifiant du jeu à reserver: ");
 	fflush(stdout);
-  	scanf("%u%*c",&(reservation.idJeu));
+  	scanf("%u%*c",&(er.idJeu));
 
-	rechercherIdJeu(tabJeu, reservation.idJeu, &trouve);
+	rangJeu = rechercherIdJeu(tabJeu, er.idJeu, &trouve);
   	if (trouve == FALSE)
   	{
   		printf("Cette identifiant de jeu n'est pas attribué\n");
@@ -178,22 +196,49 @@ Bool GLOBAL_Reserver(ListeReservation* liste_Reservation, unsigned int* nb_Reser
   		return FALSE;
   	}
 
-  	reservation.id = rechercherIdLibre(*liste_Reservation);
 
-	*liste_Reservation = insererEmpruntReservation(*liste_Reservation, nb_Reservation, reservation);
+  	if (jeuDisponible(tabJeu, er.id))
+  	{
+  		liste = &liste_Emprunt;
+  		nb_elem = &nb_Emprunt;
+
+
+  		tabJeu->jeux[rangJeu]->nbExemplaireDispo -= 1; 
+  	}
+  	else
+  	{
+  		if(UTILE_Choix_O_N("Jeu indisponible, voulez vous reserver"))
+  		{
+	  		liste = &liste_Reservation;
+	  		nb_elem = &nb_Reservation;
+  		}
+  		else
+  		{
+	  		printf("Reservation avortée\n");
+	  		return FALSE;
+  		}
+  	}
+
+	er.id = rechercherIdLibre(**liste);
+
+	**liste = insererEmpruntReservation(**liste, *nb_elem, er);
 
 	return TRUE;
 }
 
 
-Bool GLOBAL_NouvelAdherant(Adherant tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant)
+Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant)
 {
 	Adherant adherantTmp;
+	Bool trouve;
 
-	adherantTmp = nouvAdherant(tAdherant[*nbElemAdhearant-1].id+1);
-	*nbElemAdhearant = insererAdherant(&tAdherant, *nbElemAdhearant, tMaxAdherant, &adherantTmp);
+	adherantTmp = nouvAdherant((*tAdherant)[*nbElemAdhearant-1].id+1);
+	*nbElemAdhearant = insererAdherant(tAdherant, *nbElemAdhearant, tMaxAdherant, &adherantTmp);
 	if(*nbElemAdhearant >= 0)
 	{
+		if (rangNouvAdherant != NULL)
+			*rangNouvAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, adherantTmp.id, &trouve);
+
 		printf("Nouvel adherant enregistrer avec succès\n");
 		return TRUE;
 	}
@@ -201,7 +246,7 @@ Bool GLOBAL_NouvelAdherant(Adherant tAdherant[], int* nbElemAdhearant, unsigned 
 	{
 		printf("Une erreur a eu lieux lors de l'enregistrement : %d\n", *nbElemAdhearant);
 		return FALSE;
-	}	
+	}
 }
 
 Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
@@ -281,5 +326,24 @@ Bool UTILE_Choix_O_N(char message[])
 	if (choix == 'O')
 		return TRUE;
 	return FALSE;
+}
+
+
+void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
+{
+	unsigned int rangJeu;
+	Bool trouve;
+
+	while (liste_Emprunt != NULL)
+	{
+		rangJeu = rechercherIdJeu(tabJeu, liste_Emprunt->empRes.idJeu, &trouve);
+		if (trouve == FALSE)
+		{
+			fprintf(stderr, "Erreur : un id d'empunts ne correspond pas aux id des jeux\n");
+			exit(1);
+		}
+		tabJeu->jeux[rangJeu]->nbExemplaireDispo--;
+		liste_Emprunt = liste_Emprunt->suiv;
+	}
 }
 
