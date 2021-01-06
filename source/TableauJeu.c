@@ -33,7 +33,7 @@ void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 	unsigned int i;
 	if (flux == stdout)
 		printf("\nId\tType\tNombre\tDispo\tNom\n");
-	
+
 	for (i = 0; i<tabJeu->nbElement; ++i)
 	{
 		afficheJeu(tabJeu->jeux[i], flux);
@@ -43,14 +43,14 @@ void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 
 /*
 		chargerTabJeu
-Description : 
+Description :
 	Charge dans le tableau de jeux les jeux présents dans le fichier dont le nom est passé en argument
 
 Valeur de retour :
 	Si erreur -> le code erreur correspondant
 	Sinon -> ERR_NO_ERR
 
-Arguments : 
+Arguments :
 	TableauJeu* tabJeu -> Le tableau dans lequel charger le fichier
 	char nomFichier[] -> Le chemin du fichier à charger
 */
@@ -61,7 +61,7 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 
 	if (tabJeu->nbElement != 0)
 		libererTabJeu(tabJeu);
-	
+
 
 	tabJeu->triSur = TRI_NON_TRIE;
 
@@ -83,7 +83,7 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 			return ERR_OUT_OF_RANGE;
 		}
 
-		if (jeu == NULL) 
+		if (jeu == NULL)
 		{
 			fclose(flux);
 			return ERR_ALLOCATION;
@@ -91,7 +91,7 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 
 		tabJeu->jeux[tabJeu->nbElement] = jeu;
 		tabJeu->nbElement++;
-		
+
 		jeu = lireJeu(flux);
 	}
 
@@ -102,7 +102,7 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 
 /*
 		sauvegarderTabJeu
-Description : 
+Description :
 	Sauvegarde le tableau de jeu dans un fichier
 
 Valeur de retour :
@@ -164,11 +164,17 @@ Arguments :
 */
 Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
 {
-	Bool trouve;
+	Bool trouve = TRUE;
 	unsigned int rang = rechercherIdJeu(tabJeu, id, &trouve);
-	if (trouve)
+
+	printf("id dans jeu dispo %d\n", id);
+	printf("trouve : %d\n", trouve);
+	if (trouve == TRUE)
+	{
 		if (tabJeu->jeux[rang]->nbExemplaireDispo>0)
 			return TRUE;
+	}
+
 	return FALSE;
 }
 
@@ -190,17 +196,14 @@ unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouv
 	int rang;
 	if (tabJeu->triSur != TRI_ID)
 	{
-		rang = _rechercherIdJeu_TabNonTrie(tabJeu, idJeu);
-		if (rang == ERR_NOT_FOUND)
-		{
-			*trouve = FALSE;
-			return tabJeu->nbElement;
-		}
-		*trouve = TRUE;
+		rang = _rechercherIdJeu_TabNonTrie(tabJeu, idJeu, trouve);
+		printf("trouve re non tri : %d\n", *trouve );
 		return rang;
-	}	
+	}
 
-	return _rechercherIdJeu_TabTriId(tabJeu, idJeu, trouve);
+	rang =_rechercherIdJeu_TabTriId(tabJeu, idJeu, trouve);
+	printf("trouve re : %d\n", *trouve );
+	return rang;
 }
 
 /*
@@ -217,13 +220,18 @@ Arguments :
 	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
 	unsigned int idJeu -> L'identifiant à rechercher
 */
-int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu)
+unsigned int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
 {
 	unsigned int i;
 	for (i = 0; i < tabJeu->nbElement; ++i)
 		if (tabJeu->jeux[i]->id == idJeu)
+		{
+			*trouve = TRUE;
 			return i;
-	return ERR_NOT_FOUND;
+		}
+
+	*trouve = FALSE;
+	return i;
 }
 
 
@@ -256,10 +264,10 @@ unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, B
 		}
 		else if (tabJeu->jeux[mil]->id > idJeu)
 			sup = mil-1;
-		else 
+		else
 			inf = mil+1;
 		mil = (inf + sup)/2;
-	}  
+	}
 
 	*trouve = FALSE;
 	return inf;
@@ -303,7 +311,7 @@ Description :
 Valeur de retour :
 	Si pas d'erreur -> ERR_NO_ERR
 	Sinon -> Le code erreur correspondant
-	
+
 Arguments :
 	TableauJeu* tabJeu -> Le tableau duquel on veut retirer le jeu
 */
@@ -347,7 +355,7 @@ Arguments :
 CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 {
 	Bool trouve;
-	unsigned int rangInser; 
+	unsigned int rangInser;
 
 	if (tabJeu->nbElement >= TAILLE_MAX_TAB_JEU)
 	{
@@ -424,7 +432,7 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 				break;
 			}
 		}
-	}	
+	}
 }
 
 /*
@@ -467,7 +475,7 @@ Description :
 	Recherche et retourne un identifiant non utilisé
 	Cette fonction considere qu'il existe au moins un identifiant libre
 
-Valeur de retour : 
+Valeur de retour :
 	Retourne un identifiant libre
 
 Arguments :
@@ -482,7 +490,7 @@ unsigned int genIdJeu(TableauJeu* tabJeu)
 	{
 		return tabJeu->nbElement;
 	}
-	
+
 	//si il existe un jeu avec l'identifiant egal au nombre d'elements, un des identifiants inferieur est libre
 	rechercherIdJeu(tabJeu, i, &trouve);
 
@@ -628,7 +636,7 @@ void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsign
 {
 	unsigned int nS1 = 0, nS2 = 0, nD = 0;
 	int cmp;
-	
+
 	while (nS1 < nbElem1 && nS2 < nbElem2)
 	{
 		cmp = jeuCmp(tSource1[nS1], tSource2[nS2], triSur);
@@ -652,7 +660,7 @@ void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsign
 		++nD;
 		++nS1;
 	}
-	
+
 	while (nS2 < nbElem2)
 	{
 		tDest[nD] = tSource2[nS2];
