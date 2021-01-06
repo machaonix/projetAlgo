@@ -307,7 +307,7 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
 
 
 /*
-    rechercherERListe
+    rechercherERListe_AdJeu
 Description :
   Recherche un élément dans la liste selon idAdherant et idJeu et retourne l'id de l'élément.
 
@@ -317,7 +317,7 @@ Arguments :
   unsigned int idJeu -> identifiant du jeu contenu dans l'élément à rechercher.
   Bool* trouve -> pointeur vers une variable pour indiquer si l'élément a été trouvé ou non.
 */
-unsigned int rechercherListeER(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve)
+unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve)
 {
   while(liste!=NULL)
   {
@@ -330,4 +330,30 @@ unsigned int rechercherListeER(ListeER liste, unsigned int idAdherant, unsigned 
   }
   *trouve=FALSE;
   return 0;
+}
+
+
+/*
+    rechercherERListe_Jeu
+Description :
+  Recherche un élément dans la liste selon idJeu et retourne l'id de l'élément.
+
+Arguments :
+  ListeER liste -> liste dans laquel on cherche l'élément.
+  unsigned int idJeu -> identifiant du jeu contenu dans l'élément à rechercher.
+  Bool* trouve -> pointeur vers une variable pour indiquer si l'élément a été trouvé ou non.
+*/
+unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve)
+{
+    while(liste!=NULL)
+    {
+      if(liste->empRes.idJeu == idJeu)
+      {
+        *trouve=TRUE;
+        return liste->empRes.id;
+      }
+      liste = liste->suiv;
+    }
+    *trouve=FALSE;
+    return 0;
 }

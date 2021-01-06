@@ -132,7 +132,10 @@ void Ludotheque(void)
 
 }
 
-Bool GLOBAL_ModifierSupprimerJeu(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu tabJeu)
+Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation liste_Reservation, unsigned int nb_Reservation, ListeEmprunt liste_Emprunt, unsigned int nb_Emprunt)
+{
+
+}
 
 
 Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
@@ -157,7 +160,7 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 		return FALSE;
 	}
 
-	idReservation = rechercherListeER(*lr, idAdherant, idJeu, &trouve);
+	idReservation = rechercherListeER_AdJeu(*lr, idAdherant, idJeu, &trouve);
 	if(!trouve)
 	{
 		fprintf(stderr, "L'adherant %d n'as pas réservé le jeu %d\n", idAdherant, idJeu);
@@ -267,7 +270,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   	}
 
 	//rechercher un emprunt avec l'id de l'adherant et et celui du jeu
-	rechercherListeER(*liste_Emprunt,  er.idAdherant, er.idJeu, &trouve);
+	rechercherListeER_AdJeu(*liste_Emprunt,  er.idAdherant, er.idJeu, &trouve);
 	if (trouve)
 	{
 		printf("Cette adherant à déjà un emprunt en cours pour ce jeu\n");
@@ -276,7 +279,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	}
 
 	//rechercher une reseration avec l'id de l'adherant et et celui du jeu
-	rechercherListeER(*liste_Reservation,  er.idAdherant, er.idJeu, &trouve);
+	rechercherListeER_AdJeu(*liste_Reservation,  er.idAdherant, er.idJeu, &trouve);
 	if (trouve)
 	{
 		printf("Cette adherant à déjà reserver en cours pour ce jeu\n");
