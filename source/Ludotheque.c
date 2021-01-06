@@ -53,7 +53,7 @@ void Ludotheque(void)
 	UTILE_InitNbJeuDispo(liste_Emprunt,&tabJeu);
 	fprintf(stderr, "\n2\n");fflush(stderr);
 
-	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
+	printf("Saisir la date du jour (JJ/MM/YYYY):");
 	fflush(stdout);
 	dateDuJour = lireDate(stdin);
 	//Menu
@@ -156,14 +156,14 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 		fflush(stdout);
 	  	scanf("%u%*c",&(er.idAdherant));
 
-	  	rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idEmprunter, &trouve);
+	  	rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idAdherant, &trouve);
 	  	if (trouve == FALSE)
 	  	{
 	  		printf("Veuillez donner un id valable : ");
 	  		fflush(stdout);
-	  		scanf("%u%*c",&(er.idEmprunter));
+	  		scanf("%u%*c",&(er.idAdherant));
 
-	  		rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idEmprunter, &trouve);
+	  		rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idAdherant, &trouve);
 	  	}
 
 	  	if (checkInscriptionValide(&((*tAdherant)[rangAdherant]), &er.date) == FALSE)
@@ -218,6 +218,8 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	  		return FALSE;
   		}
   	}
+
+	if ()
 
 	er.id = rechercherIdLibre(**liste);
 
