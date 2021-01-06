@@ -306,12 +306,27 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
 }
 
 
-Bool reservationExiste(ListeER liste, unsigned int idAdherant, unsigned int idJeu)
+/*
+    rechercherERListe
+Description :
+  Recherche un élément dans la liste selon idAdherant et idJeu et retourne l'id de l'élément.
+
+Arguments :
+  ListeER liste -> liste dans laquel on cherche l'élément.
+  unsigned int idAdherant -> identifiant de l'adherant contenu dans l'élément à rechercher.
+  unsigned int idJeu -> identifiant du jeu contenu dans l'élément à rechercher.
+  Bool* trouve -> pointeur vers une variable pour indiquer si l'élément a été trouvé ou non.
+*/
+unsigned int rechercherERListe(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve)
 {
   while(liste!=NULL)
   {
-    if(liste->empRes.id==idAdherant && liste->empRes.idJeu)
-      return TRUE;
+    if(liste->empRes.idAdherant==idAdherant && liste->empRes.idJeu)
+    {
+      *trouve=TRUE;
+      return id;
+    }
   }
-  return FALSE;
+  *trouve=FALSE
+  return NULL;
 }
