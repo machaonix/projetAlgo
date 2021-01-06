@@ -189,6 +189,7 @@ Arguments :
 	unsigned int idJeu -> L'identifiant recherché
 	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
 */
+
 unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
 {
 	int rang;

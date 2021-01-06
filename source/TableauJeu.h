@@ -7,7 +7,7 @@
 #include "CodeErreur.h"
 #include "Bool.h"
 
-#define TAILLE_MAX_TAB_JEU 32
+#define TAILLE_MAX_TAB_JEU 100
 
 typedef struct
 {
