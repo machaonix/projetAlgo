@@ -306,7 +306,12 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
 }
 
 
-Bool reservationExiste(ListeER liste, unsigned int id, unsigned int idJeu)
+Bool reservationExiste(ListeER liste, unsigned int idAdherant, unsigned int idJeu)
 {
-  return TRUE;
+  while(liste!=NULL)
+  {
+    if(liste->empRes.id==idAdherant && liste->empRes.idJeu)
+      return TRUE;
+  }
+  return FALSE;
 }
