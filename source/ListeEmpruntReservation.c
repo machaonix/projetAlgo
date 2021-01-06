@@ -45,7 +45,7 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
   if(flux==stdout)
   {
-      printf("Id\tIdJeu\tIdEmprunter\tDate\n");
+      printf("Id\tIdJeu\tIdAdherant\tDate\n");
   } else
   {
     fprintf(flux,"%d\n",nb);
@@ -69,7 +69,7 @@ Arguments :
 */
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
-  printf("Id\tIdJeu\tIdEmprunter\tDate\n");
+  printf("Id\tIdJeu\tIdAdherant\tDate\n");
 
   while(liste!=NULL)
   {
@@ -106,7 +106,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   {
     liste=(ListeER)malloc(sizeof(Element));
     origin=liste;
-    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherant));
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
@@ -114,7 +114,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   {
     liste->suiv=(ListeER)malloc(sizeof(Element));
     liste=liste->suiv;
-    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherant));
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
@@ -298,4 +298,10 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
   }
   afficherListeEmpruntReservation(liste,flux,nb);
   return ERR_NO_ERR;
+}
+
+
+Bool reservationExiste(ListeER liste, unsigned int id, unsigned int idJeu)
+{
+  return TRUE;
 }
