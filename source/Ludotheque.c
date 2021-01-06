@@ -188,7 +188,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	//id adherant valable
 
 
-	printf("Quel est l'identifiant du jeu à reserver: ");
+	printf("Quel est l'identifiant du jeu à empunter: ");
 	fflush(stdout);
   	scanf("%u%*c",&(er.idJeu));
 
@@ -221,11 +221,13 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   		}
   	}
 
-
+	printf("1\n");fflush(stdout);
 	er.id = rechercherIdLibre(**liste);
 
+	printf("1\n");fflush(stdout);
 	**liste = insererEmpruntReservation(**liste, *nb_elem, er);
 
+	printf("1\n");fflush(stdout);
 	return TRUE;
 }
 

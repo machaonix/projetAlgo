@@ -18,7 +18,4 @@ EmpruntReservation lireEmpruntReservation(FILE* flux);
 void afficherEmpruntReservation(EmpruntReservation *Empruntreservation, FILE* flux);
 // *EmpruntReservation -> pointeur sur une structure pour que ça soit moins lourd
 
-//interactif
-EmpruntReservation nouvEmpruntReservation(unsigned int id);
-
 #endif //HG_EmpruntReservation_H

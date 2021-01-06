@@ -122,31 +122,6 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   return origin;
 }
 
-
-/*
-    rechercherListeEmpruntReservation
-Description :
-  Rechercher un emprunt ou une reservation dans une liste donnée.
-
-Arguments :
-  ListeER liste -> liste dans laquelle effectuer la recherche.
-  unsigned int id -> id de l'élément qu'on recherche.
-*/
-Element* rechercherListeEmpruntReservation(ListeER liste, unsigned int id) //retourne l'adresse d'un emprunt ou d'une reservation données par id
-{
-  while(liste!=NULL && liste->empRes.id<=id)
-  {
-    if(liste->empRes.id==id)
-    {
-      return liste;
-    }
-    liste=liste->suiv;
-  }
-    fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
-    return NULL;
-}
-
-
 /*
     rechercherIdLibre
 Description :
@@ -158,14 +133,14 @@ Arguments :
 unsigned int rechercherIdLibre(ListeER liste)
 {
   unsigned int x=0;
-  while(liste->suiv!=NULL)
+  while(liste!=NULL)
   {
     if(liste->empRes.id!=x)
       break;
     x+=1;
     liste=liste->suiv;
   }
-  return x+1;
+  return x;
 }
 
 
