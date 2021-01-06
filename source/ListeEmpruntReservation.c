@@ -317,16 +317,17 @@ Arguments :
   unsigned int idJeu -> identifiant du jeu contenu dans l'élément à rechercher.
   Bool* trouve -> pointeur vers une variable pour indiquer si l'élément a été trouvé ou non.
 */
-unsigned int rechercherERListe(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve)
+unsigned int rechercherListeER(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve)
 {
   while(liste!=NULL)
   {
-    if(liste->empRes.idAdherant==idAdherant && liste->empRes.idJeu)
+    if(liste->empRes.idAdherant==idAdherant && liste->empRes.idJeu == idJeu)
     {
       *trouve=TRUE;
-      return id;
+      return liste->empRes.id;
     }
+    liste = liste->suiv;
   }
-  *trouve=FALSE
-  return NULL;
+  *trouve=FALSE;
+  return 0;
 }

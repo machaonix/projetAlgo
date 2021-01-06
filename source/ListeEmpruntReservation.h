@@ -33,6 +33,6 @@ ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne N
 
 CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
 
-unsigned int rechercherERListe(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
+unsigned int rechercherListeER(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
 
 #endif //HG_LISTEEMPRUNTRESERVATION_H
