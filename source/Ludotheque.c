@@ -138,9 +138,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	unsigned int rangAdherant;
 	unsigned int rangJeu;
 
-	er.date.jour = dateDuJour.jour;
-	er.date.mois = dateDuJour.mois;
-	er.date.annee = dateDuJour.annee;
+	er.date = dateDuJour;
 
 
 	if(UTILE_Choix_O_N("Est-ce un nouvel adherant"))
@@ -150,13 +148,13 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 			printf("Reservation avortée\n");
 			return FALSE;
 		}
-		er.idEmprunter = (*tAdherant)[rangAdherant].id;
+		er.idAdherant = (*tAdherant)[rangAdherant].id;
 	}
 	else
 	{
 		printf("Quel est l'identifiant de l'adherant: ");
 		fflush(stdout);
-	  	scanf("%u%*c",&(er.idEmprunter));
+	  	scanf("%u%*c",&(er.idAdherant));
 
 	  	rangAdherant = rechercherUnAdherant(*tAdherant, *nbElemAdhearant, er.idEmprunter, &trouve);
 	  	if (trouve == FALSE)
@@ -221,13 +219,10 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   		}
   	}
 
-	printf("1\n");fflush(stdout);
 	er.id = rechercherIdLibre(**liste);
 
-	printf("1\n");fflush(stdout);
 	**liste = insererEmpruntReservation(**liste, *nb_elem, er);
 
-	printf("1\n");fflush(stdout);
 	return TRUE;
 }
 
@@ -343,6 +338,8 @@ void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
 
 	for (unsigned int i = 0; i < tabJeu->nbElement; i++)
 		tabJeu->jeux[i]->nbExemplaireDispo = tabJeu->jeux[i]->nbExemplaireTotal;
+
+	triTabJeu(tabJeu, TRI_ID);
 
 	while (liste_Emprunt != NULL)
 	{
