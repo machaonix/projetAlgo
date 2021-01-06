@@ -33,4 +33,6 @@ ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne N
 
 CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
 
+Bool reservationExiste(ListeER liste, unsigned int id, unsigned int idJeu);
+
 #endif //HG_LISTEEMPRUNTRESERVATION_H
