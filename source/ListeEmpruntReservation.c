@@ -224,13 +224,17 @@ Arguments :
   unsigned int id -> identifiant de l'emprunt ou de la reservation à supprimer.
   int *nb -> pointeur sur le nombre d'élément dans la liste.
 */
-ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb, CodeErreur* cErr)
 {
   ListeER origin=listeER_Vide();
   origin=liste;
+
+  cErr = ERR_NO_ERR;
+
   if(origin==NULL)
   {
     fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+    *cErr = ERR_NOT_FOUND;
     return origin;
   }
   if(liste->empRes.id==id)
@@ -255,6 +259,7 @@ ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
     *nb-=1;
   }
   fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+  *cErr = ERR_NOT_FOUND;
   return origin;
 }
 

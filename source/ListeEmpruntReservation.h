@@ -26,7 +26,7 @@ ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReserv
 //Il faut vérifier si on peux bien emprunter le jeu;
 ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
 
-ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb);
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb, CodeErreur* cErr);
 ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne NULL;
