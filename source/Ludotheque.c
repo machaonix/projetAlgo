@@ -175,6 +175,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	unsigned int rangAdherant;
 	unsigned int rangJeu;
 
+
 	er.date = dateDuJour;
 
 
@@ -256,7 +257,23 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   		}
   	}
 
-	if ()
+	//rechercher un emprunt avec l'id de l'adherant et et celui du jeu
+	rechercherListeER(*liste_Emprunt,  er.idAdherant, er.idJeu, &trouve);
+	if (trouve)
+	{
+		printf("Cette adherant à déjà un emprunt en cours pour ce jeu\n");
+	  	printf("Reservation avortée\n");
+	  	return FALSE;
+	}
+
+	//rechercher une reseration avec l'id de l'adherant et et celui du jeu
+	rechercherListeER(*liste_Reservation,  er.idAdherant, er.idJeu, &trouve);
+	if (trouve)
+	{
+		printf("Cette adherant à déjà reserver en cours pour ce jeu\n");
+		printf("Reservation avortée\n");
+		return FALSE;
+	}
 
 	er.id = rechercherIdLibre(**liste);
 
