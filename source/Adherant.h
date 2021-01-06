@@ -7,7 +7,7 @@
 #include "Date.h"
 #include "CodeErreur.h"
 
-#define PRIX_ADHERANT 15
+#define PRIX_ADHERANT 15.00
 
 typedef enum {HOMME, FEMME, INCONU} Civilite;
 
@@ -52,7 +52,7 @@ nouvAdherant():
 		Créer un nouvel Adherant
 
 */
-Adherant nouvAdherant(unsigned int id);
+Adherant nouvAdherant(unsigned int id, Date dateDuJour);
 
 
 //fonction sur tableau
@@ -192,4 +192,6 @@ copieTabAdherant():
 */
 CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
+
+unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem);
 #endif //HG_ADHERANT_H

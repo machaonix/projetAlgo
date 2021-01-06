@@ -62,12 +62,12 @@ void afficheAdherant(Adherant ad, FILE* flux, Bool entete)
 void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete)
 {
 	if(entete)
-		printf("ID  CIVILITÉE\tNOM\tPRENOM\tDate\n");
+		printf("ID  CIVILITÉE\tNOM\tPRENOM\tDATEINSCRIPTION\n");
 	for(unsigned int i=0; i<nbElem; ++i)
 		afficheAdherant(tAdherant[i], flux, FALSE);
 }
 
-Adherant nouvAdherant(unsigned int id)
+Adherant nouvAdherant(unsigned int id, Date dateDuJour)
 {
 	Adherant tmp;
 	char* espace = NULL;
@@ -119,9 +119,9 @@ Adherant nouvAdherant(unsigned int id)
 
 
 	//Traitement de la date d'inscription
-	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
-	fflush(stdout);
-	tmp.dateInscri = lireDate(stdin);
+	tmp.dateInscri.jour = dateDuJour.jour;
+	tmp.dateInscri.mois = dateDuJour.mois;
+	tmp.dateInscri.annee = dateDuJour.annee;
 
 
 	return tmp;
@@ -225,7 +225,7 @@ int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFic
 	return nbElem;
 }
 
-Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour) 
+Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour)
 {
 	return dateCmp(*dateDuJour, ad->dateInscri) < 365;
 }
@@ -265,4 +265,13 @@ CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adheran
 	for(unsigned int i=0; i<nbElem1; ++i)
 		tAdherant2[i] = tAdherant1[i];
 	return ERR_NO_ERR;
+}
+
+unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem)
+{
+	unsigned int i;
+	for(i=0; i<nbElem; ++i)
+		if(tAdherant[i].id-i != 0)
+			return i;
+	return i;
 }
