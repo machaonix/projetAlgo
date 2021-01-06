@@ -224,7 +224,7 @@ Arguments :
   unsigned int id -> identifiant de l'emprunt ou de la reservation à supprimer.
   int *nb -> pointeur sur le nombre d'élément dans la liste.
 */
-ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb, CodeErreur* cErr)
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, unsigned int *nb, CodeErreur* cErr)
 {
   ListeER origin=listeER_Vide();
   origin=liste;

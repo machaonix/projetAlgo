@@ -86,7 +86,7 @@ void Ludotheque(void)
 				ajouterJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_MODIFIER_SUPPRIMER_JEU:
-				GLOBAL_ModifierSupprimerJeu(&tabJeu, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
+				GLOBAL_ModifierSupprimerJeu(&tabJeu, &liste_Reservation, &nb_Reservation, liste_Emprunt);
 				break;
 			case CHOIX_NOUV_ADHERANT:
 				GLOBAL_NouvelAdherant(&tAdherant, &nbElemAdhearant, &tMaxAdherant, NULL, dateDuJour);
@@ -132,9 +132,73 @@ void Ludotheque(void)
 
 }
 
-Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation liste_Reservation, unsigned int nb_Reservation, ListeEmprunt liste_Emprunt, unsigned int nb_Emprunt)
+Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt liste_Emprunt)
 {
+	Bool trouve;
+	unsigned int rangJeu;
+	unsigned int idJeu;
+	unsigned int idER;
+	CodeErreur cErr;
 
+	printf("Quel est l'identifiant du jeu que vous souhaitez modifier ? :");
+	fflush(stdout);
+	scanf("%u%*c", &idJeu);
+
+	rangJeu = rechercherIdJeu(tabJeu, idJeu, &trouve);
+  	if (trouve == FALSE)
+  	{
+  		printf("Cette identifiant de jeu n'est pas attribué\n");
+  		printf("Operation avortée\n");
+  		return FALSE;
+  	}
+
+	idER = rechercherListeER_Jeu(liste_Emprunt, idJeu, &trouve);
+	if (trouve)
+	{
+		printf("Ce jeu est actuellement emprunter: notemment identifiant %u\n", idER);
+  		printf("Operation avortée\n");
+		return FALSE;
+	}
+
+	idER = rechercherListeER_Jeu(*liste_Reservation, idJeu, &trouve);
+	if (trouve)
+	{
+		printf("Ce jeu est actuellement reserver: notemment identifiant %u\n", idER);
+		if (UTILE_Choix_O_N("Souhaiter vous annuler toutes ces reservations"))
+		{
+			while (trouve)
+			{
+				*liste_Reservation = supprimerEmpruntReservation(*liste_Reservation, idER, nb_Reservation, &cErr);
+				if (cErr != ERR_NO_ERR)
+				{
+					fprintf(stderr, "Erreur lors de la suppression des reservations\n");
+					return FALSE;
+				}
+				idER = rechercherListeER_Jeu(*liste_Reservation, idJeu, &trouve);
+			}
+		}
+		else
+		{
+	  		printf("Operation avortée\n");
+			return FALSE;
+		}
+	}
+
+	printf("\n");
+	afficheJeu(tabJeu->jeux[rangJeu], stdout);
+	if (UTILE_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
+	{
+		cErr = retirerJeu(tabJeu, idJeu);
+		if (cErr != ERR_NO_ERR)
+		{
+			fprintf(stderr, "Erreur lors de la suppression du jeu\n");
+			return FALSE;
+		}
+		printf("Jeu supprimé\n");
+		return TRUE;
+	}
+
+	return TRUE;
 }
 
 
@@ -167,7 +231,7 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 		return FALSE;
 	}
 
-	*lr = supprimerEmpruntReservation(*lr, idReservation, (int*) nb_Reservation, &err);
+	*lr = supprimerEmpruntReservation(*lr, idReservation, nb_Reservation, &err);
 	if(err == ERR_NOT_FOUND)
 	{
 		fprintf(stderr, "Une erreur à eu lieu lors de l'annulation de la reservation\n");

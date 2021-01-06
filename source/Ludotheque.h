@@ -24,6 +24,8 @@ void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int n
 
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation);
 
+Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int *nb_Reservation, ListeEmprunt liste_Emprunt);
+
 Bool UTILE_Choix_O_N(char message[]);
 
 void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt,  TableauJeu* tabJeu);
