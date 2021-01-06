@@ -67,6 +67,7 @@ void Ludotheque(void)
 		switch(reponceDuMenu)
 		{
 			case CHOIX_ANNULER_RESERVATION://////////////////////////////////////////////////////////
+				GLOBAL_Anuller_Reservation
 				break;
 			case CHOIX_EMPRUNTER:
 				GLOBAL_Emprunter(&liste_Reservation, &nb_Reservation, &liste_Emprunt, &nb_Emprunt, &tabJeu, &tAdherant, &nbElemAdhearant, &tMaxAdherant, dateDuJour);
@@ -125,7 +126,12 @@ void Ludotheque(void)
 	free(tAdherant);
 
 }
-
+Bool GLOBAL_Anuller_Reservation(ListeReservation lr, unsigned nb_Reservation)
+{
+	unsigned int idReservation;
+	printf("Entrez l'ID de l'emprunt\n>>>"); scanf(&idReservation);
+	supprimerEmpruntReservation(lr, idReservation, &nb_Reservation);
+}
 
 Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
 {
