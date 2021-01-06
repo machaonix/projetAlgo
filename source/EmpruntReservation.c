@@ -32,28 +32,3 @@ void afficherEmpruntReservation(EmpruntReservation *er, FILE* flux)
   afficherDate(er->date,flux);
   fprintf(flux, "\n");
 }
-
-
-/*
-    nouvEmpruntReservation
-Description :
-  Créer un emprunt ou une reservation, en demandant les informations de l'emprunt à l'utilisateur.
-
-Arguments :
-  unsigned int id -> identifiant de l'emprunt ou de la reservation
-*/
-/*EmpruntReservation nouvEmpruntReservation(unsigned int id)
-{
-  EmpruntReservation er;
-  er.id=id;
-  printf("Quel est l'identifiant du jeu emprunté/reservé: ");
-  scanf("%d",&(er.idJeu));
-
-  printf("Quel est l'identifiant du membre: ");
-  scanf("%d",&(er.idEmprunter));
-
-  printf("Quel est la date d'emprunt: ");
-  er.date=lireDate(stdin);
-
-  return er;
-}*/
