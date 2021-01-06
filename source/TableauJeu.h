@@ -9,14 +9,14 @@
 
 #define TAILLE_MAX_TAB_JEU 32
 
-typedef struct 
+typedef struct
 {
 	unsigned int nbElement;
 	TriSur triSur;
 	Jeu* jeux[TAILLE_MAX_TAB_JEU];
 } TableauJeu;
 
-//initialise les variables du tableau 
+//initialise les variables du tableau
 void initTabJeu(TableauJeu* tabJeu);
 
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
@@ -30,10 +30,10 @@ Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id);
 void libererTabJeu(TableauJeu* tabJeu);
 
 //retourne le rang du jeu trouvé ou le rang d'insertion si non trouvé
-//Bool* trouve est assigné a TRUE si trouvé à FALSE sinon 
+//Bool* trouve est assigné a TRUE si trouvé à FALSE sinon
 unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve);
 //les fonctions suivantes sont utilisé en interne par rechercherIdJeu
-int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu);
+unsigned int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve);
 unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve);
 
 
@@ -44,7 +44,7 @@ CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu);
 CodeErreur retirerJeuInteractif(TableauJeu* tabJeu);
 
 //retourne 0 si l'ajout est fait
-//sinon retourne un CodeErreur 
+//sinon retourne un CodeErreur
 CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu);
 CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
 

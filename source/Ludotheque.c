@@ -200,12 +200,10 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   		return FALSE;
   	}
 
-
-  	if (jeuDisponible(tabJeu, er.id))
+  	if (jeuDisponible(tabJeu, er.idJeu) == TRUE)
   	{
   		liste = &liste_Emprunt;
   		nb_elem = &nb_Emprunt;
-
 
   		tabJeu->jeux[rangJeu]->nbExemplaireDispo -= 1;
   	}
@@ -222,6 +220,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	  		return FALSE;
   		}
   	}
+
 
 	er.id = rechercherIdLibre(**liste);
 
@@ -301,6 +300,8 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 		printf("reservations : ");
 	else
 		printf("emprunts : ");
+
+	fflush(stdout);
 	scanf("%u", &idJeu);
 
 	rechercherIdJeu(tabJeu, idJeu, &trouve);
@@ -337,6 +338,9 @@ void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
 {
 	unsigned int rangJeu;
 	Bool trouve;
+
+	for (unsigned int i = 0; i < tabJeu->nbElement; i++)
+		tabJeu->jeux[i]->nbExemplaireDispo = tabJeu->jeux[i]->nbExemplaireTotal;
 
 	while (liste_Emprunt != NULL)
 	{
