@@ -66,8 +66,8 @@ void Ludotheque(void)
 
 		switch(reponceDuMenu)
 		{
-			case CHOIX_ANNULER_RESERVATION://////////////////////////////////////////////////////////
-				 if(GLOBAL_Anuller_Reservation(ListeReservation, nb_Reservation, tAdherant, nbElemAdhearant, tabJeu))
+			case CHOIX_ANNULER_RESERVATION:
+				 if(GLOBAL_Anuller_Reservation(&liste_Reservation, &nb_Reservation, tAdherant, nbElemAdhearant, tabJeu))
 				 	printf("Réservation annulé avec succès\n");
 				break;
 			case CHOIX_EMPRUNTER:
@@ -127,9 +127,9 @@ void Ludotheque(void)
 	free(tAdherant);
 
 }
-Bool GLOBAL_Anuller_Reservation(ListeReservation lr, unsigned nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu tabJeu)
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu tabJeu)
 {
-	unsigned int idAdherant, idJeu;
+	unsigned int idAdherant, idJeu, idReservation;
 	Bool trouve;
 	CodeErreur err;
 
@@ -149,13 +149,14 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation lr, unsigned nb_Reservation, Ad
 		return FALSE;
 	}
 
-	rechercherERListe(lr, idAdherant, idJeu, &trouve);
+	idReservation = rechercherListeER(*lr, idAdherant, idJeu, &trouve);
 	if(!trouve)
 	{
 		fprintf(stderr, "L'adherant %d n'as pas réservé le jeu %d\n", idAdherant, idJeu);
 		return FALSE;
 	}
-	supprimerEmpruntReservation(lr, idReservation, &nb_Reservation, &err);
+
+	*lr = supprimerEmpruntReservation(*lr, idReservation, (int*) nb_Reservation, &err);
 	if(err == ERR_NOT_FOUND)
 	{
 		fprintf(stderr, "Une erreur à eu lieu lors de l'annulation de la reservation\n");
