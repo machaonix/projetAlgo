@@ -68,7 +68,7 @@ void Ludotheque(void)
 		switch(reponceDuMenu)
 		{
 			case CHOIX_ANNULER_RESERVATION:
-				 if(GLOBAL_Anuller_Reservation(&liste_Reservation, &nb_Reservation, tAdherant, nbElemAdhearant, tabJeu))
+				 if(GLOBAL_Anuller_Reservation(&liste_Reservation, &nb_Reservation, tAdherant, nbElemAdhearant, &tabJeu))
 				 	printf("Réservation annulé avec succès\n");
 				break;
 			case CHOIX_EMPRUNTER:
@@ -86,7 +86,7 @@ void Ludotheque(void)
 				ajouterJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_MODIFIER_SUPPRIMER_JEU:
-
+				GLOBAL_ModifierSupprimerJeu(&tabJeu, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				break;
 			case CHOIX_NOUV_ADHERANT:
 				GLOBAL_NouvelAdherant(&tAdherant, &nbElemAdhearant, &tMaxAdherant, NULL, dateDuJour);
@@ -131,7 +131,11 @@ void Ludotheque(void)
 	free(tAdherant);
 
 }
-Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu tabJeu)
+
+Bool GLOBAL_ModifierSupprimerJeu(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu tabJeu)
+
+
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
 {
 	unsigned int idAdherant, idJeu, idReservation;
 	Bool trouve;
@@ -146,7 +150,7 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 	}
 
 	printf("Entrez l'ID du jeu\n>>>"); scanf("%u%*c", &idJeu);
-	rechercherIdJeu(&tabJeu, idJeu, &trouve);
+	rechercherIdJeu(tabJeu, idJeu, &trouve);
 	if(!trouve)
 	{
 		fprintf(stderr, "Ce jeu n'existe pas\n");
