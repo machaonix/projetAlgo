@@ -45,7 +45,7 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
   if(flux==stdout)
   {
-      printf("Id\tIdJeu\tIdEmprunter\tDate\n");
+      printf("Id\tIdJeu\tIdAdherant\tDate\n");
   } else
   {
     fprintf(flux,"%d\n",nb);
@@ -69,7 +69,7 @@ Arguments :
 */
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
-  printf("Id\tIdJeu\tIdEmprunter\tDate\n");
+  printf("Id\tIdJeu\tIdAdherant\tDate\n");
 
   while(liste!=NULL)
   {
@@ -106,7 +106,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   {
     liste=(ListeER)malloc(sizeof(Element));
     origin=liste;
-    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherant));
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
@@ -114,7 +114,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   {
     liste->suiv=(ListeER)malloc(sizeof(Element));
     liste=liste->suiv;
-    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idEmprunter));
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherant));
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
@@ -224,13 +224,17 @@ Arguments :
   unsigned int id -> identifiant de l'emprunt ou de la reservation à supprimer.
   int *nb -> pointeur sur le nombre d'élément dans la liste.
 */
-ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb, CodeErreur* cErr)
 {
   ListeER origin=listeER_Vide();
   origin=liste;
+
+  cErr = ERR_NO_ERR;
+
   if(origin==NULL)
   {
     fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+    *cErr = ERR_NOT_FOUND;
     return origin;
   }
   if(liste->empRes.id==id)
@@ -255,6 +259,7 @@ ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, int *nb)
     *nb-=1;
   }
   fprintf(stderr, "Erreur %d: Emprunt/Reservation non trouvé\n",ERR_NOT_FOUND);
+  *cErr = ERR_NOT_FOUND;
   return origin;
 }
 
@@ -298,4 +303,15 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
   }
   afficherListeEmpruntReservation(liste,flux,nb);
   return ERR_NO_ERR;
+}
+
+
+Bool reservationExiste(ListeER liste, unsigned int idAdherant, unsigned int idJeu)
+{
+  while(liste!=NULL)
+  {
+    if(liste->empRes.id==idAdherant && liste->empRes.idJeu)
+      return TRUE;
+  }
+  return FALSE;
 }

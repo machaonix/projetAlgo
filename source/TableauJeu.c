@@ -167,8 +167,6 @@ Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
 	Bool trouve = TRUE;
 	unsigned int rang = rechercherIdJeu(tabJeu, id, &trouve);
 
-	printf("id dans jeu dispo %d\n", id);
-	printf("trouve : %d\n", trouve);
 	if (trouve == TRUE)
 	{
 		if (tabJeu->jeux[rang]->nbExemplaireDispo>0)
@@ -197,12 +195,10 @@ unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouv
 	if (tabJeu->triSur != TRI_ID)
 	{
 		rang = _rechercherIdJeu_TabNonTrie(tabJeu, idJeu, trouve);
-		printf("trouve re non tri : %d\n", *trouve );
 		return rang;
 	}
 
 	rang =_rechercherIdJeu_TabTriId(tabJeu, idJeu, trouve);
-	printf("trouve re : %d\n", *trouve );
 	return rang;
 }
 
