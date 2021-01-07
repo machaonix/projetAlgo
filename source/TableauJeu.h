@@ -6,6 +6,7 @@
 #include "Jeu.h"
 #include "CodeErreur.h"
 #include "Bool.h"
+#include "ioUtilitaire.h"
 
 #define TAILLE_MAX_TAB_JEU 100
 

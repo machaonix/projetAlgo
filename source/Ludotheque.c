@@ -117,7 +117,7 @@ void Ludotheque(void)
 				GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				break;
 			case CHOIX_QUITTER:
-				if (ioU_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
+				if (IO_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
 					GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				lance = FALSE;
 				break;
