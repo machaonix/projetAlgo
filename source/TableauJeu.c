@@ -253,11 +253,8 @@ unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, B
 	int inf = 0, sup = tabJeu->nbElement-1;
 	unsigned int mil = (inf + sup)/2;
 
-	printf("rechercher tri 1\n"); fflush(stdout);
-
 	while (inf <= sup)
 	{
-		printf("rechercher tri %d %d %d\n", inf, mil, sup); fflush(stdout);
 		if (tabJeu->jeux[mil]->id == idJeu)
 		{
 			*trouve = TRUE;
@@ -399,12 +396,8 @@ Arguments :
 CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 {
 	CodeErreur cErr;
-	printf("Test 1\n");fflush(stdout);
 	Jeu* jeu = nouvJeu(genIdJeu(tabJeu));
-	printf("Test 1\n");fflush(stdout);
 	if (jeu == NULL) return ERR_ALLOCATION;
-	printf("Test 1\n");fflush(stdout);
-
 	afficheJeu(jeu, stdout);
 
 	if (IO_Choix_O_N("\nSouhaitez vous ajouter le jeu ci dessus"))
@@ -475,17 +468,13 @@ unsigned int genIdJeu(TableauJeu* tabJeu)
 		return tabJeu->nbElement;
 	}
 
-	printf("Test genIdJeu\n"); fflush(stdout);
 	//si il existe un jeu avec l'identifiant egal au nombre d'elements, un des identifiants inferieur est libre
 	rechercherIdJeu(tabJeu, i, &trouve);
 
-	printf("Test genIdJeu 2\n"); fflush(stdout);
 	while (trouve == TRUE)
 	{
 		++i;
 		rechercherIdJeu(tabJeu, i, &trouve);
-
-			printf("Test genIdJeu 3 %d\n", i); fflush(stdout);
 	}
 	return i;
 }
