@@ -83,7 +83,11 @@ void Ludotheque(void)
 				triTabJeuInteractif(&tabJeu);
 				break;
 			case CHOIX_AJOUTER_JEU:
-				ajouterJeuInteractif(&tabJeu);
+				cErr = ajouterJeuInteractif(&tabJeu);
+				if (cErr != ERR_NO_ERR)
+				{
+
+				}
 				break;
 			case CHOIX_MODIFIER_SUPPRIMER_JEU:
 				GLOBAL_ModifierSupprimerJeu(&tabJeu, &liste_Reservation, &nb_Reservation, liste_Emprunt);
@@ -113,7 +117,7 @@ void Ludotheque(void)
 				GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				break;
 			case CHOIX_QUITTER:
-				if (UTILE_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
+				if (ioU_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
 					GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
 				lance = FALSE;
 				break;
@@ -164,7 +168,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 	if (trouve)
 	{
 		printf("Ce jeu est actuellement reserver: notemment identifiant %u\n", idER);
-		if (UTILE_Choix_O_N("Souhaiter vous annuler toutes ces reservations"))
+		if (IO_Choix_O_N("Souhaiter vous annuler toutes ces reservations"))
 		{
 			while (trouve)
 			{
@@ -186,7 +190,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 
 	printf("\n");
 	afficheJeu(tabJeu->jeux[rangJeu], stdout);
-	if (UTILE_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
+	if (IO_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
 	{
 		cErr = retirerJeu(tabJeu, idJeu);
 		if (cErr != ERR_NO_ERR)
@@ -255,7 +259,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	er.date = dateDuJour;
 
 
-	if(UTILE_Choix_O_N("Est-ce un nouvel adherant"))
+	if(IO_Choix_O_N("Est-ce un nouvel adherant"))
 	{
 		if(!GLOBAL_NouvelAdherant(tAdherant, nbElemAdhearant, tMaxAdherant, &rangAdherant, dateDuJour))
 		{
@@ -282,7 +286,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 
 	  	if (checkInscriptionValide(&((*tAdherant)[rangAdherant]), &er.date) == FALSE)
 	  	{
-	  		if(UTILE_Choix_O_N("Cet adherant n'a plus une insciption valide, voulez vous renouveller son abonement"))
+	  		if(IO_Choix_O_N("Cet adherant n'a plus une insciption valide, voulez vous renouveller son abonement"))
 	  		{
 	  			if(!GLOBAL_RenouvellerAdherant(*tAdherant, *nbElemAdhearant))
 	  			{
@@ -321,7 +325,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   	}
   	else
   	{
-  		if(UTILE_Choix_O_N("Jeu indisponible, voulez vous reserver"))
+  		if(IO_Choix_O_N("Jeu indisponible, voulez vous reserver"))
   		{
 	  		liste = &liste_Reservation;
 	  		nb_elem = &nb_Reservation;
@@ -442,26 +446,6 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 	}
 	afficherListeERJeu(liste, idJeu);
 }
-
-
-
-Bool UTILE_Choix_O_N(char message[])
-{
-	char choix;
-	printf("%s (O/N) ? : ", message);
-	fflush(stdout);
-	scanf("%c%*c", &choix);
-	while (choix != 'O' && choix != 'N')
-	{
-		printf("Veuillez par O ou par N : ");
-		fflush(stdout);
-		scanf("%c%*c", &choix);
-	}
-	if (choix == 'O')
-		return TRUE;
-	return FALSE;
-}
-
 
 void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
 {

@@ -211,11 +211,12 @@ Description :
 
 Valeur de retour :
 	Si trouvé -> le rang du jeu
-	Sinon -> ERR_NOT_FOUND
+	Sinon -> le rang d'insertion
 
 Arguments :
 	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
 	unsigned int idJeu -> L'identifiant à rechercher
+	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
 */
 unsigned int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
 {
@@ -399,37 +400,18 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu)
 	Jeu* jeu = nouvJeu(genIdJeu(tabJeu));
 	if (jeu == NULL) return ERR_ALLOCATION;
 
-	printf("\nSouhaitez vous ajouter le jeu suivant (O / N) : \n");
 	afficheJeu(jeu, stdout);
-	printf("\n");
-	fflush(stdout);
 
-
-	while (TRUE)
+	if (IO_Choix_O_N("\nSouhaitez vous ajouter le jeu ci dessus"))
 	{
-		scanf("%c%*c",&choix);
-		switch (choix)
-		{
-			case 'O':
-			{
-				cErr = ajouterJeu(tabJeu, jeu);
-				if (cErr == 0)
-					printf("Jeu ajouté\n");
-				fflush(stdout);
-				return cErr;
-			}
-			case 'N':
-			{
-				return ERR_NO_ERR;
-			}
-			default:
-			{
-				printf("Veuillez répondre par O ou N \n");
-				fflush(stdout);
-				break;
-			}
-		}
+		cErr = ajouterJeu(tabJeu, jeu);
+		if (cErr == 0)
+			printf("Jeu ajouté\n");
+		fflush(stdout);
+		return cErr;
 	}
+
+	return ERR_NO_ERR;
 }
 
 /*
