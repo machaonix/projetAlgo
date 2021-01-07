@@ -199,23 +199,17 @@ CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned in
 		return cErr;
 	}
 
-	printf("Categ %s\n",jeuARechercher.type); fflush(stdout);
 	triTabJeu(tabJeu, elementJeu);
 
 	rangInf = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, TRUE);
-	/*if (*trouve == FALSE)
-	{
-		printf("Jeu non trouvé\n");
-		return ERR_NO_ERR;
-	}*/
-	rangSup = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, FALSE);
-	/*if (*trouve == FALSE && rangSup == 0)
-	{
-		printf("Jeu non trouvé\n");
-		return ERR_NO_ERR;
-	}*/
 
-	printf("inf %d sup %d\n", rangInf, rangSup);
+//permet de trouver en tapant le début du mot recherché
+	if (elementJeu == ELEM_JEU_TYPE)
+		jeuARechercher.type[strlen(jeuARechercher.type)-1] += 1;
+	if (elementJeu == ELEM_JEU_NOM)
+		jeuARechercher.nom[strlen(jeuARechercher.nom)-1] += 1;
+
+	rangSup = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, FALSE);
 
 	if (rangInf <= rangSup)
 	{
