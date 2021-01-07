@@ -13,7 +13,7 @@
 typedef struct
 {
 	unsigned int nbElement;
-	TriSur triSur;
+	ElementJeu triSur;
 	Jeu* jeux[TAILLE_MAX_TAB_JEU];
 } TableauJeu;
 
@@ -21,27 +21,33 @@ typedef struct
 void initTabJeu(TableauJeu* tabJeu);
 
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
+void affichePartieTabJeu(TableauJeu* tabJeu, unsigned int begin, unsigned int end, FILE* flux);
 
 //retourne 0 ou un CodeErreur
 CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 
-Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id);
+Bool jeuDisponible(TableauJeu* tabJeu, Jeu* jeu);
 
 void libererTabJeu(TableauJeu* tabJeu);
 
+
+CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned int* rang);
+
 //retourne le rang du jeu trouvé ou le rang d'insertion si non trouvé
 //Bool* trouve est assigné a TRUE si trouvé à FALSE sinon
-unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve);
+unsigned int rechercherJeu(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve, Bool cherchePremier);
 //les fonctions suivantes sont utilisé en interne par rechercherIdJeu
-unsigned int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve);
-unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve);
+unsigned int _rechercherPremierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 
 
 unsigned int genIdJeu(TableauJeu* tabJeu);
 
 //retourne 0 ou un CodeErreur
-CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu);
+CodeErreur retirerJeu(TableauJeu* tabJeu, Jeu* jeu);
 CodeErreur retirerJeuInteractif(TableauJeu* tabJeu);
 
 //retourne 0 si l'ajout est fait
@@ -57,12 +63,12 @@ void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
 
 //tri tJeu et retourne
 void triTabJeuInteractif(TableauJeu* tabJeu);
-void triTabJeu(TableauJeu* tabJeu, TriSur triSur);
+void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu);
 
 
 //les fonctions suivantes sont utilisé en interne par triTabJeu
 void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
-void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[]);
-void _triJeu(Jeu* tSource[], unsigned int nbElem, TriSur triSur);
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[]);
+void _triJeu(Jeu* tSource[], unsigned int nbElem, ElementJeu elementJeu);
 
 #endif //HG_TABLEAUJEU_H

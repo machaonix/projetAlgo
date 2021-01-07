@@ -16,9 +16,22 @@ void initTabJeu(TableauJeu* tabJeu)
 		tabJeu->jeux[i] = NULL;
 	}
 	tabJeu->nbElement = 0;
-	tabJeu->triSur = TRI_NON_TRIE;
+	tabJeu->triSur = ELEM_JEU_NONE;
 }
 
+
+
+void affichePartieTabJeu(TableauJeu* tabJeu, unsigned int begin, unsigned int end, FILE* flux)
+{
+	if (flux == stdout)
+		printf("\nId\tType\tNombre\tDispo\tNom\n");
+
+	for (; begin<tabJeu->nbElement && begin<end; ++begin)
+	{
+		afficheJeu(tabJeu->jeux[begin], flux);
+		fprintf(flux, "\n");
+	}
+}
 /*
 		afficheTabJeu
 Description :
@@ -30,15 +43,7 @@ Arguments :
 */
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux)
 {
-	unsigned int i;
-	if (flux == stdout)
-		printf("\nId\tType\tNombre\tDispo\tNom\n");
-
-	for (i = 0; i<tabJeu->nbElement; ++i)
-	{
-		afficheJeu(tabJeu->jeux[i], flux);
-		fprintf(flux, "\n");
-	}
+	affichePartieTabJeu(tabJeu, 0, tabJeu->nbElement, flux);
 }
 
 /*
@@ -63,7 +68,7 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[])
 		libererTabJeu(tabJeu);
 
 
-	tabJeu->triSur = TRI_NON_TRIE;
+	tabJeu->triSur = ELEM_JEU_NONE;
 
 	flux = fopen(nomFichier, "r");
 	if (!flux)
@@ -160,12 +165,12 @@ Valeur de retour :
 
 Arguments :
 	TableauJeu* tabJeu -> Le tableau dans lequel le jeu est stocké
-	unsigned int id -> l'identifiant du jeu en question
+	Jeu* jeu -> le jeu en question (doit avoir l'id de defini)
 */
-Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
+Bool jeuDisponible(TableauJeu* tabJeu, Jeu* jeu)
 {
 	Bool trouve = TRUE;
-	unsigned int rang = rechercherIdJeu(tabJeu, id, &trouve);
+	unsigned int rang = rechercherJeu(tabJeu, jeu, ELEM_JEU_ID, &trouve, TRUE);
 
 	if (trouve == TRUE)
 	{
@@ -176,10 +181,69 @@ Bool jeuDisponible(TableauJeu* tabJeu, unsigned int id)
 	return FALSE;
 }
 
+
+
+CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned int* rang)
+{
+	Jeu jeuARechercher;
+	unsigned int rangInf;
+	unsigned int rangSup;
+	CodeErreur cErr;
+	ElementJeu elementJeu = choisirElementJeu("rechercher votre jeu");
+
+
+	cErr =  entrerValeurElementJeu(&jeuARechercher, elementJeu);
+	if (cErr != ERR_NO_ERR)
+	{
+		printf("Erreur operation avortée\n");
+		return cErr;
+	}
+
+	printf("Categ %s\n",jeuARechercher.type); fflush(stdout);
+	triTabJeu(tabJeu, elementJeu);
+
+	rangInf = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, TRUE);
+	/*if (*trouve == FALSE)
+	{
+		printf("Jeu non trouvé\n");
+		return ERR_NO_ERR;
+	}*/
+	rangSup = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, FALSE);
+	/*if (*trouve == FALSE && rangSup == 0)
+	{
+		printf("Jeu non trouvé\n");
+		return ERR_NO_ERR;
+	}*/
+
+	printf("inf %d sup %d\n", rangInf, rangSup);
+
+	if (rangInf <= rangSup)
+	{
+		affichePartieTabJeu(tabJeu, rangInf, rangSup+1, stdout);
+
+		printf("Veuillez maintenant indiquer l'identifiant du jeu : ");
+		fflush(stdout);
+		scanf("%u%*c", &jeuARechercher.id);
+
+		*rang = rechercherJeu(tabJeu, &jeuARechercher, ELEM_JEU_ID, trouve, TRUE);
+		if (*trouve == FALSE)
+		{
+			printf("L'identifiant que vous avez entré n'est pas referencé\n");
+		}
+		return ERR_NO_ERR;
+	}
+	else
+	{
+		printf("Jeu non trouvé\n");
+		return ERR_NO_ERR;
+	}
+}
+
+
 /*
-		rechercherIdJeu
+		rechercherJeu
 Description :
-	Recherche un jeu par son Identifiant dans un tableau de jeu
+	Recherche un jeu dans un tableau de jeu
 
 Valeur de retour :
 	-> Le rang d'insertion ou le rang ou le jeu est
@@ -189,25 +253,32 @@ Arguments :
 	unsigned int idJeu -> L'identifiant recherché
 	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
 */
-
-unsigned int rechercherIdJeu(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
+unsigned int rechercherJeu(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve, Bool cherchePremier)
 {
-	int rang;
-	if (tabJeu->triSur != TRI_ID)
+	unsigned int rang;
+	if (tabJeu->triSur != elementJeu)
 	{
-		rang = _rechercherIdJeu_TabNonTrie(tabJeu, idJeu, trouve);
+		if (cherchePremier)
+			rang = _rechercherPremierJeu_TabNonTrie(tabJeu, jeu, elementJeu, trouve);
+		else
+			rang = _rechercherDernierJeu_TabNonTrie(tabJeu, jeu, elementJeu, trouve);
+
 		return rang;
 	}
 
-	rang =_rechercherIdJeu_TabTriId(tabJeu, idJeu, trouve);
+	if (cherchePremier)
+		rang =_rechercherPremierJeu_TabTrie(tabJeu, jeu, elementJeu, trouve);
+	else
+		rang =_rechercherDernierJeu_TabTrie(tabJeu, jeu, elementJeu, trouve);
 	return rang;
 }
 
+
 /*
-		_rechercherIdJeu_TabNonTrie
+		_rechercherJeu_TabNonTrie
 Description :
 	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
-	Elle recherche un identifiant dans un tableau de jeu non trié en itérant sur tout les elements
+	Elle recherche un jeu dans un tableau de jeu non trié en itérant sur tout les elements
 
 Valeur de retour :
 	Si trouvé -> le rang du jeu
@@ -215,14 +286,29 @@ Valeur de retour :
 
 Arguments :
 	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
-	unsigned int idJeu -> L'identifiant à rechercher
+	Jeu* jeu -> Le jeu à rechercher
+	ElementJeu elementJeu -> L'element par rapport auquel rechercher
 	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
 */
-unsigned int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
+unsigned int _rechercherPremierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve)
 {
 	unsigned int i;
 	for (i = 0; i < tabJeu->nbElement; ++i)
-		if (tabJeu->jeux[i]->id == idJeu)
+		if (jeuCmp(tabJeu->jeux[i], jeu, elementJeu) == 0)
+		{
+			*trouve = TRUE;
+			return i;
+		}
+
+	*trouve = FALSE;
+	return i;
+}
+
+unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve)
+{
+	unsigned int i;
+	for (i = tabJeu->nbElement-1; i > 0 ; --i)
+		if (jeuCmp(tabJeu->jeux[i], jeu, elementJeu) == 0)
 		{
 			*trouve = TRUE;
 			return i;
@@ -234,10 +320,10 @@ unsigned int _rechercherIdJeu_TabNonTrie(TableauJeu* tabJeu, unsigned int idJeu,
 
 
 /*
-		_rechercherIdJeu_TabTriId
+		_rechercherJeu_TabTrie
 Description :
 	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
-	Elle recherche un identifiant dans un tableau de jeu trié par identifiant par dichotomie
+	Elle recherche un jeu dans un tableau de jeu trié par l'element donnee par dichotomie
 
 Valeur de retour :
 	Si trouvé -> le rang du jeu
@@ -245,32 +331,57 @@ Valeur de retour :
 
 Arguments :
 	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
-	unsigned int idJeu -> L'identifiant à rechercher
+	Jeu* jeu -> Le jeu à rechercher
+	ElementJeu elementJeu -> L'element par rapport auquel rechercher
 	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
 */
-unsigned int _rechercherIdJeu_TabTriId(TableauJeu* tabJeu, unsigned int idJeu, Bool* trouve)
+unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve)
 {
 	int inf = 0, sup = tabJeu->nbElement-1;
-	unsigned int mil = (inf + sup)/2;
+	int mil = (inf + sup)/2;
+	*trouve = FALSE;
 
 	while (inf <= sup)
 	{
-		if (tabJeu->jeux[mil]->id == idJeu)
-		{
+		int comparaison = jeuCmp(tabJeu->jeux[mil], jeu, elementJeu);
+		if (comparaison == 0)
 			*trouve = TRUE;
-			return mil;
-		}
-		else if (tabJeu->jeux[mil]->id > idJeu)
+
+		if (comparaison >= 0)
 			sup = mil-1;
 		else
-			inf = mil+1;
+			inf = mil +1;
+
 		mil = (inf + sup)/2;
 	}
 
-	*trouve = FALSE;
 	return inf;
 }
 
+unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve)
+{
+	int inf = 0, sup = tabJeu->nbElement-1;
+	int mil = (inf + sup)/2;
+	*trouve = FALSE;
+
+	while (inf <= sup)
+	{
+		int comparaison = jeuCmp(tabJeu->jeux[mil], jeu, elementJeu);
+		if (comparaison == 0)
+			*trouve = TRUE;
+
+		if (comparaison <= 0)
+			inf = mil+1;
+		else
+			sup = mil-1;
+
+		mil = (inf + sup)/2;
+	}
+
+	if (sup<0)
+		return 0;
+	return sup;
+}
 
 /*
 		retirerJeu
@@ -285,10 +396,10 @@ Arguments :
 	TableauJeu* tabJeu -> Le tableau duquel on veut retirer le jeu
 	unsigned int idJeu -> L'identifiant du jeu que l'on veut retirer
 */
-CodeErreur retirerJeu(TableauJeu* tabJeu, unsigned int idJeu)
+CodeErreur retirerJeu(TableauJeu* tabJeu, Jeu* jeu)
 {
 	Bool trouve;
-	unsigned int rang = rechercherIdJeu(tabJeu, idJeu, &trouve);
+	unsigned int rang = rechercherJeu(tabJeu, jeu, ELEM_JEU_ID, &trouve, TRUE);
 	if (trouve == FALSE)
 		return ERR_NOT_FOUND;
 
@@ -315,14 +426,21 @@ Arguments :
 */
 CodeErreur retirerJeuInteractif(TableauJeu* tabJeu)
 {
-	unsigned int idJeu;
+	unsigned int rangJeu;
+	Bool trouve;
+	Jeu* jeuARetirer;
 	CodeErreur cErr;
 
-	printf("\nQuel est l'Identifiant du jeu que vous souhaitez retirer ? ");
-	fflush(stdout);
-	scanf("%d", &idJeu);
+	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
+	if (cErr != ERR_NO_ERR)
+		return cErr;
 
-	cErr = retirerJeu(tabJeu, idJeu);
+	if (trouve == FALSE)
+		return ERR_NOT_FOUND;
+
+	jeuARetirer = tabJeu->jeux[rangJeu];
+
+	cErr = retirerJeu(tabJeu, jeuARetirer);
 	if (cErr == ERR_NOT_FOUND)
 	{
 		printf("Jeu non trouvé\n");
@@ -361,7 +479,11 @@ CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 		return ERR_OUT_OF_RANGE;
 	}
 
-	rangInser = rechercherIdJeu(tabJeu, jeu->id, &trouve);
+	if (tabJeu->triSur != ELEM_JEU_NONE)
+		rangInser = rechercherJeu(tabJeu, jeu, tabJeu->triSur, &trouve, TRUE);
+	else
+		rangInser = rechercherJeu(tabJeu, jeu, ELEM_JEU_ID, &trouve, TRUE);
+
 	if (trouve == TRUE)
 	{
 		printf("Jeu existant, imposible de l'ajouter\n");
@@ -372,9 +494,6 @@ CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu)
 
 	tabJeu->jeux[rangInser] = jeu;
 	tabJeu->nbElement++;
-
-	if (tabJeu->triSur != TRI_ID)
-		tabJeu->triSur = TRI_NON_TRIE;
 
 	return ERR_NO_ERR;
 }
@@ -461,89 +580,58 @@ Arguments :
 unsigned int genIdJeu(TableauJeu* tabJeu)
 {
 	Bool trouve;
-	unsigned int i=0;
-	rechercherIdJeu(tabJeu, tabJeu->nbElement, &trouve);
+	Jeu jeuIncomplet;
+	jeuIncomplet.id = tabJeu->nbElement;
+	rechercherJeu(tabJeu, &jeuIncomplet, ELEM_JEU_ID, &trouve, TRUE);
 	if (trouve == FALSE)
 	{
 		return tabJeu->nbElement;
 	}
 
+	jeuIncomplet.id = 0;
 	//si il existe un jeu avec l'identifiant egal au nombre d'elements, un des identifiants inferieur est libre
-	rechercherIdJeu(tabJeu, i, &trouve);
+	rechercherJeu(tabJeu, &jeuIncomplet, ELEM_JEU_ID, &trouve, TRUE);
 
 	while (trouve == TRUE)
 	{
-		++i;
-		rechercherIdJeu(tabJeu, i, &trouve);
+		++jeuIncomplet.id;
+		rechercherJeu(tabJeu, &jeuIncomplet, ELEM_JEU_ID, &trouve, TRUE);
 	}
-	return i;
+	return jeuIncomplet.id;
 }
 
 
 
 void triTabJeuInteractif(TableauJeu* tabJeu)
 {
-	TriSur triSur;
-	Bool boucle = TRUE;
-//TRI_NON_TRIE ,TRI_ID, TRI_NOM, TRI_TYPE, TRI_NB_EXEMPLAIRE_TOTAL, TRI_NB_EXEMPLAIRE_DISPO
-	printf("Par quel element voulez vous trier ?\n");
-	printf("%d\tLes identifiants\n", TRI_ID);
-	printf("%d\tLes noms\n", TRI_NOM);
-	printf("%d\tLes categories\n", TRI_TYPE);
-	printf("%d\tLe nombre d'exemplaires total\n", TRI_NB_EXEMPLAIRE_TOTAL);
-	printf("%d\tLe nombre d'exemplaires disponibles\n", TRI_NB_EXEMPLAIRE_DISPO);
-	fflush(stdout);
-	scanf("%d%*c", (int*)&triSur);
-
-	while (boucle)
-	{
-		switch (triSur)
-		{
-			case TRI_ID:
-			case TRI_NOM:
-			case TRI_TYPE:
-			case TRI_NB_EXEMPLAIRE_TOTAL:
-			case TRI_NB_EXEMPLAIRE_DISPO:
-			{
-				triTabJeu(tabJeu, triSur);
-				boucle = FALSE;
-				break;
-			}
-			default:
-			{
-				printf("Veuillez indiquer un element valide : ");
-				fflush(stdout);
-				scanf("%d%*c", (int*)&triSur);
-				break;
-			}
-		}
-	}
+	ElementJeu elementJeu = choisirElementJeu("trier votre tableau de jeu");
+	triTabJeu(tabJeu, elementJeu);
 }
 
 /*
 		triTabJeu
 Description :
-	Tri le tableau de jeu en fonction de triSur
+	Tri le tableau de jeu en fonction de elementJeu
 	Encapsule la fonction _triJeu
 
 Arguments :
 	TableauJeu* tabJeu -> Tableau à trier
-	TriSur triSur -> Maniere de trier
+	ElementJeu elementJeu -> Maniere de trier
 */
-void triTabJeu(TableauJeu* tabJeu, TriSur triSur)
+void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu)
 {
-	if (triSur == TRI_NON_TRIE)
+	if (elementJeu == ELEM_JEU_NONE)
 	{
-		fprintf(stderr, "Erreur operation invalide : trier avec TRI_NON_TRIE\n");
+		fprintf(stderr, "Erreur operation invalide : trier avec ELEM_JEU_NONE\n");
 		exit(-ERR_OPERATION_INVALIDE);
 	}
 
-	if (tabJeu->triSur == triSur)
+	if (tabJeu->triSur == elementJeu)
 		return;
 
-	_triJeu(tabJeu->jeux, tabJeu->nbElement, triSur);
+	_triJeu(tabJeu->jeux, tabJeu->nbElement, elementJeu);
 
-	tabJeu->triSur = triSur;
+	tabJeu->triSur = elementJeu;
 }
 
 
@@ -551,14 +639,14 @@ void triTabJeu(TableauJeu* tabJeu, TriSur triSur)
 		_triJeu
 Description :
 	/!\ Cette fonction utilise un tableau de jeu nu, ne pas l'utiliser directement -> passer par triTabJeu et utilisez un TableauJeu /!\
-	Tri le tableau de jeu en fonction de triSur
+	Tri le tableau de jeu en fonction de elementJeu
 
 Arguments :
 	Jeu* tJeu[] -> Tableau à trier
 	unsigned int nbElement -> nombre d'element du tableau
-	TriSur triSur -> Maniere de trier
+	ElementJeu elementJeu -> Maniere de trier
 */
-void _triJeu(Jeu* tJeu[], unsigned int nbElement, TriSur triSur)
+void _triJeu(Jeu* tJeu[], unsigned int nbElement, ElementJeu elementJeu)
 {
 	unsigned int nb1 = nbElement/2;
 	unsigned int nb2 = nbElement - nb1;
@@ -571,10 +659,10 @@ void _triJeu(Jeu* tJeu[], unsigned int nbElement, TriSur triSur)
 	copyTabJeu(tJeu, 0, nb1, t1);
 	copyTabJeu(tJeu, nb1, nbElement, t2);
 
-	_triJeu(t1, nb1, triSur);
-	_triJeu(t2, nb2, triSur);
+	_triJeu(t1, nb1, elementJeu);
+	_triJeu(t2, nb2, elementJeu);
 
-	fusionTabJeu(t1, nb1, t2, nb2, triSur, tJeu);
+	fusionTabJeu(t1, nb1, t2, nb2, elementJeu, tJeu);
 }
 
 
@@ -599,24 +687,24 @@ void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest
 /*
 		fusionTabJeu
 Description :
-	Fusionne les tableaux sources dans le tableau destination en respectant l'ordre indiqué par triSur
+	Fusionne les tableaux sources dans le tableau destination en respectant l'ordre indiqué par elementJeu
 
 Arguments :
 	Jeu* tSource1[] -> Tableau source 1
 	unsigned int nbElem1 -> nombre d'elements du tableau source 1
 	Jeu* tSource2[] -> Tableau source 2
 	unsigned int nbElem2 -> nombre d'elements du tableau source 2
-	TriSur triSur -> Maniere de determiner l'ordre des jeux
+	ElementJeu elementJeu -> Maniere de determiner l'ordre des jeux
 	Jeu* tDest[] -> Tableau de destination
 */
-void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, TriSur triSur, Jeu* tDest[])
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[])
 {
 	unsigned int nS1 = 0, nS2 = 0, nD = 0;
 	int cmp;
 
 	while (nS1 < nbElem1 && nS2 < nbElem2)
 	{
-		cmp = jeuCmp(tSource1[nS1], tSource2[nS2], triSur);
+		cmp = jeuCmp(tSource1[nS1], tSource2[nS2], elementJeu);
 		if (cmp < 0)
 		{
 			tDest[nD] = tSource1[nS1];

@@ -10,7 +10,7 @@ void afficheMenu(void)
 	printf("%d)\tAfficher liste des jeux\n", CHOIX_AFFICHE_JEU);
 	printf("%d)\tTrier les jeux\n", CHOIX_TRIER_JEU);
 	printf("%d)\tAjouter un jeux\n", CHOIX_AJOUTER_JEU);
-	printf("%d)\tModifier ou supprimer\n", CHOIX_MODIFIER_SUPPRIMER_JEU);
+	printf("%d)\tModifier ou supprimer un jeu\n", CHOIX_MODIFIER_SUPPRIMER_JEU);
 	printf("%d)\tNouvel adherant\n", CHOIX_NOUV_ADHERANT);
 	printf("%d)\tRenouveler un abonement\n", CHOIX_RENOUV_ADHERANT);
 	printf("%d)\tAfficher liste des adherants\n", CHOIX_AFFICHE_ADHERANT);
@@ -140,23 +140,20 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 {
 	Bool trouve;
 	unsigned int rangJeu;
-	unsigned int idJeu;
+	Jeu* jeu;
 	unsigned int idER;
 	CodeErreur cErr;
 
-	printf("Quel est l'identifiant du jeu que vous souhaitez modifier ? :");
-	fflush(stdout);
-	scanf("%u%*c", &idJeu);
+	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
+	if (cErr != ERR_NO_ERR)
+		return FALSE;
 
-	rangJeu = rechercherIdJeu(tabJeu, idJeu, &trouve);
-  	if (trouve == FALSE)
-  	{
-  		printf("Cette identifiant de jeu n'est pas attribué\n");
-  		printf("Operation avortée\n");
-  		return FALSE;
-  	}
+	if (trouve == FALSE)
+		return FALSE;
 
-	idER = rechercherListeER_Jeu(liste_Emprunt, idJeu, &trouve);
+	jeu = tabJeu->jeux[rangJeu];
+
+	idER = rechercherListeER_Jeu(liste_Emprunt, jeu->id, &trouve);
 	if (trouve)
 	{
 		printf("Ce jeu est actuellement emprunter: notemment identifiant %u\n", idER);
@@ -164,7 +161,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 		return FALSE;
 	}
 
-	idER = rechercherListeER_Jeu(*liste_Reservation, idJeu, &trouve);
+	idER = rechercherListeER_Jeu(*liste_Reservation, jeu->id, &trouve);
 	if (trouve)
 	{
 		printf("Ce jeu est actuellement reserver: notemment identifiant %u\n", idER);
@@ -178,7 +175,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 					fprintf(stderr, "Erreur lors de la suppression des reservations\n");
 					return FALSE;
 				}
-				idER = rechercherListeER_Jeu(*liste_Reservation, idJeu, &trouve);
+				idER = rechercherListeER_Jeu(*liste_Reservation, jeu->id, &trouve);
 			}
 		}
 		else
@@ -189,10 +186,10 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 	}
 
 	printf("\n");
-	afficheJeu(tabJeu->jeux[rangJeu], stdout);
+	afficheJeu(jeu, stdout);
 	if (IO_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
 	{
-		cErr = retirerJeu(tabJeu, idJeu);
+		cErr = retirerJeu(tabJeu, jeu);
 		if (cErr != ERR_NO_ERR)
 		{
 			fprintf(stderr, "Erreur lors de la suppression du jeu\n");
@@ -208,9 +205,11 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 
 Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
 {
-	unsigned int idAdherant, idJeu, idReservation;
+	unsigned int idAdherant, idReservation;
+	unsigned int rangJeu;
+	Jeu* jeuReserve;
 	Bool trouve;
-	CodeErreur err;
+	CodeErreur cErr;
 
 	printf("Entrez l'ID de l'adherant\n>>>"); scanf("%u%*c", &idAdherant);
 	rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherant, &trouve);
@@ -220,23 +219,24 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 		return FALSE;
 	}
 
-	printf("Entrez l'ID du jeu\n>>>"); scanf("%u%*c", &idJeu);
-	rechercherIdJeu(tabJeu, idJeu, &trouve);
+	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
+	if (cErr != ERR_NO_ERR)
+		return FALSE;
+
+	if (trouve == FALSE)
+		return FALSE;
+
+	jeuReserve = tabJeu->jeux[rangJeu];
+
+	idReservation = rechercherListeER_AdJeu(*lr, idAdherant, jeuReserve->id, &trouve);
 	if(!trouve)
 	{
-		fprintf(stderr, "Ce jeu n'existe pas\n");
+		fprintf(stderr, "L'adherant %d n'as pas réservé le jeu %d\n", idAdherant, jeuReserve->id);
 		return FALSE;
 	}
 
-	idReservation = rechercherListeER_AdJeu(*lr, idAdherant, idJeu, &trouve);
-	if(!trouve)
-	{
-		fprintf(stderr, "L'adherant %d n'as pas réservé le jeu %d\n", idAdherant, idJeu);
-		return FALSE;
-	}
-
-	*lr = supprimerEmpruntReservation(*lr, idReservation, nb_Reservation, &err);
-	if(err == ERR_NOT_FOUND)
+	*lr = supprimerEmpruntReservation(*lr, idReservation, nb_Reservation, &cErr);
+	if(cErr == ERR_NOT_FOUND)
 	{
 		fprintf(stderr, "Une erreur à eu lieu lors de l'annulation de la reservation\n");
 		return FALSE;
@@ -254,6 +254,9 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	Bool trouve;
 	unsigned int rangAdherant;
 	unsigned int rangJeu;
+	Jeu* jeuAEmprunter;
+
+	CodeErreur cErr;
 
 
 	er.date = dateDuJour;
@@ -304,24 +307,21 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	//id adherant valable
 
 
-	printf("Quel est l'identifiant du jeu à empunter: ");
-	fflush(stdout);
-  	scanf("%u%*c",&(er.idJeu));
+	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
+	if (cErr != ERR_NO_ERR)
+		return FALSE;
 
-	rangJeu = rechercherIdJeu(tabJeu, er.idJeu, &trouve);
-  	if (trouve == FALSE)
-  	{
-  		printf("Cette identifiant de jeu n'est pas attribué\n");
-  		printf("Reservation avortée\n");
-  		return FALSE;
-  	}
+	if (trouve == FALSE)
+		return FALSE;
 
-  	if (jeuDisponible(tabJeu, er.idJeu) == TRUE)
+	jeuAEmprunter = tabJeu->jeux[rangJeu];
+
+  	if (jeuDisponible(tabJeu, jeuAEmprunter) == TRUE)
   	{
   		liste = &liste_Emprunt;
   		nb_elem = &nb_Emprunt;
 
-  		tabJeu->jeux[rangJeu]->nbExemplaireDispo -= 1;
+  		jeuAEmprunter->nbExemplaireDispo -= 1;
   	}
   	else
   	{
@@ -338,7 +338,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   	}
 
 	//rechercher un emprunt avec l'id de l'adherant et et celui du jeu
-	rechercherListeER_AdJeu(*liste_Emprunt,  er.idAdherant, er.idJeu, &trouve);
+	rechercherListeER_AdJeu(*liste_Emprunt,  er.idAdherant, jeuAEmprunter->id, &trouve);
 	if (trouve)
 	{
 		printf("Cette adherant à déjà un emprunt en cours pour ce jeu\n");
@@ -347,7 +347,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	}
 
 	//rechercher une reseration avec l'id de l'adherant et et celui du jeu
-	rechercherListeER_AdJeu(*liste_Reservation,  er.idAdherant, er.idJeu, &trouve);
+	rechercherListeER_AdJeu(*liste_Reservation,  er.idAdherant, jeuAEmprunter->id, &trouve);
 	if (trouve)
 	{
 		printf("Cette adherant à déjà reserver en cours pour ce jeu\n");
@@ -355,6 +355,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 		return FALSE;
 	}
 
+	er.idJeu =  jeuAEmprunter->id;
 	er.id = rechercherIdLibre(**liste);
 
 	**liste = insererEmpruntReservation(**liste, *nb_elem, er);
@@ -426,40 +427,49 @@ void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int n
 
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
 {
-	unsigned int idJeu;
+	unsigned int rangJeu;
 	Bool trouve;
-	printf("Quel est l'identifiant du jeu pour lequel vous voulez afficher les ");
+	Jeu* jeuSelect;
+	CodeErreur cErr;
+
+	printf("Fonction d'affichage de la liste des ");
 	if (isReservation)
-		printf("reservations : ");
+		printf("reservations ");
 	else
-		printf("emprunts : ");
-
+		printf("emprunts ");
+	printf ("concernant un jeu.");
 	fflush(stdout);
-	scanf("%u", &idJeu);
 
-	rechercherIdJeu(tabJeu, idJeu, &trouve);
+	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
+	if (cErr != ERR_NO_ERR)
+		return;
 
 	if (trouve == FALSE)
-	{
-		printf("Le jeu d'id %u n'existe pas.\n", idJeu);
 		return;
-	}
-	afficherListeERJeu(liste, idJeu);
+
+	jeuSelect = tabJeu->jeux[rangJeu];
+	if (trouve == FALSE)
+		return;
+
+	afficherListeERJeu(liste, jeuSelect->id);
 }
 
 void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
 {
 	unsigned int rangJeu;
 	Bool trouve;
+	Jeu jeuIncompet;
+
+	triTabJeu(tabJeu, ELEM_JEU_ID);
 
 	for (unsigned int i = 0; i < tabJeu->nbElement; i++)
 		tabJeu->jeux[i]->nbExemplaireDispo = tabJeu->jeux[i]->nbExemplaireTotal;
 
-	triTabJeu(tabJeu, TRI_ID);
 
 	while (liste_Emprunt != NULL)
 	{
-		rangJeu = rechercherIdJeu(tabJeu, liste_Emprunt->empRes.idJeu, &trouve);
+		jeuIncompet.id = liste_Emprunt->empRes.idJeu;
+		rangJeu = rechercherJeu(tabJeu, &jeuIncompet, ELEM_JEU_ID, &trouve, TRUE);
 		if (trouve == FALSE)
 		{
 			fprintf(stderr, "Erreur : un id d'empunts ne correspond pas aux id des jeux\n");

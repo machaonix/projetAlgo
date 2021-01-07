@@ -4,8 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "CodeErreur.h"
+#include "Bool.h"
 
-typedef enum {TRI_NON_TRIE ,TRI_ID, TRI_NOM, TRI_TYPE, TRI_NB_EXEMPLAIRE_TOTAL, TRI_NB_EXEMPLAIRE_DISPO} TriSur;
+typedef enum { ELEM_JEU_NONE , ELEM_JEU_ID, ELEM_JEU_NOM, ELEM_JEU_TYPE, ELEM_JEU_NB_EXEMPLAIRE_TOTAL, ELEM_JEU_NB_EXEMPLAIRE_DISPO} ElementJeu;
+
+ElementJeu choisirElementJeu(char utilite[]);
+Bool elementJeuExiste(ElementJeu elementJeu, Bool noneAutorisee);
+void afficheAllElementJeu();
 
 typedef struct
 {
@@ -17,6 +23,7 @@ typedef struct
 } Jeu;
 
 Jeu* lireJeu(FILE* flux);
+CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu);
 
 //Flux=fichier pour sauvegarder ou Flux=STDOUT pour afficher en sortie standard
 void afficheJeu(Jeu* jeu, FILE* flux);
@@ -24,7 +31,8 @@ void afficheJeu(Jeu* jeu, FILE* flux);
 //interactif
 Jeu* nouvJeu(unsigned int id);
 
-int jeuCmp(Jeu* j1, Jeu* j2, TriSur triSur);
+int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
+
 void copyJeu(Jeu* jd, Jeu* js);
 
 Jeu* allocJeu(void);
