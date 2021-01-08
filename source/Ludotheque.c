@@ -317,6 +317,25 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 
 	jeuAEmprunter = tabJeu->jeux[rangJeu];
 
+
+	//rechercher un emprunt avec l'id de l'adherant et et celui du jeu
+	rechercherListeER_AdJeu(*liste_Emprunt,  er.idAdherant, jeuAEmprunter->id, &trouve);
+	if (trouve)
+	{
+		printf("Cette adherant à déjà un emprunt en cours pour ce jeu\n");
+	  	printf("Reservation avortée\n");
+	  	return FALSE;
+	}
+
+	//rechercher une reseration avec l'id de l'adherant et et celui du jeu
+	rechercherListeER_AdJeu(*liste_Reservation,  er.idAdherant, jeuAEmprunter->id, &trouve);
+	if (trouve)
+	{
+		printf("Cette adherant à déjà reserver en cours pour ce jeu\n");
+		printf("Reservation avortée\n");
+		return FALSE;
+	}
+
   	if (jeuDisponible(tabJeu, jeuAEmprunter) == TRUE)
   	{
   		liste = &liste_Emprunt;
@@ -338,23 +357,6 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
   		}
   	}
 
-	//rechercher un emprunt avec l'id de l'adherant et et celui du jeu
-	rechercherListeER_AdJeu(*liste_Emprunt,  er.idAdherant, jeuAEmprunter->id, &trouve);
-	if (trouve)
-	{
-		printf("Cette adherant à déjà un emprunt en cours pour ce jeu\n");
-	  	printf("Reservation avortée\n");
-	  	return FALSE;
-	}
-
-	//rechercher une reseration avec l'id de l'adherant et et celui du jeu
-	rechercherListeER_AdJeu(*liste_Reservation,  er.idAdherant, jeuAEmprunter->id, &trouve);
-	if (trouve)
-	{
-		printf("Cette adherant à déjà reserver en cours pour ce jeu\n");
-		printf("Reservation avortée\n");
-		return FALSE;
-	}
 
 	er.idJeu =  jeuAEmprunter->id;
 	er.id = rechercherIdLibre(**liste);
