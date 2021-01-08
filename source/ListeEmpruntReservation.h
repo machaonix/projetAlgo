@@ -20,8 +20,6 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu); //afficher reservation pour un jeu données
 ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
 
-unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
-
 ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReservation er);
 //Il faut vérifier si on peux bien emprunter le jeu;
 ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
@@ -33,6 +31,7 @@ ListeER supprimerListe(ListeER liste); //supprime toutes la liste est retourne N
 
 CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
 
+unsigned int rechercherIdLibre(ListeER liste); //retourne le premier ID de libre
 unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
 unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
 

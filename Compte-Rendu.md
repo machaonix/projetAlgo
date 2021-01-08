@@ -69,7 +69,7 @@ Date *plusGrandeDate(Date *date1, Date *date2)
 ### Les adherants
 ## Fonctions concernant les emprunts et les réservations
 
-#### Structure emprunt et réservation
+### Structure emprunt et réservation
 
 Les emprunts et les réservations sont issue de la structure
 dans ``EmpruntReservation.h``
@@ -82,7 +82,7 @@ typedef struct
     Date date;
 } Emprunt, Reservation, EmpruntReservation;
 ```
-Les emprunts et les réservations contiennent les mêmes variables, on peut donc utiliser la même structure pour les deux.
+Les emprunts et les réservations contiennent les mêmes variables, on peut donc utiliser la même structure pour les deux. De plus, le type de la structure porte plusieurs nom selon le contexte (si on définie un emprunt ou une réservation).
 
 Pour traiter cette structure, plusieurs fonctions sont disponibles dont voici les prototypes.
 
@@ -96,6 +96,33 @@ Passer le flux en paramètre permet de pouvoir réunir la fonction d'affichage �
 * flux &rarr; qui sera un flux vers le fichier dans lequel on souhaite écrire
 * stdout &rarr; flux vers la sortie standard (écran)
 
-#### Listes contenant les emprunts et les réservations
+### Listes contenant les emprunts et les réservations
+
+Les emprunts et les réservations sont contenus dans des listes, qui permettent une manipulation plus fluide d'un point de vue mémoires que les tableaux, car une liste n'a pas de taille pré-définie.
+
+```c
+typedef struct element
+{
+	EmpruntReservation empRes;
+	struct element* suiv;
+} Element, *ListeReservation, *ListeEmprunt, *ListeER;
+```
+Là aussi, le type porte plusieurs nom selon le contexte à la définition.
+
+Chaque liste est initialisé grâce à la fonction ``ListeER listeER_Vide(void);``.
+Pour savoir si une liste est vide, il y a la fonction ``Bool listeER_estVide(ListeER liste);`` qui renvoit TRUE si la liste est vide.
+
+###### Fonction d'affichage
+
+Il existe deux fonctions pour afficher une liste.
+```c
+void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
+void afficherListeERJeu(ListeER liste, unsigned int idJeu);
+```
+La première fonction affiche une liste en entière. Elle est aussi utilisée pour écrire dans les fichiers de données lors de la sauvegarde (en précisant un flux vers un fichier).
+
+La seconde fonction affiche uniquement sur la sortie standard les éléments d'une liste concernant un jeu donné.
+
+###### Fonction de chargement
 
 ## Fonctions concernant les jeux
