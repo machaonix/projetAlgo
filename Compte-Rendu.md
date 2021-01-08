@@ -16,8 +16,8 @@ Sujet: programme aidant la gestion des adorants, des emprunts et des réservatio
 
 
 
-## Fonctionnement concernant les emprunts et les réservations
+## Fonctions concernant les emprunts et les réservations
 
 
 
-## Fonction concernant les jeux
+## Fonctions concernant les jeux
