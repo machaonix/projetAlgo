@@ -86,9 +86,7 @@ void Ludotheque(void)
 			case CHOIX_AJOUTER_JEU:
 				cErr = ajouterJeuInteractif(&tabJeu);
 				if (cErr != ERR_NO_ERR)
-				{
-
-				}
+					printf("Erreur lors de l'ajout du jeu\n");
 				break;
 			case CHOIX_MODIFIER_SUPPRIMER_JEU:
 				GLOBAL_ModifierSupprimerJeu(&tabJeu, &liste_Reservation, &nb_Reservation, liste_Emprunt);
