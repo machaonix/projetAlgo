@@ -209,6 +209,22 @@ CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned in
 	if (elementJeu == ELEM_JEU_NOM)
 		jeuARechercher.nom[strlen(jeuARechercher.nom)-1] += 1;
 
+	//Les id de jeu sont uniques
+	if (elementJeu == ELEM_JEU_ID)
+	{
+		*rang = rangInf;
+		if (*trouve)
+		{
+			afficheJeu(tabJeu->jeux[*rang], stdout);
+			if (!IO_Choix_O_N("\nLe jeu si dessus est-il le jeu recherché"))
+				*trouve = FALSE;
+		}
+		else
+			printf("Jeu non trouvé\n");
+		return ERR_NO_ERR;
+	}
+		return
+
 	rangSup = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, FALSE);
 
 	if (rangInf <= rangSup)

@@ -526,6 +526,7 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 	if (trouve == FALSE)
 		return;
 
+	printf("\n");
 	afficherListeERJeu(liste, jeuSelect->id);
 }
 
