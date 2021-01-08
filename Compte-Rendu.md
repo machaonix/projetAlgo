@@ -32,6 +32,8 @@ typedef struct
 } Emprunt, Reservation, EmpruntReservation;
 ```
 
+Les emprunts et les réservations ayant les mêmes valeurs à stocké, on peut se servir de la même structure pour les emprunts et les réservations
+
 Pour traiter cette structure, plusieurs fonctions sont disponibles dont voici les prototypes.
 
 ```c
@@ -45,5 +47,7 @@ Passer le flux en paramètre permet de pouvoir réunir la fonction d'affichage �
 * stdout -> flux vers la sortie standard (écran)
 
 #### Listes contenant les emprunts et les réservations
+
+
 
 ## Fonctions concernant les jeux
