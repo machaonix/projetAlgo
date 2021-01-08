@@ -75,7 +75,8 @@ void Ludotheque(void)
 			case CHOIX_EMPRUNTER:
 				GLOBAL_Emprunter(&liste_Reservation, &nb_Reservation, &liste_Emprunt, &nb_Emprunt, &tabJeu, &tAdherant, &nbElemAdhearant, &tMaxAdherant, dateDuJour);
 				break;
-			case CHOIX_RETOUR_JEU://////////////////////////////////////////////////////////
+			case CHOIX_RETOUR_JEU:
+				GLOBAL_RetourJeu(tAdherant, nbElemAdhearant, &tabJeu, &liste_Emprunt, &nb_Emprunt, &liste_Reservation, dateDuJour);
 				break;
 			case CHOIX_AFFICHE_JEU:
 				afficheTabJeu(&tabJeu, stdout);
@@ -133,6 +134,77 @@ void Ludotheque(void)
 	libererTabJeu(&tabJeu);
 	free(tAdherant);
 
+}
+
+
+Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
+{
+	unsigned int idAdherant, idEmprunt;
+	unsigned int rangJeu, rangAdherant;
+	Jeu* jeuEmprunte;
+	Emprunt emprunt;
+	Bool trouve;
+	CodeErreur cErr;
+
+	//Aderant
+	printf("Entrez l'ID de l'adherant\n>>>");
+	fflush(stdout);
+	scanf("%u%*c", &idAdherant);
+	rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherant, &trouve);
+	if(!trouve)
+	{
+		fprintf(stderr, "Cet adherant n'existe pas\n");
+		return FALSE;
+	}
+
+	//Jeu
+	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
+	if (cErr != ERR_NO_ERR)
+		return FALSE;
+
+	if (trouve == FALSE)
+		return FALSE;
+
+	jeuEmprunte = tabJeu->jeux[rangJeu];
+
+	idEmprunt = rechercherListeER_AdJeu(*liste_Emprunt, idAdherant, jeuEmprunte->id, &trouve);
+	if (trouve == FALSE)
+	{
+		fprintf(stderr, "Cet adherant n'a pas emprunté ce jeu\n");
+		return FALSE;
+	}
+
+
+	rechercherListeER_Jeu(*liste_Reservation, jeuEmprunte->id, &trouve);
+	if (trouve)
+	{
+		emprunt = plusVieilleReservationJeu(*liste_Reservation, jeuEmprunte->id);
+		*liste_Reservation = supprimerEmpruntReservation(*liste_Reservation, emprunt.id, nb_Emprunt, &cErr);
+
+		emprunt.id = rechercherIdLibre(*liste_Emprunt);
+		emprunt.date = dateDuJour;
+
+		rangAdherant = rechercherUnAdherant(tAdherant, nbElemAdhearant, emprunt.idAdherant, &trouve);
+		if (trouve == FALSE)
+		{
+			fprintf(stderr, "Cet adherant n'existe pas\n");
+			return FALSE;
+		}
+
+		*liste_Emprunt=insererEmpruntReservation(*liste_Emprunt, nb_Emprunt, emprunt);
+		printf("%s %s a reserver le jeu, la reservation devient un emprunt\n",tAdherant[rangAdherant].prenom, tAdherant[rangAdherant].nom);
+	}
+
+
+
+	*liste_Emprunt = supprimerEmpruntReservation(*liste_Emprunt, idEmprunt, nb_Emprunt, &cErr);
+	if (cErr != ERR_NO_ERR)
+	{
+		fprintf(stderr, "Erreur de suppression\n");
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt liste_Emprunt)
@@ -210,7 +282,9 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 	Bool trouve;
 	CodeErreur cErr;
 
-	printf("Entrez l'ID de l'adherant\n>>>"); scanf("%u%*c", &idAdherant);
+	printf("Entrez l'ID de l'adherant\n>>>");
+	fflush(stdout);
+	scanf("%u%*c", &idAdherant);
 	rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherant, &trouve);
 	if(!trouve)
 	{

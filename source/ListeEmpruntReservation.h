@@ -36,4 +36,6 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
 unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
 unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
 
+Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation, unsigned int idJeu);
+
 #endif //HG_LISTEEMPRUNTRESERVATION_H
