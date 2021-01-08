@@ -17,6 +17,7 @@ void afficheMenu(void)
 	printf("%d)\tAfficher liste des emprunts en cours\n", CHOIX_AFFICHE_EMPRUNT);
 	printf("%d)\tAfficher liste des reservations en cours\n", CHOIX_AFFICHE_RESERVATION);
 	printf("%d)\tAfficher la liste des reservations pour un jeu\n", CHOIX_AFFICHE_RESERVATION_JEU);
+	printf("%d)\tAfficher la liste des emprunt pour un jeu\n", CHOIX_AFFICHE_EMPRUNT_JEU);
 	printf("%d)\tSauvegarder\n", CHOIX_SAUVEGARDER);
 	printf("%d)\tQuitter\n", CHOIX_QUITTER);
 }

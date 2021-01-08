@@ -302,6 +302,7 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
     return ERR_OUVERTURE_FICHIER;
   }
   afficherListeEmpruntReservation(liste,flux,nb);
+  fclose(flux);
   return ERR_NO_ERR;
 }
 
