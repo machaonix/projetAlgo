@@ -156,13 +156,13 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 	return nbElem+1;
 }
 
-int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad)
+int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id)
 {
 	Bool trouve;
-	unsigned int index = rechercherUnAdherant(tAdherant, nbElem, ad->id, &trouve);
+	unsigned int index = rechercherUnAdherant(tAdherant, nbElem, id, &trouve);
 	if(trouve == FALSE)
 	{
-		fprintf(stderr, "L'adherant %d n'existe pas.\n", ad->id);
+		fprintf(stderr, "L'adherant %d n'existe pas.\n", id);
 		return nbElem;
 	}
 

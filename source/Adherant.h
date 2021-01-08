@@ -48,6 +48,7 @@ nouvAdherant():
 	Retour		: Un Adherant construit dans la fonction
 	Arguments	:
 		id			-> Un entier positif représantant l'identifiant du nouvel utilisateur
+		dateDuJour	-> Une date qui vas devenir la date d'inscription de l'Adherrant
 	Finalitée	:
 		Créer un nouvel Adherant
 
@@ -89,11 +90,11 @@ supprimerAdherant():
 	Arguments 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
-		ad 			-> Un Adherant a inserrer (la valeur est passer par adresse pour alleger le programe)
+		id 			-> Un entier positif represantant l'id de l'adherant à supprimer
 	Finalitée	:
 		Supprimer un Adherant
 */
-int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, Adherant* ad);
+int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id);
 
 /*
 decalageAGaucheAdherant()
