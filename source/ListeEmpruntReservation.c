@@ -358,3 +358,18 @@ unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trou
     *trouve=FALSE;
     return 0;
 }
+
+
+Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation, unsigned int idJeu)
+{
+    Reservation res = liste_Reservation->empRes;
+
+    while (liste_Reservation != NULL)
+    {
+        if (idJeu == liste_Reservation->empRes.idJeu)
+            if (plusPetiteDate(&res.date, &(liste_Reservation->empRes.date)) == &(liste_Reservation->empRes.date))
+                res = liste_Reservation->empRes;
+        liste_Reservation = liste_Reservation->suiv;
+    }
+    return res;
+}
