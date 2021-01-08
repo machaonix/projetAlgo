@@ -93,8 +93,8 @@ void afficherEmpruntReservation(EmpruntReservation *Empruntreservation, FILE* fl
 
 Passer le flux en paramètre permet de pouvoir réunir la fonction d'affichage à l'écran et la fonction d'écriture en une seul. Le paramètre flux est donc prévue pour prendre deux arguments possibles:
 
-* flux -> qui sera un flux vers le fichier dans lequel on souhaite écrire
-* stdout -> flux vers la sortie standard (écran)
+* flux &rarr; qui sera un flux vers le fichier dans lequel on souhaite écrire
+* stdout &rarr; flux vers la sortie standard (écran)
 
 #### Listes contenant les emprunts et les réservations
 
