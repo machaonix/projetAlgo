@@ -23,18 +23,16 @@ typedef struct
 } Jeu;
 
 Jeu* lireJeu(FILE* flux);
-CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu);
-
 //Flux=fichier pour sauvegarder ou Flux=STDOUT pour afficher en sortie standard
 void afficheJeu(Jeu* jeu, FILE* flux);
+
+CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu);
+int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
 
 //interactif
 Jeu* nouvJeu(unsigned int id);
 
-int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
-
 void copyJeu(Jeu* jd, Jeu* js);
-
 Jeu* allocJeu(void);
 
 #endif //HG_JEU_H

@@ -125,4 +125,66 @@ La seconde fonction affiche uniquement sur la sortie standard les éléments d'u
 
 ###### Fonction de chargement
 
-## Fonctions concernant les jeux
+## Traitement des jeux
+
+### Préambule
+Mon objectif principal était de permettre une certaine versatilité en terme d'accès aux jeux. Pour cela je me suis concentré sur les systèmes de tri et de recherche.
+
+### Petit point sur les fichiers
+Les headers  ``TableauJeu.h`` et ``Jeu.h`` disposent de header guard. Ils incluent tout deux ``CodeErreur.h`` et ``Bool.h`` en plus de quelques headers standards.\
+``TableauJeu.c`` et ``Jeu.c`` n'incluent que leur ``.h``respectifs.
+
+### Les fichiers Jeu.h et Jeu.c
+#### Jeu : une structure simple
+##### La structure
+La structure jeu représente un jeu (et ses exemplaires)
+```C
+typedef struct
+{
+    unsigned int id;
+    char nom[41];
+    char type[15];
+    unsigned int nbExemplaireTotal;
+    unsigned int nbExemplaireDispo;
+} Jeu;
+```
+La strucure de jeu est composé des éléments requis auquels s'ajoute le nombre d'exemplaires disponibles. Cette variable permet de s'avoir efficacement si un jeu est disponible ou non.\
+Le type de jeu (ou categorie) n'est pas contraint pour offrir une place au genres de niche pouvant exister.
+
+##### Les fonctions associées
+```C
+Jeu* lireJeu(FILE* flux);
+void afficheJeu(Jeu* jeu, FILE* flux);
+Jeu* nouvJeu(unsigned int id);
+
+void copyJeu(Jeu* jd, Jeu* js);
+Jeu* allocJeu(void);
+```
+Les 3 premières fonctions offrent les fonctionnalités basique d'entrée sortie pour la structure Jeu.\
+Les 2 dernières concernent plus la gestion des ressources.\
+Même si j'essaie de copier le plus rarement possible les jeux, lorsque c'est necessaire il faut que ce soit bien fait. Jeu contenant des chaines de caractères, j'ai crée copyJeu.\
+L'allocation mémoire pouvant être sensible je l'ai encapsulé dans allocJeu de manière à ne pas multiplié les possibilité d'erreurs.
+
+#### ElementJeu : une enumération facilitant les opérations
+##### L'enumération
+ElementJeu permet d'indiquer une des elements de la structure Jeu
+```C
+typedef enum { ELEM_JEU_NONE , ELEM_JEU_ID, ELEM_JEU_NOM, ELEM_JEU_TYPE, ELEM_JEU_NB_EXEMPLAIRE_TOTAL, ELEM_JEU_NB_EXEMPLAIRE_DISPO} ElementJeu;
+```
+Cette enumération offre au fonctions sur les jeux la capacité d'agir sur les differentes variables des jeux avec plus de simplicité (et de manière uniforme). Toute les variables de Jeu y sont référencées, et "aucune" est représenté par ELEM_JEU_NONE.
+##### Les fonctions liées
+Ces trois fontions permettent de factoriser le code concernant ElementJeu.
+```C
+ElementJeu choisirElementJeu(char utilite[]);
+Bool elementJeuExiste(ElementJeu elementJeu, Bool noneAutorisee);
+void afficheAllElementJeu();
+```
+
+#### Des fonctions associant Jeu et ElementJeu
+```C
+CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu);
+int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
+```
+
+jeuCmp défini l'ordre entre les jeux selon les éléments.\
+entrerValeurElementJeu facilite l'entrée d'une valeur pour tous les elements.
