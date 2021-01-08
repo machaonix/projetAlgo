@@ -8,8 +8,8 @@
 typedef struct
 {
     unsigned int id;
-    unsigned int idAdherant;//reference à une instance d'adherant
-    unsigned int idJeu;//reference à une instance de jeu
+    unsigned int idAdherant;//reference un adherant
+    unsigned int idJeu;//reference à un jeu
     Date date;
 } Emprunt, Reservation, EmpruntReservation;
 //Pour les fonction communes EmpruntReservation sera utilise
