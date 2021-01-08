@@ -31,6 +31,7 @@ typedef struct
     Date date;
 } Emprunt, Reservation, EmpruntReservation;
 ```
+Les emprunts et les réservations contiennent les mêmes variables, on peut donc utiliser la même structure pour les deux.
 
 Pour traiter cette structure, plusieurs fonctions sont disponibles dont voici les prototypes.
 
