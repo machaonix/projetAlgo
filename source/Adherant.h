@@ -24,7 +24,7 @@ typedef struct
 lireAdherant():
 
 	Retour 		: retourne un adherant contenant les information du fichier adherant.don
-	Arguments 	:
+	Paramètres 	:
 		flux -> Un pointeur de FILE en mode lecture représentant le fichier on sont enregistré les adherants
 	Finalitée 	:
 		Lire un Adherant dans un flux
@@ -34,7 +34,7 @@ Adherant lireAdherant(FILE* flux);
 /*
 afficheAdherant():
 	Retour 		: void
-	Arguments 	:
+	Paramètres 	:
 		ad 			-> Un adherant à afficher
 		flux		-> Un pointeur de FILE en mode écriture qui représente la sortie de l'affichage
 		entete 		-> Valeur booleanne indiquant l'affichage d'une entête ou non
@@ -46,7 +46,7 @@ void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
 /*
 nouvAdherant():
 	Retour		: Un Adherant construit dans la fonction
-	Arguments	:
+	Paramètres	:
 		id			-> Un entier positif représantant l'identifiant du nouvel utilisateur
 		dateDuJour	-> Une date qui vas devenir la date d'inscription de l'Adherrant
 	Finalitée	:
@@ -60,7 +60,7 @@ Adherant nouvAdherant(unsigned int id, Date dateDuJour);
 /*
 afficheTabAdherant():
 	Retour 		: void
-	arguments	:
+	Paramètres	:
 		tAdherant 	-> Un tableau d'adherant contenant les adherant de la ludoteque
 		nbElem 		-> Un entier repréentant le nombre d'adherant dans le tableau tAdherant
 		flux		-> Un pointeur de FILE en mode écriture représantant la sortie sur la quelle écrire
@@ -74,7 +74,7 @@ void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, B
 /*
 insererAdherant():
 	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
-	Arguments 	:
+	Paramètres 	:
 		tAdherant 	-> Un poiteur du tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		tMax 		-> Un pointeur d'un entier positif représentant le nombre maximal d'Adherant de la ludoteque (la taille physique de tAdherant)
@@ -87,7 +87,7 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 /*
 supprimerAdherant():
 	Retour 		: Taille du tableau avec le nouveau nombre d'elements ou un CodeErreur
-	Arguments 	:
+	Paramètres 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		id 			-> Un entier positif represantant l'id de l'adherant à supprimer
@@ -99,7 +99,7 @@ int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id
 /*
 decalageAGaucheAdherant()
 	Retour		: void
-	Arguments 	:
+	Paramètres 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
@@ -111,7 +111,7 @@ void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 /*
 decalageADroiteAdherant()
 	Retour		: void
-	Arguments 	:
+	Paramètres 	:
 		tAdherant	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		debut 		-> Valeur entiere positive représentant l'index au quelle commancer le décalage
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
@@ -123,11 +123,11 @@ void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 /*
 rechercherUnAdherant():
 	Retour 		: index de l'element si ad a était trouvé ou l'index d'inserssion si ad n'a pas était trouvé
-	Arguments 	:
+	Paramètres 	:
 		tAdherant 	-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 		-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		id 			-> Un id d'Adherant a rechercher
-		trouve 		-> Un Bool passé par addresse (Si TRUE, adherant trouve sinon non)
+		trouve 		-> Un Bool passé par addresse (Si TRUE, adherant trouve sinon FALSE)
 	Finalitée :
 		Retrouver un Adherant dans un tAdherant (trié) par recherche dichotomique
 */
@@ -136,7 +136,7 @@ unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, uns
 /*
 chargerLesAdherants():
 	Retour 		: retourne le nombre d'élément(s) stocké dans nomDuFichier
-	Arguments 	:
+	Paramètres 	:
 		tAdherant 		-> Un poiteur du tableau d'Adherant contenant tout les Adherant de la ludoteque
 		tMax 			-> Un pointeur d'un entier positif représentant le nombre maximal	d'Adherant de la ludoteque (la taille physique de tAdherant)
 		nomDuFichier	-> Une chaine de caractere représentant le chemain du fichier stockant les Adherant
@@ -148,7 +148,7 @@ int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFic
 /*
 checkInscriptionValide():
 	Retour		: retourne un boolean indiquant le validitée de l'inscription(si la differance entre la date du jour et la date d'insctiption est inferieur à 0)
-	Arguments	:
+	Paramètres	:
 		ad 			-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe)
 		dateDuJour	-> Une Date repréntant la date du jour
 	Finalitée	:
@@ -159,19 +159,19 @@ Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
 /*
 renouvelerInscription():
 
-	Retour		: void
-	Arguments 	:
+	Retour		: ERR_OPERATION_INVALIDE | ERR_NO_ERR
+	Paramètres 	:
 		ad 				-> Un Adherant a rechercher (la valeur est passer par adresse pour alleger le programe et modifier ad)
 		nouvelleDate	-> Nouvelle date à assigner à ad (la valeur est passer par adresse pour alleger le programe)
 	Finalitée	:
 		Faire qu'un Adherant soit valide
 */
-void renouvelerInscription(Adherant* ad, Date* nouvelleDate);
+CodeErreur renouvelerInscription(Adherant* ad, Date* nouvelleDate);
 
 /*
 sauvegarderAdherant():
 	Retour		: ERR_OUVERTURE_FICHIER | ERR_NO_ERR
-	Arguments	:
+	Paramètres	:
 		tAdherant		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem 			-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		nomDuFichier	-> Chemain vers un fichier pour y stocker les Adherants
@@ -183,7 +183,7 @@ CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char n
 /*
 copieTabAdherant():
 	Retour		: ERR_OUT_OF_RANGE | ERR_NO_ERR
-	Arguments	:
+	Paramètres	:
 		tAdherant1		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
 		nbElem1			-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
 		tAdherant2		-> Un tableau d'Adherant ou vont être copié les élements de tAdherant1
@@ -193,6 +193,14 @@ copieTabAdherant():
 */
 CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
 
-
+/*
+rechercherIDAdherantLibre():
+	Retour		: Premier id disponible
+	Paramètres	:
+		tAdherant1		-> Un tableau d'Adherant contenant tout les Adherant de la ludoteque
+		nbElem 			-> Un entier posotif représentant le nombre d'Adherant de la ludoteque (de tAdherant)
+	Finalitée	:
+		Trouver le plus petit id disponible possible pour eviter d'avoir des ecarts entre les id d'Adherant
+*/
 unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem);
 #endif //HG_ADHERANT_H

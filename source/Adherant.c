@@ -119,9 +119,7 @@ Adherant nouvAdherant(unsigned int id, Date dateDuJour)
 
 
 	//Traitement de la date d'inscription
-	tmp.dateInscri.jour = dateDuJour.jour;
-	tmp.dateInscri.mois = dateDuJour.mois;
-	tmp.dateInscri.annee = dateDuJour.annee;
+	tmp.dateInscri = dateDuJour;
 
 
 	return tmp;
@@ -134,14 +132,16 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 	if(nbElem >= *tMax)
 	{
 		*tMax = *tMax+10;
-		Adherant *tmp = *tAdherant;
-		*tAdherant = (Adherant*) malloc(sizeof(Adherant)*(*tMax));
-		copieTabAdherant(tmp, nbElem, *tAdherant, *tMax);
-		free(tmp);
-		if(*tAdherant == NULL)
+		Adherant *tmp = *tAdherant;											//variable temporaire contenant l'addresse du tableau d'Adherant
+		*tAdherant = (Adherant*) malloc(sizeof(Adherant)*(*tMax));			//allocation d'un tableau superieur de 10 cases memoires par rapport au précédant
+		if(copieTabAdherant(tmp, nbElem, *tAdherant, *tMax) != ERR_NO_ERR)	//copie les valeur du premier tableau dans le deuxieme et arret de la fonction
+			return ERR_OPERATION_INVALIDE;									//en cas de problèmes
+		free(tmp);															//liberation du tableau precedant
+		if(*tAdherant == NULL)												//gestion des erreurs d'allocations
 			return ERR_ALLOCATION;
 	}
 
+	//Verifie si l'Adherant n'existe pas déjà, au quelle cas, on stop la fonction
 	unsigned int index = rechercherUnAdherant(*tAdherant, nbElem, ad->id, &trouve);
 	if(trouve == TRUE)
 	{
@@ -159,6 +159,8 @@ int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tM
 int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id)
 {
 	Bool trouve;
+
+	//Verifie si l'Adherant n'existe pas, au quelle cas, on stop la fonction
 	unsigned int index = rechercherUnAdherant(tAdherant, nbElem, id, &trouve);
 	if(trouve == FALSE)
 	{
@@ -189,6 +191,8 @@ unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, uns
 	int mil;
 
 	*trouve = FALSE;
+
+	//Algorythme addapté pour les Adherants
 	while(inf <= sup)
 	{
 		mil = (inf+sup) / 2;
@@ -230,14 +234,13 @@ Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour)
 	return dateCmp(*dateDuJour, ad->dateInscri) < 365;
 }
 
-void renouvelerInscription(Adherant* ad, Date* nouvelleDate)
+CodeErreur renouvelerInscription(Adherant* ad, Date* nouvelleDate)
 {
 	//Juste une réaffectation si l'inscription n'est pas valide
 	if(checkInscriptionValide(ad, nouvelleDate))
-		return;
-	ad->dateInscri.jour = nouvelleDate->jour;
-	ad->dateInscri.mois = nouvelleDate->mois;
-	ad->dateInscri.annee = nouvelleDate->annee;
+		return ERR_OPERATION_INVALIDE;
+	ad->dateInscri = *nouvelleDate;
+	return ERR_NO_ERR;
 
 }
 
@@ -270,6 +273,9 @@ CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adheran
 unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem)
 {
 	unsigned int i;
+	//Pour chaque Adherant du tableau trié, si son id est differant de sa possistion dans
+	//le tableau, ça veut dire qu'il y à un trou et que l'id est donc libre pour la valeur atteinte
+	//si il n'y a pas de "trou", la boncle arive à la fin du tableau et retourne donc le deriner id+1
 	for(i=0; i<nbElem; ++i)
 		if(tAdherant[i].id-i != 0)
 			return i;
