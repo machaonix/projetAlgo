@@ -12,11 +12,12 @@ Tâches:
 
 Sujet: programme aidant la gestion des adhérents, des emprunts et des réservations d'une ludothèque.
 
+----
 ## Fonctions concernant les dates et les adhérents
 ### Les dates
 #### Tout d'abord
-L'implémentation des dates de trouve dans les fichiers `source/Date.h` et `source.Date.c`
-#### Structure du fichier
+L'implémentation des dates de trouve dans les fichiers `source/Date.h` et `source/Date.c`.
+#### Structure des fichiers
 Le fichier d'entête (*source/Date.h*) débute par une *marco guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h* et *CodeErreur.h*) puis l'implémentation de la structure `Date`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces commentaires.
 
 Le fichier source (*source/Date.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
@@ -35,7 +36,56 @@ Cette structure contient simplement 3 entiers représentant les éléments que l
 
 Les `Date`s n'ont pas de fonctionnalités propre proposé dans le menu mais elle servent au bon déroulement du programme.
 
-### Les adherants
+### Les adhérants
+#### Tout d'abord
+L'implémentation des dates de trouve dans les fichiers `source/Adherant.h` et `source/Adherant.c`.
+
+#### Structure des fichiers
+Le fichier d'entête (*source/Adherant.h*) débute par une *marco guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h*, *Bool.h*, *Date.h* et *CodeErreur.h*) puis l'implémentation de l'énumération `Civilite` et  de la structure `Adherant`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces derniers.
+
+Le fichier source (*source/Adherant.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
+
+#### La structure `Adherant`
+```c
+typedef struct
+{
+	unsigned int id;
+	Civilite civilite;
+	char nom[22];
+	char prenom[22];
+	Date dateInscri;
+} Adherant;
+```
+La structure `Adherant` est composée des champs requis permettant la sauvegarde de cette structure.
+
+Les `Adherant`s serons par la suite stocké dans un tableau dynamiquement alloué. Ce choix a été fait car les `Adherant`s seron plus lus que modifier et car de nouveaux `Adherant`s peuvent venir s'ajouter au fur et à mesure du temps.
+
+#### Fonctionnalités avec `Adherant`
+```c
+void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete);
+Adherant nouvAdherant(unsigned int id, Date dateDuJour);
+CodeErreur renouvelerInscription(Adherant* ad, Date* nouvelleDate);
+CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[]);
+```
+Tout ces fonctions sont proposées dans le menu et sont toutes opérationnelles. Elles permettent ainsi le bon déroulement du programme. Aucune de ces fonctions n'ont posées problème lors de leur implémentation.
+
+Voici le restes des fonctions qui servent au fonctions implémentées si dessus :
+```c
+Adherant lireAdherant(FILE* flux);
+void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
+int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
+int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id);
+void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
+void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
+unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, Bool* trouve);
+int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[]);
+Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
+CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
+unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem);
+```
+Ici, plusieurs fonctions on était problématique lors de leurs implémentation. En effet, les fonction `copieTabAdherant` et `insererAdherant` m'ont posées problème. Je(*Allan POINT*) n'arivait pas à réallouer le tableaux dans la fonction `copieTabAdherant` et donc j'ai du le faire dans `insererAdherant`. C'est pour cette raison que `copieTabAdherant` renvoit **ERR_OUT_OF_RANG** en cas d'erreur.
+
+----
 
 ## Fonctions concernant les emprunts et les réservations
 
@@ -94,7 +144,7 @@ La première fonction affiche une liste en entière. Elle est aussi utilisée po
 La seconde fonction affiche uniquement sur la sortie standard les éléments d'une liste concernant un jeu donné.
 
 ###### Fonction de chargement
-
+----
 ## Traitement des jeux
 
 ### Préambule
