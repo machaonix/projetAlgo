@@ -13,6 +13,33 @@ Tâches:
 Sujet: programme aidant la gestion des adhérents, des emprunts et des réservations d'une ludothèque.
 
 ----
+## Généralité
+
+#### Le type Booléen
+
+Un type booléen a été créé pour certain cas d'utilisation.
+```c
+typedef enum {FALSE, TRUE}Bool;
+```
+
+#### Les codes erreurs
+
+Pour simplifier la gestion des codes erreurs, une énumération de codes erreurs a été créé.
+
+```c
+typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/, ERR_OUT_OF_RANGE /*-8*/, ERR_NOT_FOUND/*-7*/, ERR_OPERATION_INVALIDE/*-6*/, ERR_EXISTE_DEJA/*-5*/, ERR_NO_ERR = 0} CodeErreur;
+```
+
+#### Choix
+
+Il peut arriver de demander un choix à l'utilisateur qui n'attend comme réponse que ``oui`` ou ``non``.
+C'est pour ça qu'il y a la fonction
+```c
+Bool IO_Choix_O_N(char message[]);
+```
+Cette fonction test si les caractères ``o`` (pour oui) ou ``n`` (pour non) sont entrés par l'utilisateur. Avant d'appeler cette fonction, il faut d'abord afficher la question à l'écran.
+
+----
 ## Fonctions concernant les dates et les adhérents
 ### Les dates
 #### Tout d'abord
@@ -144,6 +171,42 @@ La première fonction affiche une liste en entière. Elle est aussi utilisée po
 La seconde fonction affiche uniquement sur la sortie standard les éléments d'une liste concernant un jeu donné.
 
 ###### Fonction de chargement
+
+Le chargement des fichiers d'emprunts et de réservations est assuré par la fonction
+```c
+chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
+```
+.
+Cette fonction prend en paramètre une chaîne de caractères ``nomDeFichier`` qui sera utilisé pour créer le flux vers le fichier dans lequel sont sauvegardées les données à charger. La fonction prend aussi en paramètre un pointeur vers la variable dans laquelle sera enregistrée le nombre d'éléments dans la liste.
+Il faut appeler cette fonction pour chaque liste a créer.
+
+Cette fonction fait appel à la fonction ``lireEmpruntReservation(FILE* flux)`` pour lire dans le fichier.
+
+###### Fonction d'insertion
+
+Pour insérer un élément dans une liste, il faut appeler la fonction
+```c
+ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReservation er);
+```
+Elle prend en paramètre la liste dans laquelle on insère l'élément, un pointeur sur le nombre d'élément dans la liste, et l'emprunt ou la reservation à insérer. Cette fonction utilise la fonction
+```c
+ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
+```
+
+###### Suppression d'un élément
+
+La suppression d'un élément se passe de la même manière avec deux fonctions.
+```c
+ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, unsigned int *nb, CodeErreur* cErr);
+ListeER supprimerDevantEmpruntReservation(ListeER liste);
+```
+
+La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer au lieu d'un emprunt ou d'une réservation. On lui fait aussi passer un pointeur vers une variable ``cErr`` pour retourner un code erreur si besoin.
+
+#### Sauvegarde
+
+#### Fin du programme
+
 ----
 ## Traitement des jeux
 
