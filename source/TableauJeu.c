@@ -19,6 +19,23 @@ void initTabJeu(TableauJeu* tabJeu)
 	tabJeu->triSur = ELEM_JEU_NONE;
 }
 
+/*
+		libererTabJeu
+Description :
+	Libere la mémoire allouée par un tableau de jeu
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau à liberer
+*/
+void libererTabJeu(TableauJeu* tabJeu)
+{
+	for (unsigned int i = 0; i<tabJeu->nbElement; ++i)
+	{
+		free(tabJeu->jeux[i]);
+		tabJeu->jeux[i] = NULL;
+	}
+	tabJeu->nbElement = 0;
+}
 
 /*
 		affichePartieTabJeu
@@ -144,24 +161,6 @@ CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[])
 	fclose(flux);
 
 	return ERR_NO_ERR;
-}
-
-/*
-		libererTabJeu
-Description :
-	Libere la mémoire allouée par un tableau de jeu
-
-Arguments :
-	TableauJeu* tabJeu -> Le tableau à liberer
-*/
-void libererTabJeu(TableauJeu* tabJeu)
-{
-	for (unsigned int i = 0; i<tabJeu->nbElement; ++i)
-	{
-		free(tabJeu->jeux[i]);
-		tabJeu->jeux[i] = NULL;
-	}
-	tabJeu->nbElement = 0;
 }
 
 /*

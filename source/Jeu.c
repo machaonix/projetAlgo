@@ -54,7 +54,6 @@ Valeur de retour :
 Arguments :
 	unsigned int id -> identifiant du nouveau jeu
 */
-
 Jeu* nouvJeu(unsigned int id)
 {
 	Jeu* jeu = allocJeu();
