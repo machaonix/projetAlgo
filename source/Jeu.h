@@ -11,7 +11,7 @@ typedef enum { ELEM_JEU_NONE , ELEM_JEU_ID, ELEM_JEU_NOM, ELEM_JEU_TYPE, ELEM_JE
 
 ElementJeu choisirElementJeu(char utilite[]);
 Bool elementJeuExiste(ElementJeu elementJeu, Bool noneAutorisee);
-void afficheAllElementJeu();
+void afficheAllElementJeu(void);
 
 typedef struct
 {

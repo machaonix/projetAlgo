@@ -149,6 +149,21 @@ int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu)
 }
 
 
+
+
+/*
+		elementJeuExiste
+Description :
+	Indique si l'element passé en paramètre existe
+
+Valeur de retour (ret) :
+	Si l'element existe -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	ElementJeu elementJeu -> L'element à tester
+	Bool noneAutorisee -> indique si ELEM_JEU_NONE est considerer comme un element
+*/
 Bool elementJeuExiste(ElementJeu elementJeu, Bool noneAutorisee)
 {
 	if (elementJeu == ELEM_JEU_NONE && !noneAutorisee)
@@ -166,8 +181,12 @@ Bool elementJeuExiste(ElementJeu elementJeu, Bool noneAutorisee)
 	return FALSE;
 }
 
-
-void afficheAllElementJeu()
+/*
+		afficheAllElementJeu
+Description :
+	Affiche tout les ElementJeu (sauf ELEM_JEU_NONE) dans le but d'une selection par l'utilisateur
+*/
+void afficheAllElementJeu(void)
 {
 	printf("%d)\tIdentifiant\n", ELEM_JEU_ID);
 	printf("%d)\tNom\n", ELEM_JEU_NOM);
@@ -176,6 +195,17 @@ void afficheAllElementJeu()
 	printf("%d)\tNombre disponible d'exemplaire\n", ELEM_JEU_NB_EXEMPLAIRE_DISPO);
 }
 
+/*
+	choisirElementJeu
+Description :
+	Permet à l'utilisateur de choisir un ElementJeu
+
+Valeur de retour :
+	-> L'element choisi
+
+Arguments :
+	char utilite[] -> permet de donner du contexte au choix de l'utilisateur (une action commençant par un verbe à l'infinitif)
+*/
 ElementJeu choisirElementJeu(char utilite[])
 {
 	ElementJeu elementJeu;
@@ -193,7 +223,18 @@ ElementJeu choisirElementJeu(char utilite[])
 	return elementJeu;
 }
 
+/*
+		entrerValeurElementJeu
+Description :
+	Permet de lire une valeur specifique d'un jeu
 
+Valeur de retour
+	-> Un CodeErreur
+
+Arguments :
+	Jeu* jeu -> le jeu dans lequel ecrire
+	ElementJeu elementJeu -> Indique la variable à modifier
+*/
 CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu)
 {
 	switch (elementJeu) {
