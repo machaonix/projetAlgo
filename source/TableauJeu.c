@@ -246,7 +246,6 @@ CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned in
 			printf("Jeu non trouvé\n");
 		return ERR_NO_ERR;
 	}
-		return
 
 	rangSup = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, FALSE);
 

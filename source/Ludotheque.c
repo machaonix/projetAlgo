@@ -210,9 +210,12 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt liste_Emprunt)
 {
 	Bool trouve;
+	Bool supprimable = TRUE;
 	unsigned int rangJeu;
 	Jeu* jeu;
 	unsigned int idER;
+	ElementJeu elementJeuAModifier;
+	unsigned int nbMinExemplaireTotal;
 	CodeErreur cErr;
 
 	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
@@ -228,8 +231,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 	if (trouve)
 	{
 		printf("Ce jeu est actuellement emprunter: notemment identifiant %u\n", idER);
-  		printf("Operation avortée\n");
-		return FALSE;
+		supprimable = FALSE;
 	}
 
 	idER = rechercherListeER_Jeu(*liste_Reservation, jeu->id, &trouve);
@@ -251,24 +253,65 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 		}
 		else
 		{
-	  		printf("Operation avortée\n");
-			return FALSE;
+			supprimable = FALSE;
 		}
 	}
 
 	printf("\n");
 	afficheJeu(jeu, stdout);
-	if (IO_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
-	{
-		cErr = retirerJeu(tabJeu, jeu);
-		if (cErr != ERR_NO_ERR)
+	if (supprimable)
+		if (IO_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
 		{
-			fprintf(stderr, "Erreur lors de la suppression du jeu\n");
+			cErr = retirerJeu(tabJeu, jeu);
+			if (cErr != ERR_NO_ERR)
+			{
+				fprintf(stderr, "Erreur lors de la suppression du jeu\n");
+				return FALSE;
+			}
+			printf("Jeu supprimé\n");
+			return TRUE;
+		}
+
+	if (IO_Choix_O_N("\nSouhaitez vous modifier le jeu"))
+	{
+		elementJeuAModifier = choisirElementJeu("modifier le jeu ci dessus");
+		if (elementJeuAModifier == ELEM_JEU_ID)
+		{
+			printf("Il n'est pas autorisé de modifier l'identifiant d'un jeu'\n");
 			return FALSE;
 		}
-		printf("Jeu supprimé\n");
-		return TRUE;
+		if (elementJeuAModifier == ELEM_JEU_NB_EXEMPLAIRE_DISPO)
+		{
+			printf("Il n'est pas autorisé de modifier le nombre d'exemplaires disponibles\n");
+			return FALSE;
+		}
+		if (elementJeuAModifier == ELEM_JEU_NB_EXEMPLAIRE_TOTAL)
+		{
+			nbMinExemplaireTotal = jeu->nbExemplaireTotal - jeu->nbExemplaireDispo;
+		}
+		cErr = entrerValeurElementJeu(jeu, elementJeuAModifier);
+		if (cErr != ERR_NO_ERR)
+		{
+			printf("Erreur lors de la modification\n");
+			return FALSE;
+		}
+		if (jeu->nbExemplaireTotal<nbMinExemplaireTotal)
+		{
+			printf("Il n'est pas autorisé d'assigner une valeur inferieur au nombres d'exemplaires empruntés.\n");
+			printf("Le nombre total d'exemplaire est assigné à la valeur minimal possible\n");
+			jeu->nbExemplaireTotal = nbMinExemplaireTotal;
+		}
+
+		//Modification du nombre d'exemplaires disponible en fonction du nouveau nombre d'exemplaire total
+		if (elementJeuAModifier == ELEM_JEU_NB_EXEMPLAIRE_TOTAL)
+		{
+			jeu->nbExemplaireDispo = jeu->nbExemplaireTotal - nbMinExemplaireTotal;
+		}
+		printf("Jeu modifié :");
+		afficheJeu(jeu,stdout);
+		printf("\n");
 	}
+
 
 	return TRUE;
 }
