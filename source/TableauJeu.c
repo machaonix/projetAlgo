@@ -20,7 +20,17 @@ void initTabJeu(TableauJeu* tabJeu)
 }
 
 
+/*
+		affichePartieTabJeu
+Description :
+	Ecrit une partie des jeux du tableau sur le flux de sortie donné et une entête si le flux est la sortie standard
 
+Arguments :
+	TableauJeu* tabJeu -> Le tableau contenant les jeux à afficher
+	unsigned int begin -> Le premier element à afficher
+	unsigned int end -> Le dernier element (exclu)
+	FILE* flux -> Le flux de sortie ou écrire
+*/
 void affichePartieTabJeu(TableauJeu* tabJeu, unsigned int begin, unsigned int end, FILE* flux)
 {
 	if (flux == stdout)
@@ -183,6 +193,20 @@ Bool jeuDisponible(TableauJeu* tabJeu, Jeu* jeu)
 
 
 
+/*
+		rechercherJeuInteractif
+Description :
+	Fonction interactive
+	Permet à l'utilisateur de rechercher un jeu dans un tableau de jeu
+
+Valeur de retour :
+	-> Un CodeErreur
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau de jeu où rechercher
+	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
+	unsigned int* rang -> Si le jeu est trouvé : le rang ou le jeu est trouvé sinon : le rang d'insertion
+*/
 CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned int* rang)
 {
 	Jeu jeuARechercher;
@@ -259,9 +283,11 @@ Valeur de retour :
 	-> Le rang d'insertion ou le rang ou le jeu est
 
 Arguments :
-	TableauJeu* tabJeu -> Le tableau de jeu où rechercher
-	unsigned int idJeu -> L'identifiant recherché
+	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
+	Jeu* jeu -> Le jeu à rechercher
+	ElementJeu elementJeu -> L'element par rapport auquel rechercher
 	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
+	Bool cherchePremier -> determine si la recherche doit chercher le premier ou le dernier jeu correspondant
 */
 unsigned int rechercherJeu(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve, Bool cherchePremier)
 {
@@ -285,10 +311,10 @@ unsigned int rechercherJeu(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, 
 
 
 /*
-		_rechercherJeu_TabNonTrie
+		_rechercherPremierJeu_TabNonTrie
 Description :
 	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
-	Elle recherche un jeu dans un tableau de jeu non trié en itérant sur tout les elements
+	Elle recherche le premier jeu correspondant dans un tableau de jeu non trié en itérant sur tout les elements
 
 Valeur de retour :
 	Si trouvé -> le rang du jeu
@@ -314,6 +340,22 @@ unsigned int _rechercherPremierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, Elem
 	return i;
 }
 
+/*
+		_rechercherDernierJeu_TabNonTrie
+Description :
+	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
+	Elle recherche le dernier jeu correspondant dans un tableau de jeu non trié en itérant sur tout les elements
+
+Valeur de retour :
+	Si trouvé -> le rang du jeu
+	Sinon -> le rang d'insertion
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
+	Jeu* jeu -> Le jeu à rechercher
+	ElementJeu elementJeu -> L'element par rapport auquel rechercher
+	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
+*/
 unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve)
 {
 	unsigned int i;
@@ -330,10 +372,10 @@ unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, Elem
 
 
 /*
-		_rechercherJeu_TabTrie
+		_rechercherPremierJeu_TabTrie
 Description :
 	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
-	Elle recherche un jeu dans un tableau de jeu trié par l'element donnee par dichotomie
+	Elle recherche par dicotomie le premier jeu correspondant dans un tableau de jeu trié
 
 Valeur de retour :
 	Si trouvé -> le rang du jeu
@@ -368,6 +410,22 @@ unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, Element
 	return inf;
 }
 
+/*
+		_rechercherDernierJeu_TabTrie
+Description :
+	/!\ Cette fonction n'a pas vocation à être utilisée par une autre fonction que rechercherIdJeu /!\
+	Elle recherche par dicotomie le dernier jeu correspondant dans un tableau de jeu trié
+
+Valeur de retour :
+	Si trouvé -> le rang du jeu
+	Sinon -> le rang d'insertion
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau dans lequel rechercher
+	Jeu* jeu -> Le jeu à rechercher
+	ElementJeu elementJeu -> L'element par rapport auquel rechercher
+	Bool* trouve -> Si le jeu est trouvé est assigné à TRUE sinon FALSE
+*/
 unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve)
 {
 	int inf = 0, sup = tabJeu->nbElement-1;
@@ -404,7 +462,7 @@ Valeur de retour :
 
 Arguments :
 	TableauJeu* tabJeu -> Le tableau duquel on veut retirer le jeu
-	unsigned int idJeu -> L'identifiant du jeu que l'on veut retirer
+	Jeu* jeu -> Le jeu correspondant (au moins par id) au jeu à retirer
 */
 CodeErreur retirerJeu(TableauJeu* tabJeu, Jeu* jeu)
 {
@@ -611,7 +669,14 @@ unsigned int genIdJeu(TableauJeu* tabJeu)
 }
 
 
+/*
+		triTabJeuInteractif
+Description :
+	Permet à l'utilisateur de choisir un element pour trier le tableau puis tri le tableau
 
+Arguments :
+	TableauJeu* tabJeu -> Tableau à trier
+*/
 void triTabJeuInteractif(TableauJeu* tabJeu)
 {
 	ElementJeu elementJeu = choisirElementJeu("trier votre tableau de jeu");
@@ -626,7 +691,7 @@ Description :
 
 Arguments :
 	TableauJeu* tabJeu -> Tableau à trier
-	ElementJeu elementJeu -> Maniere de trier
+	ElementJeu elementJeu -> Element sur lequel baser le tri
 */
 void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu)
 {
@@ -654,7 +719,7 @@ Description :
 Arguments :
 	Jeu* tJeu[] -> Tableau à trier
 	unsigned int nbElement -> nombre d'element du tableau
-	ElementJeu elementJeu -> Maniere de trier
+	ElementJeu elementJeu -> Element sur lequel baser le tri
 */
 void _triJeu(Jeu* tJeu[], unsigned int nbElement, ElementJeu elementJeu)
 {
@@ -704,7 +769,7 @@ Arguments :
 	unsigned int nbElem1 -> nombre d'elements du tableau source 1
 	Jeu* tSource2[] -> Tableau source 2
 	unsigned int nbElem2 -> nombre d'elements du tableau source 2
-	ElementJeu elementJeu -> Maniere de determiner l'ordre des jeux
+	ElementJeu elementJeu -> Element determinant l'ordre des jeux
 	Jeu* tDest[] -> Tableau de destination
 */
 void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[])
