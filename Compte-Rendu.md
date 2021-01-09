@@ -18,7 +18,7 @@ Sujet: programme aidant la gestion des adhérents, des emprunts et des réservat
 #### Tout d'abord
 L'implémentation des dates de trouve dans les fichiers `source/Date.h` et `source/Date.c`.
 #### Structure des fichiers
-Le fichier d'entête (*source/Date.h*) débute par une *marco guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h* et *CodeErreur.h*) puis l'implémentation de la structure `Date`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces commentaires.
+Le fichier d'entête (*source/Date.h*) débute par une *header guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h* et *CodeErreur.h*) puis l'implémentation de la structure `Date`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces commentaires.
 
 Le fichier source (*source/Date.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
 
@@ -41,7 +41,7 @@ Les `Date`s n'ont pas de fonctionnalités propre proposé dans le menu mais elle
 L'implémentation des dates de trouve dans les fichiers `source/Adherant.h` et `source/Adherant.c`.
 
 #### Structure des fichiers
-Le fichier d'entête (*source/Adherant.h*) débute par une *marco guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h*, *Bool.h*, *Date.h* et *CodeErreur.h*) puis l'implémentation de l'énumération `Civilite` et  de la structure `Adherant`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces derniers.
+Le fichier d'entête (*source/Adherant.h*) débute par un *header guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h*, *Bool.h*, *Date.h* et *CodeErreur.h*) puis l'implémentation de l'énumération `Civilite` et  de la structure `Adherant`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces derniers.
 
 Le fichier source (*source/Adherant.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
 
