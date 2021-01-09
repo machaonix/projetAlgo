@@ -19,6 +19,7 @@ typedef struct
 
 //initialise les variables du tableau
 void initTabJeu(TableauJeu* tabJeu);
+void libererTabJeu(TableauJeu* tabJeu);
 
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
 void affichePartieTabJeu(TableauJeu* tabJeu, unsigned int begin, unsigned int end, FILE* flux);
@@ -28,12 +29,9 @@ CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 
 Bool jeuDisponible(TableauJeu* tabJeu, Jeu* jeu);
-
-void libererTabJeu(TableauJeu* tabJeu);
-
+unsigned int genIdJeu(TableauJeu* tabJeu);
 
 CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned int* rang);
-
 //retourne le rang du jeu trouvé ou le rang d'insertion si non trouvé
 //Bool* trouve est assigné a TRUE si trouvé à FALSE sinon
 unsigned int rechercherJeu(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve, Bool cherchePremier);
@@ -43,32 +41,21 @@ unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, Elem
 unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 
+void triTabJeuInteractif(TableauJeu* tabJeu);
+void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu);
+//les fonctions suivantes sont utilisé en interne par triTabJeu
+void _triJeu(Jeu* tSource[], unsigned int nbElem, ElementJeu elementJeu);
+void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[]);
 
-unsigned int genIdJeu(TableauJeu* tabJeu);
-
-//retourne 0 ou un CodeErreur
+//retourne un CodeErreur
 CodeErreur retirerJeu(TableauJeu* tabJeu, Jeu* jeu);
 CodeErreur retirerJeuInteractif(TableauJeu* tabJeu);
-
-//retourne 0 si l'ajout est fait
-//sinon retourne un CodeErreur
+//Retourne un CodeErreur
 CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu);
 CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
-
 //les fonctions suivantes sont utilisé en interne par retirerJeu et ajouterJeu
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut);//ne libere pas la memoire
 void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
-
-
-
-//tri tJeu et retourne
-void triTabJeuInteractif(TableauJeu* tabJeu);
-void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu);
-
-
-//les fonctions suivantes sont utilisé en interne par triTabJeu
-void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
-void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[]);
-void _triJeu(Jeu* tSource[], unsigned int nbElem, ElementJeu elementJeu);
 
 #endif //HG_TABLEAUJEU_H

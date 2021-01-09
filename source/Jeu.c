@@ -54,7 +54,6 @@ Valeur de retour :
 Arguments :
 	unsigned int id -> identifiant du nouveau jeu
 */
-
 Jeu* nouvJeu(unsigned int id)
 {
 	Jeu* jeu = allocJeu();
@@ -209,7 +208,7 @@ Arguments :
 ElementJeu choisirElementJeu(char utilite[])
 {
 	ElementJeu elementJeu;
-	printf("Veuillez choisir un element de jeu permettant de %s\n", utilite);
+	printf("Veuillez choisir un element de jeu pour %s\n", utilite);
 	afficheAllElementJeu();
 	fflush(stdout);
 	scanf("%d%*c", (unsigned int*)&elementJeu);

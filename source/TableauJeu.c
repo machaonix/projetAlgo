@@ -19,6 +19,23 @@ void initTabJeu(TableauJeu* tabJeu)
 	tabJeu->triSur = ELEM_JEU_NONE;
 }
 
+/*
+		libererTabJeu
+Description :
+	Libere la mémoire allouée par un tableau de jeu
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau à liberer
+*/
+void libererTabJeu(TableauJeu* tabJeu)
+{
+	for (unsigned int i = 0; i<tabJeu->nbElement; ++i)
+	{
+		free(tabJeu->jeux[i]);
+		tabJeu->jeux[i] = NULL;
+	}
+	tabJeu->nbElement = 0;
+}
 
 /*
 		affichePartieTabJeu
@@ -147,24 +164,6 @@ CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[])
 }
 
 /*
-		libererTabJeu
-Description :
-	Libere la mémoire allouée par un tableau de jeu
-
-Arguments :
-	TableauJeu* tabJeu -> Le tableau à liberer
-*/
-void libererTabJeu(TableauJeu* tabJeu)
-{
-	for (unsigned int i = 0; i<tabJeu->nbElement; ++i)
-	{
-		free(tabJeu->jeux[i]);
-		tabJeu->jeux[i] = NULL;
-	}
-	tabJeu->nbElement = 0;
-}
-
-/*
 		jeuDisponible
 Description :
 	Indique si un jeu est disponible ou non
@@ -247,7 +246,6 @@ CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned in
 			printf("Jeu non trouvé\n");
 		return ERR_NO_ERR;
 	}
-		return
 
 	rangSup = rechercherJeu(tabJeu, &jeuARechercher, elementJeu, trouve, FALSE);
 

@@ -172,6 +172,7 @@ La seconde fonction affiche uniquement sur la sortie standard les éléments d'u
 
 ###### Fonction de chargement
 
+<<<<<<< HEAD
 Le chargement des fichiers d'emprunts et de réservations est assuré par la fonction
 ```c
 chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
@@ -207,15 +208,21 @@ La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer a
 
 #### Fin du programme
 
+=======
+>>>>>>> 92004e277fd6bc7d425fdaf144c2e8ce9e9cc53c
 ----
+
 ## Traitement des jeux
 
 ### Préambule
 Mon objectif principal était de permettre une certaine versatilité en terme d'accès aux jeux. Pour cela je me suis concentré sur les systèmes de tri et de recherche.
 
 ### Petit point sur les fichiers
-Les headers  ``TableauJeu.h`` et ``Jeu.h`` disposent de header guard. Ils incluent tout deux ``CodeErreur.h`` et ``Bool.h`` en plus de quelques headers standards.\
-``TableauJeu.c`` et ``Jeu.c`` n'incluent que leur ``.h``respectifs.
+Les headers  ``source/TableauJeu.h`` et ``source/Jeu.h`` disposent de header guard. Ils incluent tout deux ``source/CodeErreur.h`` et ``source/Bool.h`` en plus de quelques headers standards.\
+``source/TableauJeu.c`` et ``source/Jeu.c`` n'incluent que leur ``.h``respectifs. Ils contiennent les commentaires des fonctions
+
+##### Note au lecteur
+Les termes Jeu et structure Jeu seront tout deux utilisés pour designer la structure Jeu. De même pour la structure TableauJeu.
 
 ### Les fichiers Jeu.h et Jeu.c
 #### Jeu : une structure simple
@@ -271,3 +278,88 @@ int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
 
 jeuCmp défini l'ordre entre les jeux selon les éléments.\
 entrerValeurElementJeu facilite l'entrée d'une valeur pour tous les elements.
+
+
+### Les fichiers TableauJeu.h et TableauJeu.c
+
+#### TableauJeu : Un tableau entouré
+##### La structure
+TableauJeu contient un tableau de jeux et les données necessaires à son fonctionnement
+```C
+#define TAILLE_MAX_TAB_JEU 100
+
+typedef struct
+{
+	unsigned int nbElement;
+	ElementJeu triSur;
+	Jeu* jeux[TAILLE_MAX_TAB_JEU];
+} TableauJeu;
+```
+Le tableau à proprement parler est un tableau statique de pointeurs vers des Jeu. Sa taille est défini par une macro du préprocesseur (Ce qui permet de l'utiliser dans les fonctions en ayant besoin).\
+Le nombre de jeux dans le tableau est stocké dans la variable nbElement.\
+TableauJeu contient aussi une variable ElementJeu indiquant si et comment le tableau est ordonné.
+
+##### Les fonctions sur TableauJeu
+Les fonctions ayant besoin d'un TableauJeu prennent un pointeur sur un TableauJeu de manière à éviter de copier la structure.
+
+###### Initialisation et libération
+```C
+void initTabJeu(TableauJeu* tabJeu);
+void libererTabJeu(TableauJeu* tabJeu);
+```
+Ces deux fonctions sont à appeller respectivement à la création et à la fin de vie du TableauJeu.
+
+###### Chargement et sauvegarde
+
+```C
+CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[]);
+CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
+```
+Ces fonctions manipulent les fichiers pour sauvegarder et charger un TableauJeu.
+
+###### Affichage
+
+```C
+void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
+void affichePartieTabJeu(TableauJeu* tabJeu, unsigned int begin, unsigned int end, FILE* flux);
+```
+Ecrit tout ou partie d'un tableau de jeu dans un flux.
+
+###### Recherche
+```C
+CodeErreur rechercherJeuInteractif(TableauJeu* tabJeu, Bool* trouve, unsigned int* rang);
+unsigned int rechercherJeu(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve, Bool cherchePremier);
+unsigned int _rechercherPremierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
+```
+Permettent la recherche de jeu dans un tableau.\
+Les fonctions débutants par _ sont uniquement présentes pour servir `rechercherJeu`et `rechercherJeuInteractif`.
+
+###### Tri
+```C
+void triTabJeuInteractif(TableauJeu* tabJeu);
+void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu);
+//les fonctions suivantes sont utilisé en interne par triTabJeu
+void _triJeu(Jeu* tSource[], unsigned int nbElem, ElementJeu elementJeu);
+void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[]);
+```
+`triTabJeuInteractif` et `triTabJeu` sont des fonctions fesant l'interface entre les fontions utilisant le tri et `_triJeu`, une fontion de tri par dichotomie.
+
+###### Ajout et délétion
+```C
+CodeErreur retirerJeu(TableauJeu* tabJeu, Jeu* jeu);
+CodeErreur retirerJeuInteractif(TableauJeu* tabJeu);
+
+CodeErreur ajouterJeu(TableauJeu* tabJeu, Jeu* jeu);
+CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
+//les fonctions suivantes sont utilisé en interne par retirerJeu et ajouterJeu
+void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut);
+void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
+```
+Ces fonctions permettent d'ajouter ou de retirer des Jeu du tableau avec ou sans interaction avec l'utilisateur.\
+`retirerJeuInteractif` n'est pas utilisé dans ce projet car il est necessaire de faire des tests sur les listes de reservations et d'emprunts.
+
+.
