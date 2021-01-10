@@ -1,4 +1,7 @@
 # Compte Rendu du Projet d'algorithmie et de structure de données.
+
+Vous pouvez consulter le code du projet depuis le [depot GitHub](https://github.com/machaonix/projetAlgo).
+
 Tâches:
 * Point Allan G5
   - Fonctions de traitement des dates
@@ -27,7 +30,7 @@ typedef enum {FALSE, TRUE}Bool;
 Pour simplifier la gestion des codes erreurs, une énumération de codes erreurs a été créé.
 
 ```c
-typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/, ERR_OUT_OF_RANGE /*-8*/, ERR_NOT_FOUND/*-7*/, ERR_OPERATION_INVALIDE/*-6*/, ERR_EXISTE_DEJA/*-5*/, ERR_NO_ERR = 0} CodeErreur;
+typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/,...} CodeErreur;
 ```
 
 #### Choix
@@ -157,7 +160,7 @@ typedef struct element
 Là aussi, le type porte plusieurs nom selon le contexte à la définition.
 
 Chaque liste est initialisé grâce à la fonction ``ListeER listeER_Vide(void);``.
-Pour savoir si une liste est vide, il y a la fonction ``Bool listeER_estVide(ListeER liste);`` qui renvoit TRUE si la liste est vide.
+Pour savoir si une liste est vide, il y a la fonction ``Bool listeER_estVide(ListeER liste);`` qui renvoit TRUE si la liste est vide. Enfin, les listes sont triées par identifiant des emprunts et des réservations.
 
 ###### Fonction d'affichage
 
@@ -166,13 +169,12 @@ Il existe deux fonctions pour afficher une liste.
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu);
 ```
-La première fonction affiche une liste en entière. Elle est aussi utilisée pour écrire dans les fichiers de données lors de la sauvegarde (en précisant un flux vers un fichier).
+La première fonction affiche une liste en entière. Elle est aussi utilisée pour écrire dans les fichiers de données lors de la sauvegarde (en précisant un flux vers un fichier), justifiant le paramètre ``nb`` (nombre d'élément dans la liste).
 
 La seconde fonction affiche uniquement sur la sortie standard les éléments d'une liste concernant un jeu donné.
 
 ###### Fonction de chargement
 
-<<<<<<< HEAD
 Le chargement des fichiers d'emprunts et de réservations est assuré par la fonction
 ```c
 chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
@@ -204,12 +206,43 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer au lieu d'un emprunt ou d'une réservation. On lui fait aussi passer un pointeur vers une variable ``cErr`` pour retourner un code erreur si besoin.
 
-#### Sauvegarde
+###### Les fonctions de recherche
 
-#### Fin du programme
+Plusieurs fonction de recherche existent selon ce qu'on recherche et les informations qu'on possède.
+```c
+unsigned int rechercherIdLibre(ListeER liste);
+unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
+unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
+```
+La fonction ``rechercherIdLibre()`` permet de rechercher le premier identifiant libre (inutilisé) de la liste qu'on lui passe, ce qui permet de garder les liste trié par identifiant. Cette identifiant servira à définir un nouvel élément à insérer dans la liste.
 
-=======
->>>>>>> 92004e277fd6bc7d425fdaf144c2e8ce9e9cc53c
+La fonction ``rechercherListeER_AdJeu()`` permet de rechercher un élément, selon l'identifiant du jeu emprunté et l'identifiant de l’adhérent qui a emprunté le jeu.
+Cette fonction retourne l'identifiant de l'élément. Elle permet aussi de savoir avec le pointeur ``trouve`` si l'élément a été trouvé ou non.
+
+La fonction ``rechercherListeER_Jeu`` permet de rechercher un élément selon un identifiant de jeu. Cette fonction est surtout utilisé pour savoir si un emprunt ou une réservations existe avec le jeu donné.
+
+###### Réservation la plus ancienne
+
+Quand un jeu est retourné par un adhérent, on recherche les réservations du jeu rendu pour changer la plus ancienne réservation en emprunt. Pour récupérer la réservation la plus ancienne, il faut utiliser la fonction suivante
+```c
+Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation, unsigned int idJeu);
+```
+
+###### Sauvegarde
+
+```c
+CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
+```
+Cette fonction écrit une liste dans un fichier dont le nom est donné par la chaîne de caractère ``nomDeFichier``. Elle prend en paramètre ``nb``, le nombre d'éléments dans la liste. Pour écrire dans le fichier, la fonction utilise ``afficherListeEmpruntReservation()``. Comme décrite plus tôt, cette fonction prend en paramètre un flux (fichier ou stdout) et le nombre d'élément dans la liste.
+
+###### Fin du programme
+
+Tous les éléments des listes sont créés par allocation dynamique. Pour supprimer tous ces éléments, il faut utilisé la fonction suivante
+```c
+ListeER supprimerListe(ListeER liste);
+```
+Cette fonction va libérer la mémoire pour chaque élément de la liste qui lui est passée. Elle retourne ``NULL`` quand tous les éléments de la liste sont supprimés.
+
 ----
 
 ## Traitement des jeux
