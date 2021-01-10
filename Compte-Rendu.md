@@ -162,7 +162,7 @@ Là aussi, le type porte plusieurs nom selon le contexte à la définition.
 Chaque liste est initialisé grâce à la fonction ``ListeER listeER_Vide(void);``.
 Pour savoir si une liste est vide, il y a la fonction ``Bool listeER_estVide(ListeER liste);`` qui renvoit TRUE si la liste est vide. Enfin, les listes sont triées par identifiant des emprunts et des réservations.
 
-###### Fonction d'affichage
+##### Fonction d'affichage
 
 Il existe deux fonctions pour afficher une liste.
 ```c
@@ -173,7 +173,7 @@ La première fonction affiche une liste en entière. Elle est aussi utilisée po
 
 La seconde fonction affiche uniquement sur la sortie standard les éléments d'une liste concernant un jeu donné.
 
-###### Fonction de chargement
+##### Fonction de chargement
 
 Le chargement des fichiers d'emprunts et de réservations est assuré par la fonction
 ```c
@@ -185,7 +185,7 @@ Il faut appeler cette fonction pour chaque liste a créer.
 
 Cette fonction fait appel à la fonction ``lireEmpruntReservation(FILE* flux)`` pour lire dans le fichier.
 
-###### Fonction d'insertion
+##### Fonction d'insertion
 
 Pour insérer un élément dans une liste, il faut appeler la fonction
 ```c
@@ -196,7 +196,7 @@ Elle prend en paramètre la liste dans laquelle on insère l'élément, un point
 ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
 ```
 
-###### Suppression d'un élément
+##### Suppression d'un élément
 
 La suppression d'un élément se passe de la même manière avec deux fonctions.
 ```c
@@ -206,7 +206,7 @@ ListeER supprimerDevantEmpruntReservation(ListeER liste);
 
 La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer au lieu d'un emprunt ou d'une réservation. On lui fait aussi passer un pointeur vers une variable ``cErr`` pour retourner un code erreur si besoin.
 
-###### Les fonctions de recherche
+##### Les fonctions de recherche
 
 Plusieurs fonction de recherche existent selon ce qu'on recherche et les informations qu'on possède.
 ```c
@@ -221,21 +221,21 @@ Cette fonction retourne l'identifiant de l'élément. Elle permet aussi de savoi
 
 La fonction ``rechercherListeER_Jeu`` permet de rechercher un élément selon un identifiant de jeu. Cette fonction est surtout utilisé pour savoir si un emprunt ou une réservations existe avec le jeu donné.
 
-###### Réservation la plus ancienne
+##### Réservation la plus ancienne
 
 Quand un jeu est retourné par un adhérent, on recherche les réservations du jeu rendu pour changer la plus ancienne réservation en emprunt. Pour récupérer la réservation la plus ancienne, il faut utiliser la fonction suivante
 ```c
 Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation, unsigned int idJeu);
 ```
 
-###### Sauvegarde
+##### Sauvegarde
 
 ```c
 CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[], int nb);
 ```
 Cette fonction écrit une liste dans un fichier dont le nom est donné par la chaîne de caractère ``nomDeFichier``. Elle prend en paramètre ``nb``, le nombre d'éléments dans la liste. Pour écrire dans le fichier, la fonction utilise ``afficherListeEmpruntReservation()``. Comme décrite plus tôt, cette fonction prend en paramètre un flux (fichier ou stdout) et le nombre d'élément dans la liste.
 
-###### Fin du programme
+##### Fin du programme
 
 Tous les éléments des listes sont créés par allocation dynamique. Pour supprimer tous ces éléments, il faut utilisé la fonction suivante
 ```c
