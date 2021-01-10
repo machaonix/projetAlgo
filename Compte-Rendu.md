@@ -137,8 +137,8 @@ Les emprunts et les réservations contiennent les mêmes variables, on peut donc
 Pour traiter cette structure, plusieurs fonctions sont disponibles dont voici les prototypes.
 
 ```c
-EmpruntReservation lireEmpruntReservation(FILE* flux); //Lit un emprunt ou une réservation depuis un flux.
-void afficherEmpruntReservation(EmpruntReservation *Empruntreservation, FILE* flux);//Affiche un emprunt ou une réservation dans un flux.
+EmpruntReservation lireEmpruntReservation(FILE* flux);
+void afficherEmpruntReservation(EmpruntReservation *Empruntreservation, FILE* flux);
 ```
 
 Passer le flux en paramètre permet de pouvoir réunir la fonction d'affichage à l'écran et la fonction d'écriture en une seul. Le paramètre flux est donc prévue pour prendre deux arguments possibles:
