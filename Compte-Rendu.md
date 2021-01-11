@@ -41,6 +41,40 @@ Bool IO_Choix_O_N(char message[]);
 Cette fonction test si les caractères ``O`` (pour oui) ou ``N`` (pour non) sont entrés par l'utilisateur. Le message en paramètre est la question posée sans ``?``.
 
 ----
+
+## Fonctionnalités pour les utilisateurs finaux
+
+### Généralités
+Les differentes fonctionnalités sont accessibles à partir d'un menu. Les fonctions suivantes se chargent respectivement de l'affichage et du traitement des entrées de celui ci.
+```C
+void afficheMenu(void);
+void Ludotheque(void);
+```
+La liste des fonctionnalités est représentée par l'énumération suivante.
+```C
+typedef enum {CHOIX_ANNULER_RESERVATION =1 , CHOIX_EMPRUNTER, CHOIX_RETOUR_JEU, CHOIX_AFFICHE_JEU, CHOIX_TRIER_JEU, CHOIX_AJOUTER_JEU, CHOIX_MODIFIER_SUPPRIMER_JEU, CHOIX_NOUV_ADHERANT, CHOIX_RENOUV_ADHERANT, CHOIX_AFFICHE_ADHERANT, CHOIX_AFFICHE_EMPRUNT, CHOIX_AFFICHE_RESERVATION, CHOIX_AFFICHE_RESERVATION_JEU, CHOIX_AFFICHE_EMPRUNT_JEU, CHOIX_SAUVEGARDER, CHOIX_QUITTER} ChoixAction;
+```
+\
+La fonction ``void Ludotheque(void)`` se charge aussi d'initialiser, de charger et de libérer toutes les listes et tableaux stockant adhérants, emprunts, reservations et jeux.
+
+## Sauvegarder et quitter
+CHOIX_SAUVEGARDER et CHOIX_QUITTER dans l'énumération ChoixAction
+```C
+void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
+```
+La fonction ``GLOBAL_Sauvegarder`` est responsable de la sauvegarde des differentes données.
+
+```C
+case CHOIX_QUITTER:
+    if (IO_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
+        GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
+    lance = FALSE;
+    break;
+```
+Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de quitter.
+
+----
+
 ## Fonctions concernant les dates et les adhérents
 ### Les dates
 #### Tout d'abord
