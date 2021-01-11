@@ -1,8 +1,6 @@
 # Compte Rendu du Projet d'algorithmie et de structure de données.
 
-Vous pouvez consulter le code du projet depuis le [depot GitHub](https://github.com/machaonix/projetAlgo).
-
-Tâches:
+Répartition des tâches:
 * Point Allan G5
   - Fonctions de traitement des dates
   - Fonctions de traitement des adhérants
@@ -27,7 +25,8 @@ typedef enum {FALSE, TRUE}Bool;
 
 #### Les codes erreurs
 
-Pour simplifier la gestion des codes erreurs, une énumération de codes erreurs a été créé.
+Pour simplifier et uniformiser la gestion des codes erreurs, une énumération de codes erreurs a été créé.
+A posteriori nous pensons qu'il aurait été interessant de créer un fonction affichant les messages appropriés au different code.
 
 ```c
 typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/,...} CodeErreur;
@@ -35,12 +34,11 @@ typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/,...} CodeErreur;
 
 #### Choix
 
-Il peut arriver de demander un choix à l'utilisateur qui n'attend comme réponse que ``oui`` ou ``non``.
-C'est pour ça qu'il y a la fonction
+Cette fonction permet de poser une question "Oui/Non" de manière simple, la fonction gérant les tests sur l'entrée.
 ```c
 Bool IO_Choix_O_N(char message[]);
 ```
-Cette fonction test si les caractères ``o`` (pour oui) ou ``n`` (pour non) sont entrés par l'utilisateur. Avant d'appeler cette fonction, il faut d'abord afficher la question à l'écran.
+Cette fonction test si les caractères ``O`` (pour oui) ou ``N`` (pour non) sont entrés par l'utilisateur. Le message en paramètre est la question posée sans ``?``.
 
 ----
 ## Fonctions concernant les dates et les adhérents
