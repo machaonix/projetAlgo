@@ -73,6 +73,8 @@ case CHOIX_QUITTER:
 ```
 Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de quitter.
 
+
+
 ----
 
 ## Fonctions concernant les dates et les adhérents
