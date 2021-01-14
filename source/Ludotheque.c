@@ -232,6 +232,21 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 	return TRUE;
 }
 
+/*
+		GLOBAL_ModifierSupprimerJeu
+Description :
+	Permet de modifier ou de supprimer un jeu sans risquer de corrompre des emprunts ou des reservations
+
+Valeur de retour :
+	Si l'opération voulu à été effectué -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau de jeux
+	ListeEmprunt liste_Emprunt -> Liste d'emprunts
+	ListeReservation* liste_Reservation -> La liste des reservations
+	unsigned int* nb_Reservation -> Nombre de reserations
+*/
 Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt liste_Emprunt)
 {
 	Bool trouve;
@@ -243,6 +258,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 	unsigned int nbMinExemplaireTotal;
 	CodeErreur cErr;
 
+	//Recherche du jeu à modifier ou supprimer
 	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
 	if (cErr != ERR_NO_ERR)
 		return FALSE;
@@ -252,6 +268,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 
 	jeu = tabJeu->jeux[rangJeu];
 
+	//Si le jeu est emprunté, il est interdit de le supprimer
 	idER = rechercherListeER_Jeu(liste_Emprunt, jeu->id, &trouve);
 	if (trouve)
 	{
@@ -259,12 +276,14 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 		supprimable = FALSE;
 	}
 
+	//Si le jeu est reservé, il est interdit de le supprimer, à moins d'annuler toutes les reservations le concernant
 	idER = rechercherListeER_Jeu(*liste_Reservation, jeu->id, &trouve);
 	if (trouve)
 	{
 		printf("Ce jeu est actuellement reserver: notemment identifiant %u\n", idER);
 		if (IO_Choix_O_N("Souhaiter vous annuler toutes ces reservations"))
 		{
+			//Annulation de toutes les reservations pour le jeu
 			while (trouve)
 			{
 				*liste_Reservation = supprimerEmpruntReservation(*liste_Reservation, idER, nb_Reservation, &cErr);
@@ -284,6 +303,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 
 	printf("\n");
 	afficheJeu(jeu, stdout);
+	//Si le jeu est supprimable, on demande si il s'agit de l'action que l'utilisateur veut effectuer
 	if (supprimable)
 		if (IO_Choix_O_N("\nSouhaitez vous supprimer le jeu ci dessus"))
 		{
@@ -297,9 +317,12 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 			return TRUE;
 		}
 
+	//On demande si l'utilisateur veut modifier le jeu
 	if (IO_Choix_O_N("\nSouhaitez vous modifier le jeu"))
 	{
+		//Choix de l'élément de modification
 		elementJeuAModifier = choisirElementJeu("modifier le jeu ci dessus");
+		//3 sécurités pour empécher ou restreindre certaines actions
 		if (elementJeuAModifier == ELEM_JEU_ID)
 		{
 			printf("Il n'est pas autorisé de modifier l'identifiant d'un jeu'\n");
@@ -314,12 +337,15 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 		{
 			nbMinExemplaireTotal = jeu->nbExemplaireTotal - jeu->nbExemplaireDispo;
 		}
+
+		//Entrée de la nouvelle valeur
 		cErr = entrerValeurElementJeu(jeu, elementJeuAModifier);
 		if (cErr != ERR_NO_ERR)
 		{
 			printf("Erreur lors de la modification\n");
 			return FALSE;
 		}
+		//Test de limite
 		if (jeu->nbExemplaireTotal<nbMinExemplaireTotal)
 		{
 			printf("Il n'est pas autorisé d'assigner une valeur inferieur au nombres d'exemplaires empruntés.\n");
@@ -335,10 +361,11 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 		printf("Jeu modifié :");
 		afficheJeu(jeu,stdout);
 		printf("\n");
+		return TRUE;
 	}
 
 
-	return TRUE;
+	return FALSE;
 }
 
 
