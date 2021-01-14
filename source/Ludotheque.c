@@ -35,26 +35,22 @@ void Ludotheque(void)
 	CodeErreur cErr;
 	Date dateDuJour;
 
-	fprintf(stderr, "\n1\n");fflush(stderr);
+
 	//initialisation et chargement
 	initTabJeu(&tabJeu);
  	cErr = chargerTabJeu(&tabJeu, "donnee/jeux.don");
  	if (cErr != ERR_NO_ERR) return;
-	fprintf(stderr, "\n1 Jeux ok\n");fflush(stderr);
 
 	tAdherant = (Adherant*) malloc(sizeof(Adherant)*tMaxAdherant);
 	nbElemAdhearant = chargerLesAdherants(&tAdherant, &tMaxAdherant, "donnee/adherant.don");
 	if(nbElemAdhearant < 0) return;
-	fprintf(stderr, "\n1 Adherant ok\n");fflush(stderr);
 
 	liste_Emprunt=chargerListeEmpruntReservation("donnee/emprunts.don",&nb_Emprunt);
-	fprintf(stderr, "\n1 Emprunt ok\n");fflush(stderr);
   	liste_Reservation=chargerListeEmpruntReservation("donnee/reservations.don",&nb_Reservation);
-	fprintf(stderr, "\n1 reservations ok\n");fflush(stderr);
 
 	UTILE_InitNbJeuDispo(liste_Emprunt,&tabJeu);
-	fprintf(stderr, "\n2\n");fflush(stderr);
 
+	
 	printf("Saisir la date du jour (JJ/MM/YYYY):");
 	fflush(stdout);
 	dateDuJour = lireDate(stdin);
