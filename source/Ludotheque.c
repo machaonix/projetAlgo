@@ -666,18 +666,30 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 	afficherListeERJeu(liste, jeuSelect->id);
 }
 
+
+/*
+		UTILE_InitNbJeuDispo
+Description :
+	Initialise les nombres d'exemplaires disponibles pour chaque jeux
+
+Arguments :
+	ListeEmprunt liste_Emprunt -> Liste d'emprunts
+	TableauJeu* tabJeu -> Le tableau de jeux
+*/
 void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu)
 {
 	unsigned int rangJeu;
 	Bool trouve;
 	Jeu jeuIncompet;
 
+	//Le tri par id permet de rechercher plus vite à l'aide des idJeu
 	triTabJeu(tabJeu, ELEM_JEU_ID);
 
+	//On initialise tout les nombres d'exemplaires disponibles au nombre total d'exemplaires
 	for (unsigned int i = 0; i < tabJeu->nbElement; i++)
 		tabJeu->jeux[i]->nbExemplaireDispo = tabJeu->jeux[i]->nbExemplaireTotal;
 
-
+	//On parcourt la liste d'emprunt pour décrémenter le nombre d'exemplaires disponible des jeux empruntés
 	while (liste_Emprunt != NULL)
 	{
 		jeuIncompet.id = liste_Emprunt->empRes.idJeu;
