@@ -89,6 +89,18 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 ```
 Permet la recherche d'un jeu pour lequel afficher les reservations ou les emprunts associés.
 
+## Gestion des jeux
+``CHOIX_TRIER_JEU`` ``CHOIX_AJOUTER_JEU``\
+Ces deux fonctionnalités s'appuient uniquement sur des fonctions de TableauJeu
+
+ ``CHOIX_MODIFIER_SUPPRIMER_JEU``\
+Celle ci requiert differents tests sur les emprunts et les reservations pour éviter de corrompre leurs listes respectives.
+```C
+Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int *nb_Reservation, ListeEmprunt liste_Emprunt);
+```
+``GLOBAL_ModifierSupprimerJeu`` se charge donc d'assurer la cohérance d'une suppression ou d'une modification de jeu.
+
+
 ## Gestion des adherants
 
 
