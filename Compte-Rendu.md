@@ -58,7 +58,7 @@ typedef enum {CHOIX_ANNULER_RESERVATION =1 , CHOIX_EMPRUNTER, CHOIX_RETOUR_JEU, 
 La fonction ``void Ludotheque(void)`` se charge aussi d'initialiser, de charger et de libérer toutes les listes et tableaux stockant adhérants, emprunts, reservations et jeux.
 
 ## Sauvegarder et quitter
-CHOIX_SAUVEGARDER et CHOIX_QUITTER dans l'énumération ChoixAction
+``CHOIX_SAUVEGARDER`` et ``CHOIX_QUITTER`` dans l'énumération ChoixAction
 ```C
 void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
 ```
@@ -73,7 +73,21 @@ case CHOIX_QUITTER:
 ```
 Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de quitter.
 
+## Affichage
+``CHOIX_AFFICHE_JEU``
+``CHOIX_AFFICHE_ADHERANT``
+``CHOIX_AFFICHE_EMPRUNT``
+``CHOIX_AFFICHE_RESERVATION``\
+Ces 4 affichages utilise les fonctions d'affichages fournies avec les différentes structures.
 
+``CHOIX_AFFICHE_RESERVATION_JEU``
+``CHOIX_AFFICHE_EMPRUNT_JEU``\
+Ces deux fonctionnalités d'affichage utilisent une fonction globale.
+
+```C
+void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
+```
+Permet la recherche d'un jeu pour lequel afficher les reservations ou les emprunts associés.
 
 ----
 
