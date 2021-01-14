@@ -137,6 +137,24 @@ void Ludotheque(void)
 }
 
 
+/*
+		GLOBAL_RetourJeu
+Description :
+	Permet de retourner un jeu
+
+Valeur de retour :
+	Si retour effectué -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	Adherant tAdherant[] -> Le tableau d'adhérants
+	unsigned int nbElemAdhearant -> Nombre d'adhérants
+	TableauJeu* tabJeu -> Le tableau de jeux
+	ListeEmprunt* liste_Emprunt -> Liste d'emprunts
+	unsigned int* nb_Emprunt -> Nombre d'emprunts
+	ListeReservation* liste_Reservation -> La liste des reservations (pour savoir si le jeu doit-être transmis)
+	Date dateDuJour -> La date du jour
+*/
 Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
 {
 	unsigned int idAdherant, idEmprunt;
@@ -146,7 +164,7 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 	Bool trouve;
 	CodeErreur cErr;
 
-	//Aderant
+	//Recherche de l'adérant concerné
 	printf("Entrez l'ID de l'adherant\n>>>");
 	fflush(stdout);
 	scanf("%u%*c", &idAdherant);
@@ -157,7 +175,7 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 		return FALSE;
 	}
 
-	//Jeu
+	//Recherche du Jeu retourné
 	cErr = rechercherJeuInteractif(tabJeu, &trouve, &rangJeu);
 	if (cErr != ERR_NO_ERR)
 		return FALSE;
@@ -167,6 +185,7 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 
 	jeuEmprunte = tabJeu->jeux[rangJeu];
 
+	//Recherche de l'emprunt en question
 	idEmprunt = rechercherListeER_AdJeu(*liste_Emprunt, idAdherant, jeuEmprunte->id, &trouve);
 	if (trouve == FALSE)
 	{
@@ -174,15 +193,12 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 		return FALSE;
 	}
 
-
+	//Recherche d'une reservation pour ce jeu
 	rechercherListeER_Jeu(*liste_Reservation, jeuEmprunte->id, &trouve);
 	if (trouve)
 	{
+		//Recherche de la plus vielle reservation pour ce jeu pour le transmettre à l'adherant ayant reservé le premier
 		emprunt = plusVieilleReservationJeu(*liste_Reservation, jeuEmprunte->id);
-		*liste_Reservation = supprimerEmpruntReservation(*liste_Reservation, emprunt.id, nb_Emprunt, &cErr);
-
-		emprunt.id = rechercherIdLibre(*liste_Emprunt);
-		emprunt.date = dateDuJour;
 
 		rangAdherant = rechercherUnAdherant(tAdherant, nbElemAdhearant, emprunt.idAdherant, &trouve);
 		if (trouve == FALSE)
@@ -191,12 +207,21 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, Tablea
 			return FALSE;
 		}
 
+		//Suppression de la reservation
+		*liste_Reservation = supprimerEmpruntReservation(*liste_Reservation, emprunt.id, nb_Emprunt, &cErr);
+
+		//Création d'un nouvel identifiant et mise à jour de la date
+		emprunt.id = rechercherIdLibre(*liste_Emprunt);
+		emprunt.date = dateDuJour;
+
+		//Ajout de ce nouvel emprunt à la liste d'emprunts
 		*liste_Emprunt=insererEmpruntReservation(*liste_Emprunt, nb_Emprunt, emprunt);
+		//Message indiquant le transfert
 		printf("%s %s a reserver le jeu, la reservation devient un emprunt\n",tAdherant[rangAdherant].prenom, tAdherant[rangAdherant].nom);
 	}
 
 
-
+	//Suppression de l'emprunt
 	*liste_Emprunt = supprimerEmpruntReservation(*liste_Emprunt, idEmprunt, nb_Emprunt, &cErr);
 	if (cErr != ERR_NO_ERR)
 	{
