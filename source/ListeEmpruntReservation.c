@@ -191,7 +191,6 @@ ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReserv
   liste=insererDevantEmpruntReservation(liste,er);
   *nb+=1;
 
-  printf("\nId/reservation insérer avec l'Id: %u\n\n",er.id);
   return liste;
 }
 
