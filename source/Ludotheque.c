@@ -381,7 +381,7 @@ Arguments :
 	ListeReservation* liste_Reservation -> pointeur pour faire passer la liste des réservation
 	unsigned int* nb_Reservation -> pointeur sur le nombre d'élément de la liste
 	Adherant tAdherant[] -> tableau d'adhérent
-	unsigned int nbElemAdhearant
+	unsigned int nbElemAdherant
 */
 Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdherant, TableauJeu* tabJeu)
 {
