@@ -453,6 +453,13 @@ CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 ```
 Ces fonctions manipulent les fichiers pour sauvegarder et charger un TableauJeu.
 
+###### Initialisation
+```C
+void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu);
+```
+Cette fonction n'est pas une fonction de TableauJeu.h mais une fonction de Ludotheque.h.
+Elle initialise les nombres d'exemplaires disponibles des différents jeux.
+
 ###### Affichage
 
 ```C
@@ -497,5 +504,3 @@ void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
 ```
 Ces fonctions permettent d'ajouter ou de retirer des Jeu du tableau avec ou sans interaction avec l'utilisateur.\
 `retirerJeuInteractif` n'est pas utilisé dans ce projet car il est necessaire de faire des tests sur les listes de reservations et d'emprunts.
-
-.
