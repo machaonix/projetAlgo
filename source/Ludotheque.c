@@ -50,7 +50,7 @@ void Ludotheque(void)
 
 	UTILE_InitNbJeuDispo(liste_Emprunt,&tabJeu);
 
-	
+
 	printf("Saisir la date du jour (JJ/MM/YYYY):");
 	fflush(stdout);
 	dateDuJour = lireDate(stdin);
@@ -239,9 +239,9 @@ Valeur de retour :
 
 Arguments :
 	TableauJeu* tabJeu -> Le tableau de jeux
-	ListeEmprunt liste_Emprunt -> Liste d'emprunts
 	ListeReservation* liste_Reservation -> La liste des reservations
 	unsigned int* nb_Reservation -> Nombre de reserations
+	ListeEmprunt liste_Emprunt -> Liste d'emprunts
 */
 Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt liste_Emprunt)
 {
