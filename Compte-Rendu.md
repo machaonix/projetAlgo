@@ -89,6 +89,7 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 ```
 Permet la recherche d'un jeu pour lequel afficher les reservations ou les emprunts associés.
 
+
 ## Gestion des jeux
 ``CHOIX_TRIER_JEU`` ``CHOIX_AJOUTER_JEU``\
 Ces deux fonctionnalités s'appuient uniquement sur des fonctions de TableauJeu
@@ -100,10 +101,17 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 ```
 ``GLOBAL_ModifierSupprimerJeu`` se charge donc d'assurer la cohérance d'une suppression ou d'une modification de jeu.
 
-
-## Gestion des adherants
-
-
+## Gestion des adhérants
+### Ajouter un `Adherant`
+C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérants si cet `Adherant` n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
+```c
+Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
+```
+### Renouveler un abonement
+C'est la fonction `GLOBAL_RenouvellerAdherant` qui s'occupe de renouveler un abonnement. Elle demande un montant et renouvelle l’abonnement en fonction de ce dernier. Elle renvoi un booléen pour indiquer si tout c'est bien passé.
+```c
+Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
+```
 
 ## Emprunt et reservation de jeux
 
