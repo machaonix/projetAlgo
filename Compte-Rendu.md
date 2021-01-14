@@ -91,6 +91,7 @@ Ces deux fonctionnalités d'affichage utilisent une fonction globale.
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
 ```
 Permet la recherche d'un jeu pour lequel afficher les reservations ou les emprunts associés.
+On fait passer un booléen à la fonction pour savoir si il s'agit d'afficher des réservations ou des emprunts, de manière à modifier l'affichage en conséquence.
 
 
 ## Gestion des jeux
@@ -141,23 +142,6 @@ Cette fonction permet d'annuler une réservation en demandant les informations �
 Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
 ```
 Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformé en emprunt.
-
-#### Afficher les listes
-
-###### Afficher les emprunts et réservations en cours
-
-Pour afficher les emprunts et réservations en cours, il faut utiliser la fonction
-```c
-void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
-```
-On fait passer un booléen à la fonction pour savoir si on afficher les réservations ou les emprunts, et pour modifier l'affichage en conséquence.
-
-###### Afficher les emprunts et réservations en cours concernant un jeu données
-
-```c
-void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
-```
-La fonction demande l'identifiant du jeu à l'utilisateur et rechercher dans la liste. Là aussi, un booléen est passé pour les mêmes raisons que l'autre fonction d'affichage.
 
 ----
 
