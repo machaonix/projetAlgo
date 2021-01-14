@@ -40,6 +40,9 @@ Bool IO_Choix_O_N(char message[]);
 ```
 Cette fonction test si les caractères ``O`` (pour oui) ou ``N`` (pour non) sont entrés par l'utilisateur. Le message en paramètre est la question posée sans ``?``.
 
+#### Date du jour
+La date du jour est demandé à l'utilisateur au début du programme pour le bon fonctionnement du de ce dernier. En effet, grâce à tout cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passé cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner.
+
 ----
 
 ## Fonctionnalités pour les utilisateurs finaux
