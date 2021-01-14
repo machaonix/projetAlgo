@@ -381,7 +381,8 @@ Arguments :
 	ListeReservation* liste_Reservation -> pointeur pour faire passer la liste des réservation
 	unsigned int* nb_Reservation -> pointeur sur le nombre d'élément de la liste
 	Adherant tAdherant[] -> tableau d'adhérent
-	unsigned int nbElemAdherant
+	unsigned int nbElemAdherant -> nombre d'adhérant dans le tableau
+	TableauJeu* tabjeu -> pointeur vers le tableau contenant les jeux
 */
 Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdherant, TableauJeu* tabJeu)
 {
@@ -426,6 +427,26 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 	return TRUE;
 }
 
+/*
+		GLOBAL_Emprunter
+Description :
+	Permet de créer un emprunt ou une reservation si le jeu est indisponible
+
+Valeur de retour :
+	Si retour effectué -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	ListeReservation* liste_Reservation -> pointeur pour faire passer la liste des réservation
+	unsigned int* nb_Reservation -> pointeur sur le nombre d'élément de la liste
+	ListeEmprunt* liste_Emprunt -> pointeur pour faire passer la liste des réservation
+	unsigned int* nb_Emprunt -> pointeur sur le nombre d'élément de la liste
+	TableauJeu* tabjeu -> pointeur vers le tableau contenant les jeux
+	Adherant tAdherant[] -> tableau d'adhérent
+	unsigned int nbElemAdherant -> nombre d'adhérant dans le tableau
+	unsigned int* tMaxAdhrant -> nombre maximum d'élément dans le tableau
+	Date dateDuJour -> date du jour (entrée au lancement du programme)
+*/
 Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
 {
 	EmpruntReservation er;
@@ -609,6 +630,16 @@ void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int n
 	sauvegarderListeER(liste_Reservation, "donnee/reservations.don", nb_Reservation);
 }
 
+/*
+		GLOBAL_afficherListeERJeu_Interactif
+Description :
+	Permet d'afficher les élément de la liste en fonction d'un jeu que la fonction demande à l'utilisateur.
+
+Arguments :
+	ListeER liste -> liste dans laquelle on effectue la recherche
+	TableauJeu* tabJeu -> pointeur vers le tableau contenant les jeux
+	Bool isReservation -> booleen indiquant si on affiche les réservations ou les emprunts
+*/
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
 {
 	unsigned int rangJeu;

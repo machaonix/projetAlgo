@@ -113,7 +113,48 @@ C'est la fonction `GLOBAL_RenouvellerAdherant` qui s'occupe de renouveler un abo
 Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
 ```
 
-## Emprunt et reservation de jeux
+## Emprunt et réservation de jeux
+
+Voici les différentes fonctionnalités que l'utilisateur peut utiliser.
+
+#### Emprunter et réserver
+
+Pour emprunter un jeu, on utilise la fonction
+```c
+GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
+```
+Si il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
+
+#### Annuler une réservation
+
+```c
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
+```
+Cette fonction permet d'annuler une réservation en demandant les informations à l'utilisateur.
+
+#### Retourner un jeux
+
+```c
+Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
+```
+Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformé en emprunt.
+
+#### Afficher les listes
+
+###### Afficher les emprunts et réservations en cours
+
+Pour afficher les emprunts et réservations en cours, il faut utiliser la fonction
+```c
+void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
+```
+On fait passer un booléen à la fonction pour savoir si on afficher les réservations ou les emprunts, et pour modifier l'affichage en conséquence.
+
+###### Afficher les emprunts et réservations en cours concernant un jeu données
+
+```c
+void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
+```
+La fonction demande l'identifiant du jeu à l'utilisateur et rechercher dans la liste. Là aussi, un booléen est passé pour les mêmes raisons que l'autre fonction d'affichage.
 
 ----
 
