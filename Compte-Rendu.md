@@ -363,6 +363,7 @@ typedef struct
 } TableauJeu;
 ```
 Le tableau à proprement parler est un tableau statique de pointeurs vers des Jeu. Sa taille est défini par une macro du préprocesseur (Ce qui permet de l'utiliser dans les fonctions en ayant besoin).\
+Nous avons choisi un tableau de pointeurs pour éviter un maximum la copie des Jeu durant les nombreux tris effectué sur le tableau de jeux.\
 Le nombre de jeux dans le tableau est stocké dans la variable nbElement.\
 TableauJeu contient aussi une variable ElementJeu indiquant si et comment le tableau est ordonné.
 
