@@ -368,8 +368,22 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 	return FALSE;
 }
 
+/*
+		GLOBAL_Anuller_Reservation
+Description :
+	Permet d'annuler une réservation.
 
-Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
+Valeur de retour :
+	Si retour effectué -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	ListeReservation* liste_Reservation -> pointeur pour faire passer la liste des réservation
+	unsigned int* nb_Reservation -> pointeur sur le nombre d'élément de la liste
+	Adherant tAdherant[] -> tableau d'adhérent
+	unsigned int nbElemAdhearant
+*/
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdherant, TableauJeu* tabJeu)
 {
 	unsigned int idAdherant, idReservation;
 	unsigned int rangJeu;
@@ -380,7 +394,7 @@ Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservati
 	printf("Entrez l'ID de l'adherant\n>>>");
 	fflush(stdout);
 	scanf("%u%*c", &idAdherant);
-	rechercherUnAdherant(tAdherant, nbElemAdhearant, idAdherant, &trouve);
+	rechercherUnAdherant(tAdherant, nbElemAdherant, idAdherant, &trouve);
 	if(!trouve)
 	{
 		fprintf(stderr, "Cet adherant n'existe pas\n");
