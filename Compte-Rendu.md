@@ -89,6 +89,12 @@ void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Boo
 ```
 Permet la recherche d'un jeu pour lequel afficher les reservations ou les emprunts associés.
 
+## Gestion des adherants
+
+
+
+## Emprunt et reservation de jeux
+
 ----
 
 ## Fonctions concernant les dates et les adhérents
