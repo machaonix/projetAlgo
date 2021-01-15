@@ -589,9 +589,10 @@ Valeur de retour :
 	Sinon -> FALSE
 
 Arguments :
-	Adherant tAdherant[] -> tableau d'adhérent
-	unsigned int nbElemAdherant -> nombre d'adhérant dans le tableau
+	Adherant* tAdherant[] -> tableau d'adhérent
+	unsigned int* nbElemAdherant -> nombre d'adhérant dans le tableau
 	unsigned int* tMaxAdhrant -> nombre maximum d'élément dans le tableau
+	unsigned int* rangNouvAdherant -> (peut-être NULL) si non NULL, se voit assigner le rang de l'adhérant nouvellement enregistré
 	Date dateDuJour -> date du jour (entrée au lancement du programme)
 */
 Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdherant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
@@ -616,11 +617,24 @@ Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdherant, unsigned 
 	}
 }
 
-Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdherant)
+/*
+		GLOBAL_RenouvellerAdherant
+Description :
+	Permet le renouvellement d'une inscription.
+
+Valeur de retour :
+	Si renouvellement effectué -> TRUE
+	Sinon -> FALSE
+
+Arguments :
+	Adherant* tAdherant[] -> tableau d'adhérent
+	unsigned int* nbElemAdherant -> nombre d'adhérant dans le tableau
+	Date dateDuJour -> date du jour (entrée au lancement du programme)
+*/
+Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdherant, Date dateDuJour)
 {
 	unsigned int idAdherantTmp, indexAdherant;
 	float montantRemis;
-	Date dateTmp;
 	Bool trouveAdherant;
 
 
@@ -637,11 +651,7 @@ Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdheran
 		return FALSE;
 	}
 
-	printf("Saisir la date du jour (JJ/MM/YYYY):\n");
-	fflush(stdout);
-	dateTmp = lireDate(stdin);
-
-	renouvelerInscription(&(tAdherant[indexAdherant]), &dateTmp);
+	renouvelerInscription(&(tAdherant[indexAdherant]), &dateDuJour);
 
 	return TRUE;
 }
