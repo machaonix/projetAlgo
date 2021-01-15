@@ -656,6 +656,20 @@ Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdheran
 	return TRUE;
 }
 
+/*
+		GLOBAL_Sauvegarder
+Description :
+	Sauvegarde les differentes données
+
+Arguments :
+	TableauJeu* tabJeu -> Le tableau de jeux
+	Adherant tAdherant[] -> Le tableau d'adhérants
+	unsigned int nbElemAdherant -> Nombre d'adhérants
+	ListeReservation liste_Reservation -> La liste des reservations
+	unsigned int nb_Reservation -> Nombre de reservations
+	ListeEmprunt liste_Emprunt -> Liste d'emprunts
+	unsigned int nb_Emprunt -> Nombre d'emprunts
+*/
 void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdherant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt)
 {
 	printf("Sauvegarde\n");
