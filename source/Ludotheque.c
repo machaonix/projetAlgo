@@ -1,6 +1,10 @@
 #include "Ludotheque.h"
 
-
+/*
+		afficheMenu
+Description :
+	Affiche les differentes actions possibles, ainsi que leurs numéros
+*/
 void afficheMenu(void)
 {
 	printf("\n\tMenu :\n");
@@ -22,14 +26,19 @@ void afficheMenu(void)
 	printf("%d)\tQuitter\n", CHOIX_QUITTER);
 }
 
+/*
+		Ludotheque
+Description :
+	Fonction globale de l'application : déclare, charge et initalise les tableaux et listes necessaires au bon fonctionnement de l'application.
+*/
 void Ludotheque(void)
 {
 	TableauJeu tabJeu;
 	Adherant *tAdherant;
 	unsigned int tMaxAdherant = 2;
 	int nbElemAdhearant;
-	ListeER liste_Emprunt=listeER_Vide(),liste_Reservation=listeER_Vide();
-	unsigned int nb_Emprunt,nb_Reservation;
+	ListeER liste_Emprunt=listeER_Vide(), liste_Reservation=listeER_Vide();
+	unsigned int nb_Emprunt, nb_Reservation;
 	unsigned int reponceDuMenu;
 	Bool lance = TRUE;
 	CodeErreur cErr;
@@ -54,14 +63,19 @@ void Ludotheque(void)
 	printf("Saisir la date du jour (JJ/MM/YYYY):");
 	fflush(stdout);
 	dateDuJour = lireDate(stdin);
+
 	//Menu
 	while(lance)
 	{
+		//Affichage
 		afficheMenu();
 		printf("\n>>>");
 		fflush(stdout);
+
+		//Choix utilisateur
 		scanf("%u%*c", &reponceDuMenu);
 
+		//Réaction au choix
 		switch(reponceDuMenu)
 		{
 			case CHOIX_ANNULER_RESERVATION:
@@ -125,6 +139,7 @@ void Ludotheque(void)
 	}
 
 
+	//Libération de la mémoire
 	supprimerListe(liste_Reservation);
 	supprimerListe(liste_Emprunt);
 	libererTabJeu(&tabJeu);
