@@ -48,7 +48,7 @@ La date du jour est demandée à l'utilisateur au début du programme pour le bo
 ## Fonctionnalités pour les utilisateurs finaux
 
 ### Généralités
-Les differentes fonctionnalités sont accessibles à partir d'un menu. Les fonctions suivantes se chargent respectivement de l'affichage et du traitement des entrées de celui ci.
+Les différentes fonctionnalités sont accessibles à partir d'un menu. Les fonctions suivantes se chargent respectivement de l'affichage et du traitement des entrées de celui ci.
 ```C
 void afficheMenu(void);
 void Ludotheque(void);
@@ -109,7 +109,8 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 ### Ajouter un `Adherant`
 C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérants si il n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
 ```c
-Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
+Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant,
+	 unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
 ```
 ### Renouveler un abonnement
 C'est la fonction `GLOBAL_RenouvellerAdherant` qui s'occupe de renouveler un abonnement. Elle demande un montant et renouvelle l’abonnement en fonction de ce dernier. Elle renvoi un booléen pour indiquer si tout c'est bien passé.
@@ -212,7 +213,8 @@ void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned 
 unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, Bool* trouve);
 int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[]);
 Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
-CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2);
+CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1,
+	Adherant tAdherant2[], unsigned int tMax2);
 unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem);
 ```
 Ici, plusieurs fonctions on était problématique lors de leurs implémentation. En effet, les fonction `copieTabAdherant` et `insererAdherant` m'ont posées problème. Je(*Allan POINT*) n'arivait pas à réallouer le tableaux dans la fonction `copieTabAdherant` et donc j'ai du le faire dans `insererAdherant`. C'est pour cette raison que `copieTabAdherant` renvoit **ERR_OUT_OF_RANG** en cas d'erreur.
