@@ -41,7 +41,7 @@ Bool IO_Choix_O_N(char message[]);
 Cette fonction test si les caractères ``O`` (pour oui) ou ``N`` (pour non) sont entrés par l'utilisateur. Le message en paramètre est la question posée sans ``?``.
 
 #### Date du jour
-La date du jour est demandé à l'utilisateur au début du programme pour le bon fonctionnement du de ce dernier. En effet, grâce à tout cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passé cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner.
+La date du jour est demandée à l'utilisateur au début du programme pour le bon fonctionnement du de ce dernier. En effet, grâce à cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passer cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner.
 
 ----
 
@@ -107,11 +107,11 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 
 ## Gestion des adhérants
 ### Ajouter un `Adherant`
-C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérants si cet `Adherant` n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
+C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérants si il n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
 ```c
 Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
 ```
-### Renouveler un abonement
+### Renouveler un abonnement
 C'est la fonction `GLOBAL_RenouvellerAdherant` qui s'occupe de renouveler un abonnement. Elle demande un montant et renouvelle l’abonnement en fonction de ce dernier. Elle renvoi un booléen pour indiquer si tout c'est bien passé.
 ```c
 Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
