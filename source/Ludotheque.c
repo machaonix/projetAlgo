@@ -106,7 +106,7 @@ void Ludotheque(void)
 				GLOBAL_NouvelAdherant(&tAdherant, &nbElemAdherant, &tMaxAdherant, NULL, dateDuJour);
 				break;
 			case CHOIX_RENOUV_ADHERANT:
-				GLOBAL_RenouvellerAdherant(tAdherant, nbElemAdherant);
+				GLOBAL_RenouvellerAdherant(tAdherant, nbElemAdherant, dateDuJour);
 				break;
 			case CHOIX_AFFICHE_ADHERANT:
 				afficheTabAdherant(tAdherant, nbElemAdherant, stdout, TRUE);
@@ -505,7 +505,7 @@ Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Rese
 	  	{
 	  		if(IO_Choix_O_N("Cet adherant n'a plus une insciption valide, voulez vous renouveller son abonement"))
 	  		{
-	  			if(!GLOBAL_RenouvellerAdherant(*tAdherant, *nbElemAdherant))
+	  			if(!GLOBAL_RenouvellerAdherant(*tAdherant, *nbElemAdherant, dateDuJour))
 	  			{
 	  				printf("Reservation avortée\n");
 	  				return FALSE;
