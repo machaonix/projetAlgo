@@ -124,11 +124,14 @@ void Ludotheque(void)
 				GLOBAL_afficherListeERJeu_Interactif(liste_Emprunt, &tabJeu, FALSE);
 				break;
 			case CHOIX_SAUVEGARDER:
-				GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdherant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
+				if (!GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdherant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt))
+					printf("Une erreur à perturbé la sauvegarde\n");
 				break;
 			case CHOIX_QUITTER:
 				if (IO_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
-					GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdherant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
+					if (!GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdherant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt))
+						if (!IO_Choix_O_N("Un erreur à perturbé la sauvegarde, souhaitez vous tout de meme quitter"))
+							break;
 				lance = FALSE;
 				break;
 			default:
@@ -661,6 +664,10 @@ Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdheran
 Description :
 	Sauvegarde les differentes données
 
+Valeur de retour :
+	Si la sauvegarde s'est bien passée -> TRUE
+	Sinon -> FALSE
+
 Arguments :
 	TableauJeu* tabJeu -> Le tableau de jeux
 	Adherant tAdherant[] -> Le tableau d'adhérants
@@ -670,13 +677,25 @@ Arguments :
 	ListeEmprunt liste_Emprunt -> Liste d'emprunts
 	unsigned int nb_Emprunt -> Nombre d'emprunts
 */
-void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdherant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt)
+Bool GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdherant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt)
 {
+	CodeErreur cErr;
+	Bool sauvegardeEffectuee = TRUE;
 	printf("Sauvegarde\n");
-	sauvegarderTabJeu(tabJeu, "donnee/jeux.don");
-	sauvegarderAdherant(tAdherant, nbElemAdherant, "donnee/adherant.don");
-	sauvegarderListeER(liste_Emprunt, "donnee/emprunts.don", nb_Emprunt);
-	sauvegarderListeER(liste_Reservation, "donnee/reservations.don", nb_Reservation);
+	cErr = sauvegarderTabJeu(tabJeu, "donnee/jeux.don");
+	if (cErr != ERR_NO_ERR)
+		sauvegardeEffectuee = FALSE;
+	cErr = sauvegarderAdherant(tAdherant, nbElemAdherant, "donnee/adherant.don");
+	if (cErr != ERR_NO_ERR)
+		sauvegardeEffectuee = FALSE;
+	cErr = sauvegarderListeER(liste_Emprunt, "donnee/emprunts.don", nb_Emprunt);
+	if (cErr != ERR_NO_ERR)
+		sauvegardeEffectuee = FALSE;
+	cErr = sauvegarderListeER(liste_Reservation, "donnee/reservations.don", nb_Reservation);
+	if (cErr != ERR_NO_ERR)
+		sauvegardeEffectuee = FALSE;
+
+	return sauvegardeEffectuee;
 }
 
 /*

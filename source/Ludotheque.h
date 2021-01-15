@@ -22,7 +22,7 @@ Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdherant, Tableau
 Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdherant, Date dateDuJour);
 Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdherant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour);
 
-void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdherant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
+Bool GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdherant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
 
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation);
 
