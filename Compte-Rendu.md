@@ -26,7 +26,7 @@ typedef enum {FALSE, TRUE}Bool;
 #### Les codes erreurs
 
 Pour simplifier et uniformiser la gestion des codes erreurs, une énumération de codes erreurs a été créé.
-A posteriori nous pensons qu'il aurait été interessant de créer un fonction affichant les messages appropriés au different code.
+A posteriori nous pensons qu'il aurait été intéressant de créer un fonction affichant les messages appropriés au différent code.
 
 ```c
 typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/,...} CodeErreur;
