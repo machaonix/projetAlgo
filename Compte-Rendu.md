@@ -126,21 +126,27 @@ Voici les différentes fonctionnalités que l'utilisateur peut utiliser.
 
 Pour emprunter un jeu, on utilise la fonction
 ```c
-GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
+GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation,
+  ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu,
+  Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant,
+  Date dateDuJour)
 ```
 Si il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
 
 #### Annuler une réservation
 
 ```c
-Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation,
+  Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
 ```
 Cette fonction permet d'annuler une réservation en demandant les informations à l'utilisateur.
 
 #### Retourner un jeux
 
 ```c
-Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
+Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant,
+  TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt,
+  ListeReservation* liste_Reservation, Date dateDuJour)
 ```
 Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformé en emprunt.
 
@@ -315,7 +321,8 @@ La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer a
 Plusieurs fonction de recherche existent selon ce qu'on recherche et les informations qu'on possède.
 ```c
 unsigned int rechercherIdLibre(ListeER liste);
-unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
+unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant,
+  unsigned int idJeu, Bool* trouve);
 unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
 ```
 La fonction ``rechercherIdLibre()`` permet de rechercher le premier identifiant libre (inutilisé) de la liste qu'on lui passe, ce qui permet de garder les liste trié par identifiant. Cette identifiant servira à définir un nouvel élément à insérer dans la liste.
@@ -329,7 +336,8 @@ La fonction ``rechercherListeER_Jeu`` permet de rechercher un élément selon un
 
 Quand un jeu est retourné par un adhérent, on recherche les réservations du jeu rendu pour changer la plus ancienne réservation en emprunt. Pour récupérer la réservation la plus ancienne, il faut utiliser la fonction suivante
 ```c
-Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation, unsigned int idJeu);
+Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation,
+  unsigned int idJeu);
 ```
 
 ##### Sauvegarde
