@@ -133,21 +133,28 @@ Voici les différentes fonctionnalités que l'utilisateur peut utiliser.
 
 Pour emprunter un jeu, on utilise la fonction
 ```c
-Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
+Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation,
+  unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt,
+  unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[],
+  int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
 ```
 Si il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
 
 #### Annuler une réservation
 
 ```c
-Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr,
+  unsigned int* nb_Reservation, Adherant tAdherant[],
+  unsigned int nbElemAdhearant, TableauJeu* tabJeu)
 ```
 Cette fonction permet d'annuler une réservation en demandant les informations à l'utilisateur.
 
 #### Retourner un jeux
 
 ```c
-Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
+Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant,
+  TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt,
+  ListeReservation* liste_Reservation, Date dateDuJour)
 ```
 Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformé en emprunt.
 
