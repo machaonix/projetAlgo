@@ -14,7 +14,7 @@ Répartition des tâches:
 Sujet: programme aidant la gestion des adhérents, des emprunts et des réservations d'une ludothèque.
 
 ----
-## Généralité
+## Généralités
 
 #### Le type Booléen
 
