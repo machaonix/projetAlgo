@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "TableauJeu.h"
 #include "ListeEmpruntReservation.h"
-#include "Adherant.h"
+#include "Adherent.h"
 #include "ioUtilitaire.h"
 
 
@@ -15,14 +15,14 @@ void afficheMenu(void);
 
 void Ludotheque(void);
 
-Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdherant, TableauJeu* tabJeu);
-Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdherant, unsigned int* tMaxAdherant, Date dateDuJour);
-Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdherant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour);
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherent tAdherent[], unsigned int nbElemAdherent, TableauJeu* tabJeu);
+Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherent* tAdherent[], int* nbElemAdherent, unsigned int* tMaxAdherent, Date dateDuJour);
+Bool GLOBAL_RetourJeu(Adherent tAdherent[], unsigned int nbElemAdherent, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour);
 
-Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdherant, Date dateDuJour);
-Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdherant, unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour);
+Bool GLOBAL_RenouvellerAdherent(Adherent tAdherent[], unsigned int nbElemAdherent, Date dateDuJour);
+Bool GLOBAL_NouvelAdherent(Adherent* tAdherent[], int* nbElemAdherent, unsigned int* tMaxAdherent, unsigned int* rangNouvAdherent, Date dateDuJour);
 
-Bool GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdherant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
+Bool GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherent tAdherent[], unsigned int nbElemAdherent, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
 
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation);
 

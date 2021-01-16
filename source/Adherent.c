@@ -1,39 +1,39 @@
-#include "Adherant.h"
+#include "Adherent.h"
 
-Adherant lireAdherant(FILE* flux)
+Adherent lireAdherent(FILE* flux)
 {
 	//Déclaration de variables utiles
-	Adherant adherantEnCourDeLecture;
+	Adherent adherentEnCourDeLecture;
 	char civilite;
 
 	//Lecture de l'identifient et de la civilitée de l'adhérant
-	fscanf(flux, "%d%*c", &(adherantEnCourDeLecture.id));
+	fscanf(flux, "%d%*c", &(adherentEnCourDeLecture.id));
 	civilite = fgetc(flux);
 
 	//determination de la civilitée a partir d'information lu
 	switch(civilite)
 	{
 		case 'H':
-			adherantEnCourDeLecture.civilite = HOMME;
+			adherentEnCourDeLecture.civilite = HOMME;
 			break;
 		case 'F':
-			adherantEnCourDeLecture.civilite = FEMME;
+			adherentEnCourDeLecture.civilite = FEMME;
 			break;
 		default:
-			adherantEnCourDeLecture.civilite = INCONU;
+			adherentEnCourDeLecture.civilite = INCONU;
 			break;
 	}
 
 	//lecture du nom et du prénom de l'adhérant
-	fscanf(flux, "%s%s%*c", adherantEnCourDeLecture.nom, adherantEnCourDeLecture.prenom);
+	fscanf(flux, "%s%s%*c", adherentEnCourDeLecture.nom, adherentEnCourDeLecture.prenom);
 
 	//Lecture de la date d'inscription de l'adhérant
-	adherantEnCourDeLecture.dateInscri = lireDate(flux);
+	adherentEnCourDeLecture.dateInscri = lireDate(flux);
 
-	return adherantEnCourDeLecture;
+	return adherentEnCourDeLecture;
 }
 
-void afficheAdherant(Adherant ad, FILE* flux, Bool entete)
+void afficheAdherent(Adherent ad, FILE* flux, Bool entete)
 {
 	//affichage d'une entete si le flux est la sortie standard
 	if(flux == stdout && entete)
@@ -59,17 +59,17 @@ void afficheAdherant(Adherant ad, FILE* flux, Bool entete)
 	fprintf(flux, "\n");
 }
 
-void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete)
+void afficheTabAdherent(Adherent tAdherent[], unsigned int nbElem, FILE* flux, Bool entete)
 {
 	if(entete)
 		printf("ID  CIVILITÉE\tNOM\tPRENOM\tDATEINSCRIPTION\n");
 	for(unsigned int i=0; i<nbElem; ++i)
-		afficheAdherant(tAdherant[i], flux, FALSE);
+		afficheAdherent(tAdherent[i], flux, FALSE);
 }
 
-Adherant nouvAdherant(unsigned int id, Date dateDuJour)
+Adherent nouvAdherent(unsigned int id, Date dateDuJour)
 {
-	Adherant tmp;
+	Adherent tmp;
 	char* espace = NULL;
 	char civilite;
 	tmp.id = id;
@@ -125,116 +125,116 @@ Adherant nouvAdherant(unsigned int id, Date dateDuJour)
 	return tmp;
 }
 
-int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad)
+int insererAdherent(Adherent* tAdherent[], unsigned int nbElem, unsigned int *tMax, Adherent* ad)
 {
 	Bool trouve;
 	//Si le tableau est trop petit, l'agrandir de 10 espaces memoires
 	if(nbElem >= *tMax)
 	{
 		*tMax = *tMax+10;
-		Adherant *tmp = *tAdherant;											//variable temporaire contenant l'addresse du tableau d'Adherant
-		*tAdherant = (Adherant*) malloc(sizeof(Adherant)*(*tMax));			//allocation d'un tableau superieur de 10 cases memoires par rapport au précédant
-		if(copieTabAdherant(tmp, nbElem, *tAdherant, *tMax) != ERR_NO_ERR)	//copie les valeur du premier tableau dans le deuxieme et arret de la fonction
+		Adherent *tmp = *tAdherent;											//variable temporaire contenant l'addresse du tableau d'Adherent
+		*tAdherent = (Adherent*) malloc(sizeof(Adherent)*(*tMax));			//allocation d'un tableau superieur de 10 cases memoires par rapport au précédant
+		if(copieTabAdherent(tmp, nbElem, *tAdherent, *tMax) != ERR_NO_ERR)	//copie les valeur du premier tableau dans le deuxieme et arret de la fonction
 			return ERR_OPERATION_INVALIDE;									//en cas de problèmes
 		free(tmp);															//liberation du tableau precedant
-		if(*tAdherant == NULL)												//gestion des erreurs d'allocations
+		if(*tAdherent == NULL)												//gestion des erreurs d'allocations
 			return ERR_ALLOCATION;
 	}
 
-	//Verifie si l'Adherant n'existe pas déjà, au quelle cas, on stop la fonction
-	unsigned int index = rechercherUnAdherant(*tAdherant, nbElem, ad->id, &trouve);
+	//Verifie si l'Adherent n'existe pas déjà, au quelle cas, on stop la fonction
+	unsigned int index = rechercherUnAdherent(*tAdherent, nbElem, ad->id, &trouve);
 	if(trouve == TRUE)
 	{
-		fprintf(stderr, "L'adherant %d existe deja.\n", ad->id);
+		fprintf(stderr, "L'adherent %d existe deja.\n", ad->id);
 		return nbElem;
 	}
 
-	//Inserssion de l'Adherant
-	decalageADroiteAdherant(*tAdherant, index, nbElem);
-	(*tAdherant)[index] = *ad;
+	//Inserssion de l'Adherent
+	decalageADroiteAdherent(*tAdherent, index, nbElem);
+	(*tAdherent)[index] = *ad;
 
 	return nbElem+1;
 }
 
-int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id)
+int supprimerAdherent(Adherent tAdherent[], unsigned int nbElem, unsigned int id)
 {
 	Bool trouve;
 
-	//Verifie si l'Adherant n'existe pas, au quelle cas, on stop la fonction
-	unsigned int index = rechercherUnAdherant(tAdherant, nbElem, id, &trouve);
+	//Verifie si l'Adherent n'existe pas, au quelle cas, on stop la fonction
+	unsigned int index = rechercherUnAdherent(tAdherent, nbElem, id, &trouve);
 	if(trouve == FALSE)
 	{
-		fprintf(stderr, "L'adherant %d n'existe pas.\n", id);
+		fprintf(stderr, "L'adherent %d n'existe pas.\n", id);
 		return nbElem;
 	}
 
-	//suppression de l'Adherant de possistion index
-	decalageAGaucheAdherant(tAdherant, index, nbElem);
+	//suppression de l'Adherent de possistion index
+	decalageAGaucheAdherent(tAdherent, index, nbElem);
 	return nbElem-1;
 }
 
-void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem)
+void decalageAGaucheAdherent(Adherent tAdherent[], unsigned int debut, unsigned int nbElem)
 {
 	for(unsigned int i=debut; i>nbElem; ++i)
-		tAdherant[i] = tAdherant[i+1];
+		tAdherent[i] = tAdherent[i+1];
 }
 
-void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem)
+void decalageADroiteAdherent(Adherent tAdherent[], unsigned int debut, unsigned int nbElem)
 {
 	for(unsigned int i=nbElem; i>debut; --i)
-		tAdherant[i] = tAdherant[i-1];
+		tAdherent[i] = tAdherent[i-1];
 }
 
-unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, Bool* trouve)
+unsigned int rechercherUnAdherent(Adherent tAdherent[], unsigned int nbElem, unsigned int id, Bool* trouve)
 {
 	int inf=0, sup=nbElem-1;
 	int mil;
 
 	*trouve = FALSE;
 
-	//Algorythme addapté pour les Adherants
+	//Algorythme addapté pour les Adherents
 	while(inf <= sup)
 	{
 		mil = (inf+sup) / 2;
-		if(id <= tAdherant[mil].id)
+		if(id <= tAdherent[mil].id)
 			sup = mil-1;
 		else
 			inf = mil+1;
 	}
-	if(tAdherant[inf].id == id)
+	if(tAdherent[inf].id == id)
 		*trouve = TRUE;
 	return inf;
 }
 
-int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[])
+int chargerLesAdherents(Adherent* tAdherent[], unsigned int* tMax, char nomDuFichier[])
 {
 	unsigned int nbElem = 0;
-	Adherant tmp;
+	Adherent tmp;
 	FILE* flux = fopen(nomDuFichier, "r");
 	if(flux == NULL)
 		return ERR_OUVERTURE_FICHIER;
 
 	//Temps que le currseur n'est pas a la fin du fichier,
-	//convertire la ligne en cours de lecture en Adherant
-	tmp = lireAdherant(flux);
+	//convertire la ligne en cours de lecture en Adherent
+	tmp = lireAdherent(flux);
 	while(!feof(flux))
 	{
-		if(insererAdherant(tAdherant, nbElem, tMax, &tmp) == ERR_ALLOCATION)
+		if(insererAdherent(tAdherent, nbElem, tMax, &tmp) == ERR_ALLOCATION)
 			printf("Pb d'allocation dynamique lors du chargement\n");
 		++nbElem;
 
-		tmp = lireAdherant(flux);
+		tmp = lireAdherent(flux);
 	}
 	fclose(flux);
 	return nbElem;
 }
 
-Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour)
+Bool checkInscriptionValide(Adherent* ad, Date* dateDuJour)
 {
 	return dateCmp(*dateDuJour, ad->dateInscri) < 365;
 }
 
-CodeErreur renouvelerInscription(Adherant* ad, Date* nouvelleDate)
+CodeErreur renouvelerInscription(Adherent* ad, Date* nouvelleDate)
 {
 	//Juste une réaffectation si l'inscription n'est pas valide
 	if(checkInscriptionValide(ad, nouvelleDate))
@@ -244,21 +244,21 @@ CodeErreur renouvelerInscription(Adherant* ad, Date* nouvelleDate)
 
 }
 
-CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[])
+CodeErreur sauvegarderAdherent(Adherent tAdherent[], unsigned int nbElem, char nomDuFichier[])
 {
 	FILE* flux = fopen(nomDuFichier, "w");
 	if(flux == NULL)
 		return ERR_OUVERTURE_FICHIER;
 
-	//Écrire le Tableau comportant tout les Adherants (trié) dans le fichier nomDuFichier
-	afficheTabAdherant(tAdherant, nbElem, flux, FALSE);
+	//Écrire le Tableau comportant tout les Adherents (trié) dans le fichier nomDuFichier
+	afficheTabAdherent(tAdherent, nbElem, flux, FALSE);
 
 	fclose(flux);
 
 	return ERR_NO_ERR;
 }
 
-CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adherant tAdherant2[], unsigned int tMax2)
+CodeErreur copieTabAdherent(Adherent tAdherent1[], unsigned int nbElem1, Adherent tAdherent2[], unsigned int tMax2)
 {
 	//Si le tableau à copier comporte plus d'element que la taille maximum du tableauqui reçoit les données,
 	//Alors, on retourne une erreur de type OUT OF RANGE
@@ -266,18 +266,18 @@ CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1, Adheran
 		return ERR_OUT_OF_RANGE;
 
 	for(unsigned int i=0; i<nbElem1; ++i)
-		tAdherant2[i] = tAdherant1[i];
+		tAdherent2[i] = tAdherent1[i];
 	return ERR_NO_ERR;
 }
 
-unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem)
+unsigned int rechercherIDAdherentLibre(Adherent tAdherent[], unsigned int nbElem)
 {
 	unsigned int i;
-	//Pour chaque Adherant du tableau trié, si son id est differant de sa possistion dans
+	//Pour chaque Adherent du tableau trié, si son id est differant de sa possistion dans
 	//le tableau, ça veut dire qu'il y à un trou et que l'id est donc libre pour la valeur atteinte
 	//si il n'y a pas de "trou", la boncle arive à la fin du tableau et retourne donc le deriner id+1
 	for(i=0; i<nbElem; ++i)
-		if(tAdherant[i].id-i != 0)
+		if(tAdherent[i].id-i != 0)
 			return i;
 	return i;
 }
