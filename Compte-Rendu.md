@@ -133,7 +133,7 @@ Voici les différentes fonctionnalités que l'utilisateur peut utiliser.
 
 Pour emprunter un jeu, on utilise la fonction
 ```c
-GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
+Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
 ```
 Si il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
 
