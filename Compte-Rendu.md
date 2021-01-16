@@ -84,7 +84,7 @@ Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de q
 
 ## Affichage
 ``CHOIX_AFFICHE_JEU`` ``CHOIX_AFFICHE_ADHERANT`` ``CHOIX_AFFICHE_EMPRUNT`` ``CHOIX_AFFICHE_RESERVATION``
-Ces 4 affichages utilise les fonctions d'affichages fournies avec les différentes structures.
+Ces quatres affichages utilisent les fonctions d'affichages fournies avec les différentes structures.
 
 ``CHOIX_AFFICHE_RESERVATION_JEU`` ``CHOIX_AFFICHE_EMPRUNT_JEU``
 Ces deux fonctionnalités d'affichage utilisent une fonction globale.
