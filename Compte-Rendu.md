@@ -18,7 +18,7 @@ Sujet: programme aidant la gestion des adhérents, des emprunts et des réservat
 
 #### Le type Booléen
 
-Un type booléen a été créé pour certain cas d'utilisation.
+Un type booléen a été créé pour rendre le code plus explicite.
 ```c
 typedef enum {FALSE, TRUE}Bool;
 ```
@@ -26,7 +26,7 @@ typedef enum {FALSE, TRUE}Bool;
 #### Les codes erreurs
 
 Pour simplifier et uniformiser la gestion des codes erreurs, une énumération de codes erreurs a été créée.
-A posteriori nous pensons qu'il aurait été intéressant de créer une fonction affichant les messages appropriés aux différentx codes.
+A posteriori nous pensons qu'il aurait été intéressant de créer une fonction affichant les messages appropriés aux différents codes.
 
 ```c
 typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/,...} CodeErreur;
@@ -41,7 +41,7 @@ Bool IO_Choix_O_N(char message[]);
 Cette fonction test si les caractères ``O`` (pour oui) ou ``N`` (pour non) sont entrés par l'utilisateur. Le message en paramètre est la question posée sans ``?``.
 
 #### Date du jour
-La date du jour est demandée à l'utilisateur au début du programme pour le bon fonctionnement de ce dernier. En effet, grâce à cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passer cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner.
+La date du jour est demandée à l'utilisateur au début du programme pour le bon fonctionnement de ce dernier. En effet, grâce à cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passer cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner, sans avoir à la redemander à l'utilisateur.
 
 ----
 
@@ -61,16 +61,16 @@ typedef enum {CHOIX_ANNULER_RESERVATION =1 , CHOIX_EMPRUNTER, CHOIX_RETOUR_JEU, 
     CHOIX_AFFICHE_RESERVATION_JEU, CHOIX_AFFICHE_EMPRUNT_JEU, CHOIX_SAUVEGARDER, CHOIX_QUITTER} ChoixAction;
 ```
 
-La fonction ``void Ludotheque(void)`` se charge aussi d'initialiser, de charger et de libérer toutes les listes et tableaux stockant adhérants, emprunts, reservations et jeux.
+La fonction ``void Ludotheque(void)`` se charge aussi d'initialiser, de charger et de libérer toutes les listes et tableaux stockant adhérents, emprunts, réservations et jeux.
 
 ## Sauvegarder et quitter
-``CHOIX_SAUVEGARDER`` et ``CHOIX_QUITTER`` dans l'énumération ChoixAction
+``CHOIX_SAUVEGARDER`` et ``CHOIX_QUITTER`` dans l'énumération ChoixAction.
 ```C
 void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant,
     ListeReservation liste_Reservation, int nb_Reservation,
     ListeEmprunt liste_Emprunt, int nb_Emprunt);
 ```
-La fonction ``GLOBAL_Sauvegarder`` est responsable de la sauvegarde des differentes données.
+La fonction ``GLOBAL_Sauvegarder`` est responsable de la sauvegarde des différentes données.
 
 ```C
 case CHOIX_QUITTER:
@@ -84,7 +84,7 @@ Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de q
 
 ## Affichage
 ``CHOIX_AFFICHE_JEU`` ``CHOIX_AFFICHE_ADHERANT`` ``CHOIX_AFFICHE_EMPRUNT`` ``CHOIX_AFFICHE_RESERVATION``
-Ces quatres affichages utilisent les fonctions d'affichages fournies avec les différentes structures.
+Ces quatre affichages utilisent les fonctions d'affichages fournies avec les différentes structures.
 
 ``CHOIX_AFFICHE_RESERVATION_JEU`` ``CHOIX_AFFICHE_EMPRUNT_JEU``
 Ces deux fonctionnalités d'affichage utilisent une fonction globale.
@@ -92,21 +92,21 @@ Ces deux fonctionnalités d'affichage utilisent une fonction globale.
 ```C
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
 ```
-Permet la recherche d'un jeu pour lequel afficher les reservations ou les emprunts associés.
-On fait passer un booléen à la fonction pour savoir si il s'agit d'afficher des réservations ou des emprunts, de manière à modifier l'affichage en conséquence.
+Permet la recherche d'un jeu pour lequel afficher les réservations ou les emprunts associés.
+On fait passer un booléen à la fonction pour savoir s'il s'agit d'afficher des réservations ou des emprunts, de manière à modifier l'affichage en conséquence.
 
 
 ## Gestion des jeux
 ``CHOIX_TRIER_JEU`` ``CHOIX_AJOUTER_JEU``
-Ces deux fonctionnalités s'appuient uniquement sur des fonctions de TableauJeu
+Ces deux fonctionnalités s'appuient uniquement sur des fonctions de TableauJeu.
 
  ``CHOIX_MODIFIER_SUPPRIMER_JEU``
-Celle ci requiert differents tests sur les emprunts et les reservations pour éviter de corrompre leurs listes respectives.
+Celle ci requiert différents tests sur les emprunts et les réservations pour éviter de corrompre leurs listes respectives.
 ```C
 Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation,
     unsigned int *nb_Reservation, ListeEmprunt liste_Emprunt);
 ```
-``GLOBAL_ModifierSupprimerJeu`` se charge donc d'assurer la cohérance d'une suppression ou d'une modification de jeu.
+``GLOBAL_ModifierSupprimerJeu`` se charge donc d'assurer la cohérence d'une suppression ou d'une modification de jeu.
 
 ## Gestion des adhérants
 ### Ajouter un `Adherant`
