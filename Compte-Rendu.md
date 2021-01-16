@@ -194,6 +194,7 @@ La structure `Adherant` est composée des champs requis permettant la sauvegarde
 Les `Adherant`s serons par la suite stocké dans un tableau dynamiquement alloué. Ce choix a été fait car les `Adherant`s seron plus lus que modifier et car de nouveaux `Adherant`s peuvent venir s'ajouter au fur et à mesure du temps.
 
 #### Fonctionnalités avec `Adherant`
+
 ```c
 void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete);
 Adherant nouvAdherant(unsigned int id, Date dateDuJour);
