@@ -133,27 +133,21 @@ Voici les différentes fonctionnalités que l'utilisateur peut utiliser.
 
 Pour emprunter un jeu, on utilise la fonction
 ```c
-GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation,
-  ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu,
-  Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant,
-  Date dateDuJour)
+GLOBAL_Emprunter(ListeReservation* liste_Reservation, unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[], int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
 ```
 Si il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
 
 #### Annuler une réservation
 
 ```c
-Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation,
-  Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
+Bool GLOBAL_Anuller_Reservation(ListeReservation* lr, unsigned int* nb_Reservation, Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu)
 ```
 Cette fonction permet d'annuler une réservation en demandant les informations à l'utilisateur.
 
 #### Retourner un jeux
 
 ```c
-Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant,
-  TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt,
-  ListeReservation* liste_Reservation, Date dateDuJour)
+Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant, TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt, ListeReservation* liste_Reservation, Date dateDuJour)
 ```
 Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformé en emprunt.
 
@@ -329,8 +323,7 @@ La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer a
 Plusieurs fonction de recherche existent selon ce qu'on recherche et les informations qu'on possède.
 ```c
 unsigned int rechercherIdLibre(ListeER liste);
-unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant,
-  unsigned int idJeu, Bool* trouve);
+unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
 unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
 ```
 La fonction ``rechercherIdLibre()`` permet de rechercher le premier identifiant libre (inutilisé) de la liste qu'on lui passe, ce qui permet de garder les liste trié par identifiant. Cette identifiant servira à définir un nouvel élément à insérer dans la liste.
@@ -344,8 +337,7 @@ La fonction ``rechercherListeER_Jeu`` permet de rechercher un élément selon un
 
 Quand un jeu est retourné par un adhérent, on recherche les réservations du jeu rendu pour changer la plus ancienne réservation en emprunt. Pour récupérer la réservation la plus ancienne, il faut utiliser la fonction suivante
 ```c
-Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation,
-  unsigned int idJeu);
+Reservation plusVieilleReservationJeu(ListeReservation liste_Reservation, unsigned int idJeu);
 ```
 
 ##### Sauvegarde
@@ -371,7 +363,7 @@ Cette fonction va libérer la mémoire pour chaque élément de la liste qui lui
 Mon objectif principal était de permettre une certaine versatilité en terme d'accès aux jeux. Pour cela je me suis concentré sur les systèmes de tri et de recherche.
 
 ### Petit point sur les fichiers
-Les headers  ``source/TableauJeu.h`` et ``source/Jeu.h`` disposent de header guard. Ils incluent tout deux ``source/CodeErreur.h`` et ``source/Bool.h`` en plus de quelques headers standards.\
+Les headers  ``source/TableauJeu.h`` et ``source/Jeu.h`` disposent de header guard. Ils incluent tout deux ``source/CodeErreur.h`` et ``source/Bool.h`` en plus de quelques headers standards.
 ``source/TableauJeu.c`` et ``source/Jeu.c`` n'incluent que leur ``.h``respectifs. Ils contiennent les commentaires des fonctions
 
 ##### Note au lecteur
@@ -391,7 +383,7 @@ typedef struct
     unsigned int nbExemplaireDispo;
 } Jeu;
 ```
-La strucure de jeu est composé des éléments requis auquels s'ajoute le nombre d'exemplaires disponibles. Cette variable permet de s'avoir efficacement si un jeu est disponible ou non.\
+La strucure de jeu est composé des éléments requis auquels s'ajoute le nombre d'exemplaires disponibles. Cette variable permet de s'avoir efficacement si un jeu est disponible ou non.
 Le type de jeu (ou categorie) n'est pas contraint pour offrir une place au genres de niche pouvant exister.
 
 ##### Les fonctions associées
@@ -403,9 +395,9 @@ Jeu* nouvJeu(unsigned int id);
 void copyJeu(Jeu* jd, Jeu* js);
 Jeu* allocJeu(void);
 ```
-Les 3 premières fonctions offrent les fonctionnalités basique d'entrée sortie pour la structure Jeu.\
-Les 2 dernières concernent plus la gestion des ressources.\
-Même si j'essaie de copier le plus rarement possible les jeux, lorsque c'est necessaire il faut que ce soit bien fait. Jeu contenant des chaines de caractères, j'ai crée copyJeu.\
+Les 3 premières fonctions offrent les fonctionnalités basique d'entrée sortie pour la structure Jeu.
+Les 2 dernières concernent plus la gestion des ressources.
+Même si j'essaie de copier le plus rarement possible les jeux, lorsque c'est necessaire il faut que ce soit bien fait. Jeu contenant des chaines de caractères, j'ai crée copyJeu.
 L'allocation mémoire pouvant être sensible je l'ai encapsulé dans allocJeu de manière à ne pas multiplié les possibilité d'erreurs.
 
 #### ElementJeu : une enumération facilitant les opérations
@@ -430,7 +422,7 @@ CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu);
 int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
 ```
 
-jeuCmp défini l'ordre entre les jeux selon les éléments.\
+jeuCmp défini l'ordre entre les jeux selon les éléments.
 entrerValeurElementJeu facilite l'entrée d'une valeur pour tous les elements.
 
 
@@ -449,9 +441,9 @@ typedef struct
 	Jeu* jeux[TAILLE_MAX_TAB_JEU];
 } TableauJeu;
 ```
-Le tableau à proprement parler est un tableau statique de pointeurs vers des Jeu. Sa taille est défini par une macro du préprocesseur (Ce qui permet de l'utiliser dans les fonctions en ayant besoin).\
-Nous avons choisi un tableau de pointeurs pour éviter un maximum la copie des Jeu durant les nombreux tris effectué sur le tableau de jeux.\
-Le nombre de jeux dans le tableau est stocké dans la variable nbElement.\
+Le tableau à proprement parler est un tableau statique de pointeurs vers des Jeu. Sa taille est défini par une macro du préprocesseur (Ce qui permet de l'utiliser dans les fonctions en ayant besoin).
+Nous avons choisi un tableau de pointeurs pour éviter un maximum la copie des Jeu durant les nombreux tris effectué sur le tableau de jeux.
+Le nombre de jeux dans le tableau est stocké dans la variable nbElement.
 TableauJeu contient aussi une variable ElementJeu indiquant si et comment le tableau est ordonné.
 
 ##### Les fonctions sur TableauJeu
@@ -496,7 +488,7 @@ unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, Elem
 unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 ```
-Permettent la recherche de jeu dans un tableau.\
+Permettent la recherche de jeu dans un tableau.
 Les fonctions débutants par _ sont uniquement présentes pour servir `rechercherJeu`et `rechercherJeuInteractif`.
 
 ###### Tri
@@ -522,5 +514,5 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut);
 void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
 ```
-Ces fonctions permettent d'ajouter ou de retirer des Jeu du tableau avec ou sans interaction avec l'utilisateur.\
+Ces fonctions permettent d'ajouter ou de retirer des Jeu du tableau avec ou sans interaction avec l'utilisateur.
 `retirerJeuInteractif` n'est pas utilisé dans ce projet car il est necessaire de faire des tests sur les listes de reservations et d'emprunts.
