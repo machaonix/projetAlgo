@@ -3,7 +3,7 @@
 Répartition des tâches:
 * Point Allan G5
   - Fonctions de traitement des dates
-  - Fonctions de traitement des adhérants
+  - Fonctions de traitement des adhérents
 * Ribémont Mathis G5
   - Fonctions de traitement des emprunts et des réservations
   - Fonctions de traitement des listes d'emprunts et de réservations
@@ -56,8 +56,8 @@ void Ludotheque(void);
 La liste des fonctionnalités est représentée par l'énumération suivante.
 ```C
 typedef enum {CHOIX_ANNULER_RESERVATION =1 , CHOIX_EMPRUNTER, CHOIX_RETOUR_JEU, CHOIX_AFFICHE_JEU,
-    CHOIX_TRIER_JEU, CHOIX_AJOUTER_JEU, CHOIX_MODIFIER_SUPPRIMER_JEU, CHOIX_NOUV_ADHERANT,
-    CHOIX_RENOUV_ADHERANT, CHOIX_AFFICHE_ADHERANT, CHOIX_AFFICHE_EMPRUNT, CHOIX_AFFICHE_RESERVATION,
+    CHOIX_TRIER_JEU, CHOIX_AJOUTER_JEU, CHOIX_MODIFIER_SUPPRIMER_JEU, CHOIX_NOUV_Adherent,
+    CHOIX_RENOUV_Adherent, CHOIX_AFFICHE_Adherent, CHOIX_AFFICHE_EMPRUNT, CHOIX_AFFICHE_RESERVATION,
     CHOIX_AFFICHE_RESERVATION_JEU, CHOIX_AFFICHE_EMPRUNT_JEU, CHOIX_SAUVEGARDER, CHOIX_QUITTER} ChoixAction;
 ```
 
@@ -66,7 +66,7 @@ La fonction ``void Ludotheque(void)`` se charge aussi d'initialiser, de charger 
 ## Sauvegarder et quitter
 ``CHOIX_SAUVEGARDER`` et ``CHOIX_QUITTER`` dans l'énumération ChoixAction.
 ```C
-void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant,
+void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherent tAdherent[], unsigned int nbElemAdhearant,
     ListeReservation liste_Reservation, int nb_Reservation,
     ListeEmprunt liste_Emprunt, int nb_Emprunt);
 ```
@@ -75,7 +75,7 @@ La fonction ``GLOBAL_Sauvegarder`` est responsable de la sauvegarde des différe
 ```C
 case CHOIX_QUITTER:
     if (IO_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
-        GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation,
+        GLOBAL_Sauvegarder(&tabJeu, tAdherent, nbElemAdhearant, liste_Reservation, nb_Reservation,
             liste_Emprunt, nb_Emprunt);
     lance = FALSE;
     break;
@@ -83,7 +83,7 @@ case CHOIX_QUITTER:
 Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de quitter.
 
 ## Affichage
-``CHOIX_AFFICHE_JEU`` ``CHOIX_AFFICHE_ADHERANT`` ``CHOIX_AFFICHE_EMPRUNT`` ``CHOIX_AFFICHE_RESERVATION``
+``CHOIX_AFFICHE_JEU`` ``CHOIX_AFFICHE_Adherent`` ``CHOIX_AFFICHE_EMPRUNT`` ``CHOIX_AFFICHE_RESERVATION``
 Ces quatre affichages utilisent les fonctions d'affichages fournies avec les différentes structures.
 
 ``CHOIX_AFFICHE_RESERVATION_JEU`` ``CHOIX_AFFICHE_EMPRUNT_JEU``
@@ -108,17 +108,17 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 ```
 ``GLOBAL_ModifierSupprimerJeu`` se charge donc d'assurer la cohérence d'une suppression ou d'une modification de jeu.
 
-## Gestion des adhérants
-### Ajouter un `Adherant`
-C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérents si il n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
+## Gestion des adhérents
+### Ajouter un `Adherent`
+C'est la fonction `GLOBAL_NouvelAdherent` qui s'occupe d'ajouter un `Adherent` dans le tableau d’adhérents s'il n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherent` a bien était ajouté.
 ```c
-Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant,
-	 unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
+Bool GLOBAL_NouvelAdherent(Adherent* tAdherent[], int* nbElemAdhearant,
+	 unsigned int* tMaxAdherent, unsigned int* rangNouvAdherent, Date dateDuJour)
 ```
 ### Renouveler un abonnement
-C'est la fonction `GLOBAL_RenouvellerAdherant` qui s'occupe de renouveler un abonnement. Elle demande un montant et renouvelle l’abonnement en fonction de ce dernier. Elle renvoi un booléen pour indiquer si tout c'est bien passé.
+C'est la fonction `GLOBAL_RenouvellerAdherent` qui s'occupe de renouveler un abonnement. Elle demande un montant et renouvelle l’abonnement en fonction de ce dernier. Elle renvoi un booléen pour indiquer si tout c'est bien passé.
 ```c
-Bool GLOBAL_RenouvellerAdherant(Adherant tAdherant[], unsigned int nbElemAdhearant)
+Bool GLOBAL_RenouvellerAdherent(Adherent tAdherent[], unsigned int nbElemAdhearant)
 ```
 
 ## Emprunt et réservation de jeux
@@ -131,16 +131,16 @@ Pour emprunter un jeu, on utilise la fonction
 ```c
 Bool GLOBAL_Emprunter(ListeReservation* liste_Reservation,
   unsigned int* nb_Reservation, ListeEmprunt* liste_Emprunt,
-  unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherant* tAdherant[],
-  int* nbElemAdhearant, unsigned int* tMaxAdherant, Date dateDuJour)
+  unsigned int* nb_Emprunt, TableauJeu* tabJeu, Adherent* tAdherent[],
+  int* nbElemAdhearant, unsigned int* tMaxAdherent, Date dateDuJour)
 ```
-Si il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
+S'il n'y a pas d'exemplaire du jeu disponible, on demande à l'utilisateur s'il doit créer une réservation. Si oui, une réservation est créée.
 
 #### Annuler une réservation
 
 ```c
 Bool GLOBAL_Anuller_Reservation(ListeReservation* lr,
-  unsigned int* nb_Reservation, Adherant tAdherant[],
+  unsigned int* nb_Reservation, Adherent tAdherent[],
   unsigned int nbElemAdhearant, TableauJeu* tabJeu)
 ```
 Cette fonction permet d'annuler une réservation en demandant les informations à l'utilisateur.
@@ -148,11 +148,11 @@ Cette fonction permet d'annuler une réservation en demandant les informations �
 #### Retourner un jeux
 
 ```c
-Bool GLOBAL_RetourJeu(Adherant tAdherant[], unsigned int nbElemAdhearant,
+Bool GLOBAL_RetourJeu(Adherent tAdherent[], unsigned int nbElemAdhearant,
   TableauJeu* tabJeu, ListeEmprunt* liste_Emprunt, unsigned int* nb_Emprunt,
   ListeReservation* liste_Reservation, Date dateDuJour)
 ```
-Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformé en emprunt.
+Cette fonction permet de retourner un jeu. Si des réservations du jeu rendu existent, la plus ancienne réservation est donc transformée en emprunt.
 
 ----
 
@@ -177,18 +177,18 @@ Cette structure contient simplement 3 entiers représentant les éléments que l
 
 #### Fonctionnalités avec `Date`
 
-Les `Date`s n'ont pas de fonctionnalités propre proposé dans le menu mais elle servent au bon déroulement du programme.
+Les `Date` n'ont pas de fonctionnalités propres proposées dans le menu mais elles servent au bon déroulement du programme.
 
-### Les adhérants
+### Les adhérents
 #### Tout d'abord
-L'implémentation des dates de trouve dans les fichiers `source/Adherant.h` et `source/Adherant.c`.
+L'implémentation des dates de trouve dans les fichiers `source/Adherent.h` et `source/Adherent.c`.
 
 #### Structure des fichiers
-Le fichier d'entête (*source/Adherant.h*) débute par un *header guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h*, *Bool.h*, *Date.h* et *CodeErreur.h*) puis l'implémentation de l'énumération `Civilite` et  de la structure `Adherant`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces derniers.
+Le fichier d'entête (*source/Adherent.h*) débute par un *header guard* affin de protéger le fichier des inclusions multiples. S'en suit les inclusions nécessaires au bon fonctionnement du code (*stdio.h*, *stdlib.h*, *Bool.h*, *Date.h* et *CodeErreur.h*) puis l'implémentation de l'énumération `Civilite` et de la structure `Adherent`. La suite du fichier consiste à commenter les prototypes des fonctions qui sont définis en dessous de ces derniers.
 
-Le fichier source (*source/Adherant.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
+Le fichier source (*source/Adherent.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
 
-#### La structure `Adherant`
+#### La structure `Adherent`
 
 ```c
 typedef struct
@@ -198,38 +198,38 @@ typedef struct
 	char nom[22];
 	char prenom[22];
 	Date dateInscri;
-} Adherant;
+} Adherent;
 ```
-La structure `Adherant` est composée des champs requis permettant la sauvegarde de cette structure.
+La structure `Adherent` est composée des champs requis permettant la sauvegarde de cette structure.
 
-Les `Adherant`s serons par la suite stocké dans un tableau dynamiquement alloué. Ce choix a été fait car les `Adherant`s seron plus lus que modifier et car de nouveaux `Adherant`s peuvent venir s'ajouter au fur et à mesure du temps.
+Les `Adherent` serons par la suite stockés dans un tableau dynamiquement alloué. Ce choix a été fait car les `Adherent` seront plus lus que modifiés et car de nouveaux `Adherent` peuvent venir s'ajouter au fur et à mesure du temps.
 
-#### Fonctionnalités avec `Adherant`
+#### Fonctionnalités avec `Adherent`
 
 ```c
-void afficheTabAdherant(Adherant tAdherant[], unsigned int nbElem, FILE* flux, Bool entete);
-Adherant nouvAdherant(unsigned int id, Date dateDuJour);
-CodeErreur renouvelerInscription(Adherant* ad, Date* nouvelleDate);
-CodeErreur sauvegarderAdherant(Adherant tAdherant[], unsigned int nbElem, char nomDuFichier[]);
+void afficheTabAdherent(Adherent tAdherent[], unsigned int nbElem, FILE* flux, Bool entete);
+Adherent nouvAdherent(unsigned int id, Date dateDuJour);
+CodeErreur renouvelerInscription(Adherent* ad, Date* nouvelleDate);
+CodeErreur sauvegarderAdherent(Adherent tAdherent[], unsigned int nbElem, char nomDuFichier[]);
 ```
-Tout ces fonctions sont proposées dans le menu et sont toutes opérationnelles. Elles permettent ainsi le bon déroulement du programme. Aucune de ces fonctions n'ont posées problème lors de leur implémentation.
+Toutes ces fonctions sont proposées dans le menu et sont toutes opérationnelles. Elles permettent ainsi le bon déroulement du programme. Aucune de ces fonctions n'ont posées problème lors de leur implémentation.
 
 Voici le restes des fonctions qui servent au fonctions implémentées si dessus :
 ```c
-Adherant lireAdherant(FILE* flux);
-void afficheAdherant(Adherant ad, FILE* flux, Bool entete);
-int insererAdherant(Adherant* tAdherant[], unsigned int nbElem, unsigned int *tMax, Adherant* ad);
-int supprimerAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id);
-void decalageAGaucheAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
-void decalageADroiteAdherant(Adherant tAdherant[], unsigned int debut, unsigned int nbElem);
-unsigned int rechercherUnAdherant(Adherant tAdherant[], unsigned int nbElem, unsigned int id, Bool* trouve);
-int chargerLesAdherants(Adherant* tAdherant[], unsigned int* tMax, char nomDuFichier[]);
-Bool checkInscriptionValide(Adherant* ad, Date* dateDuJour);
-CodeErreur copieTabAdherant(Adherant tAdherant1[], unsigned int nbElem1,
-	Adherant tAdherant2[], unsigned int tMax2);
-unsigned int rechercherIDAdherantLibre(Adherant tAdherant[], unsigned int nbElem);
+Adherent lireAdherent(FILE* flux);
+void afficheAdherent(Adherent ad, FILE* flux, Bool entete);
+int insererAdherent(Adherent* tAdherent[], unsigned int nbElem, unsigned int *tMax, Adherent* ad);
+int supprimerAdherent(Adherent tAdherent[], unsigned int nbElem, unsigned int id);
+void decalageAGaucheAdherent(Adherent tAdherent[], unsigned int debut, unsigned int nbElem);
+void decalageADroiteAdherent(Adherent tAdherent[], unsigned int debut, unsigned int nbElem);
+unsigned int rechercherUnAdherent(Adherent tAdherent[], unsigned int nbElem, unsigned int id, Bool* trouve);
+int chargerLesAdherents(Adherent* tAdherent[], unsigned int* tMax, char nomDuFichier[]);
+Bool checkInscriptionValide(Adherent* ad, Date* dateDuJour);
+CodeErreur copieTabAdherent(Adherent tAdherent1[], unsigned int nbElem1,
+	Adherent tAdherent2[], unsigned int tMax2);
+unsigned int rechercherIDAdherentLibre(Adherent tAdherent[], unsigned int nbElem);
 ```
-Ici, plusieurs fonctions on était problématique lors de leurs implémentation. En effet, les fonction `copieTabAdherant` et `insererAdherant` m'ont posées problème. Je(*Allan POINT*) n'arivait pas à réallouer le tableaux dans la fonction `copieTabAdherant` et donc j'ai du le faire dans `insererAdherant`. C'est pour cette raison que `copieTabAdherant` renvoit **ERR_OUT_OF_RANG** en cas d'erreur.
+Ici, plusieurs fonctions ont été problématiques lors de leur implémentation. En effet, les fonctions `copieTabAdherent` et `insererAdherent` m'ont posé problème. Je (*Allan POINT*) n'arrivais pas à réallouer le tableaux dans la fonction `copieTabAdherent` et donc j'ai dû le faire dans `insererAdherent`. C'est pour cette raison que `copieTabAdherent` renvoi **ERR_OUT_OF_RANG** en cas d'erreur.
 
 ----
 
@@ -243,7 +243,7 @@ dans ``EmpruntReservation.h``
 typedef struct
 {
     unsigned int id;
-    unsigned int idAdherant;//reference un adherant
+    unsigned int idAdherent;//reference un adherent
     unsigned int idJeu;//reference à un jeu
     Date date;
 } Emprunt, Reservation, EmpruntReservation;
@@ -327,7 +327,7 @@ La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer a
 Plusieurs fonction de recherche existent selon ce qu'on recherche et les informations qu'on possède.
 ```c
 unsigned int rechercherIdLibre(ListeER liste);
-unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve);
+unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherent, unsigned int idJeu, Bool* trouve);
 unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
 ```
 La fonction ``rechercherIdLibre()`` permet de rechercher le premier identifiant libre (inutilisé) de la liste qu'on lui passe, ce qui permet de garder les liste trié par identifiant. Cette identifiant servira à définir un nouvel élément à insérer dans la liste.
