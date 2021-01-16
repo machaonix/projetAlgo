@@ -110,7 +110,7 @@ Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Res
 
 ## Gestion des adhérants
 ### Ajouter un `Adherant`
-C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérants si il n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
+C'est la fonction `GLOBAL_NouvelAdherant` qui s'occupe d'ajouter un `Adherant` dans le tableau d’adhérents si il n'est pas déjà enregistré. Elle retourne un booléen pour indiquer si l'`Adherant` a bien était ajouté.
 ```c
 Bool GLOBAL_NouvelAdherant(Adherant* tAdherant[], int* nbElemAdhearant,
 	 unsigned int* tMaxAdherant, unsigned int* rangNouvAdherant, Date dateDuJour)
