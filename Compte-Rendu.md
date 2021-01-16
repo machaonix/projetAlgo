@@ -237,8 +237,7 @@ Ici, plusieurs fonctions ont été problématiques lors de leur implémentation.
 
 ### Structure emprunt et réservation
 
-Les emprunts et les réservations sont issue de la structure
-dans ``EmpruntReservation.h``
+Les emprunts et les réservations sont issus de la structure dans ``EmpruntReservation.h``.
 ```c
 typedef struct
 {
@@ -276,7 +275,7 @@ typedef struct element
 Là aussi, le type porte plusieurs nom selon le contexte à la définition.
 
 Chaque liste est initialisé grâce à la fonction ``ListeER listeER_Vide(void);``.
-Pour savoir si une liste est vide, il y a la fonction ``Bool listeER_estVide(ListeER liste);`` qui renvoit TRUE si la liste est vide. Enfin, les listes sont triées par identifiant des emprunts et des réservations.
+Pour savoir si une liste est vide, il y a la fonction ``Bool listeER_estVide(ListeER liste);`` qui renvoi ``TRUE`` si la liste est vide. Enfin, les listes sont triées par identifiant des emprunts et des réservations.
 
 ##### Fonction d'affichage
 
@@ -285,18 +284,18 @@ Il existe deux fonctions pour afficher une liste.
 void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb);
 void afficherListeERJeu(ListeER liste, unsigned int idJeu);
 ```
-La première fonction affiche une liste en entière. Elle est aussi utilisée pour écrire dans les fichiers de données lors de la sauvegarde (en précisant un flux vers un fichier), justifiant le paramètre ``nb`` (nombre d'élément dans la liste).
+La première fonction affiche une liste entière. Elle est aussi utilisée pour écrire dans les fichiers de données lors de la sauvegarde (en précisant un flux vers un fichier), justifiant le paramètre ``nb`` (nombre d'élément dans la liste).
 
 La seconde fonction affiche uniquement sur la sortie standard les éléments d'une liste concernant un jeu donné.
 
 ##### Fonction de chargement
 
-Le chargement des fichiers d'emprunts et de réservations est assuré par la fonction
+Le chargement des fichiers d'emprunts et de réservations est assuré par la fonction suivante.
 ```c
 chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
 ```
 .
-Cette fonction prend en paramètre une chaîne de caractères ``nomDeFichier`` qui sera utilisé pour créer le flux vers le fichier dans lequel sont sauvegardées les données à charger. La fonction prend aussi en paramètre un pointeur vers la variable dans laquelle sera enregistrée le nombre d'éléments dans la liste.
+Cette fonction prend en paramètre une chaîne de caractères ``nomDeFichier`` qui sera utilisée pour créer le flux vers le fichier dans lequel sont sauvegardées les données à charger. La fonction prend aussi en paramètre un pointeur vers la variable dans laquelle sera enregistré le nombre d'éléments dans la liste.
 Il faut appeler cette fonction pour chaque liste a créer.
 
 Cette fonction fait appel à la fonction ``lireEmpruntReservation(FILE* flux)`` pour lire dans le fichier.
