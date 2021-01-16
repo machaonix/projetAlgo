@@ -193,6 +193,7 @@ Le fichier d'entête (*source/Adherant.h*) débute par un *header guard* affin d
 Le fichier source (*source/Adherant.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
 
 #### La structure `Adherant`
+
 ```c
 typedef struct
 {
