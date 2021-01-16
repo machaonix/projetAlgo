@@ -55,22 +55,28 @@ void Ludotheque(void);
 ```
 La liste des fonctionnalités est représentée par l'énumération suivante.
 ```C
-typedef enum {CHOIX_ANNULER_RESERVATION =1 , CHOIX_EMPRUNTER, CHOIX_RETOUR_JEU, CHOIX_AFFICHE_JEU, CHOIX_TRIER_JEU, CHOIX_AJOUTER_JEU, CHOIX_MODIFIER_SUPPRIMER_JEU, CHOIX_NOUV_ADHERANT, CHOIX_RENOUV_ADHERANT, CHOIX_AFFICHE_ADHERANT, CHOIX_AFFICHE_EMPRUNT, CHOIX_AFFICHE_RESERVATION, CHOIX_AFFICHE_RESERVATION_JEU, CHOIX_AFFICHE_EMPRUNT_JEU, CHOIX_SAUVEGARDER, CHOIX_QUITTER} ChoixAction;
+typedef enum {CHOIX_ANNULER_RESERVATION =1 , CHOIX_EMPRUNTER, CHOIX_RETOUR_JEU, CHOIX_AFFICHE_JEU,
+    CHOIX_TRIER_JEU, CHOIX_AJOUTER_JEU, CHOIX_MODIFIER_SUPPRIMER_JEU, CHOIX_NOUV_ADHERANT,
+    CHOIX_RENOUV_ADHERANT, CHOIX_AFFICHE_ADHERANT, CHOIX_AFFICHE_EMPRUNT, CHOIX_AFFICHE_RESERVATION,
+    CHOIX_AFFICHE_RESERVATION_JEU, CHOIX_AFFICHE_EMPRUNT_JEU, CHOIX_SAUVEGARDER, CHOIX_QUITTER} ChoixAction;
 ```
-\
+
 La fonction ``void Ludotheque(void)`` se charge aussi d'initialiser, de charger et de libérer toutes les listes et tableaux stockant adhérants, emprunts, reservations et jeux.
 
 ## Sauvegarder et quitter
 ``CHOIX_SAUVEGARDER`` et ``CHOIX_QUITTER`` dans l'énumération ChoixAction
 ```C
-void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant, ListeReservation liste_Reservation, int nb_Reservation, ListeEmprunt liste_Emprunt, int nb_Emprunt);
+void GLOBAL_Sauvegarder(TableauJeu* tabJeu, Adherant tAdherant[], unsigned int nbElemAdhearant,
+    ListeReservation liste_Reservation, int nb_Reservation,
+    ListeEmprunt liste_Emprunt, int nb_Emprunt);
 ```
 La fonction ``GLOBAL_Sauvegarder`` est responsable de la sauvegarde des differentes données.
 
 ```C
 case CHOIX_QUITTER:
     if (IO_Choix_O_N("Souhaitez vous sauvegarder avant de quitter"))
-        GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation, liste_Emprunt, nb_Emprunt);
+        GLOBAL_Sauvegarder(&tabJeu, tAdherant, nbElemAdhearant, liste_Reservation, nb_Reservation,
+            liste_Emprunt, nb_Emprunt);
     lance = FALSE;
     break;
 ```
@@ -80,11 +86,11 @@ Il n'y a pas de fonction pour quitter. Il est proposé de sauvegarder avant de q
 ``CHOIX_AFFICHE_JEU``
 ``CHOIX_AFFICHE_ADHERANT``
 ``CHOIX_AFFICHE_EMPRUNT``
-``CHOIX_AFFICHE_RESERVATION``\
+``CHOIX_AFFICHE_RESERVATION``
 Ces 4 affichages utilise les fonctions d'affichages fournies avec les différentes structures.
 
 ``CHOIX_AFFICHE_RESERVATION_JEU``
-``CHOIX_AFFICHE_EMPRUNT_JEU``\
+``CHOIX_AFFICHE_EMPRUNT_JEU``
 Ces deux fonctionnalités d'affichage utilisent une fonction globale.
 
 ```C
@@ -95,13 +101,14 @@ On fait passer un booléen à la fonction pour savoir si il s'agit d'afficher de
 
 
 ## Gestion des jeux
-``CHOIX_TRIER_JEU`` ``CHOIX_AJOUTER_JEU``\
+``CHOIX_TRIER_JEU`` ``CHOIX_AJOUTER_JEU``
 Ces deux fonctionnalités s'appuient uniquement sur des fonctions de TableauJeu
 
- ``CHOIX_MODIFIER_SUPPRIMER_JEU``\
+ ``CHOIX_MODIFIER_SUPPRIMER_JEU``
 Celle ci requiert differents tests sur les emprunts et les reservations pour éviter de corrompre leurs listes respectives.
 ```C
-Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation, unsigned int *nb_Reservation, ListeEmprunt liste_Emprunt);
+Bool GLOBAL_ModifierSupprimerJeu(TableauJeu* tabJeu, ListeReservation* liste_Reservation,
+    unsigned int *nb_Reservation, ListeEmprunt liste_Emprunt);
 ```
 ``GLOBAL_ModifierSupprimerJeu`` se charge donc d'assurer la cohérance d'une suppression ou d'une modification de jeu.
 
@@ -397,7 +404,8 @@ L'allocation mémoire pouvant être sensible je l'ai encapsulé dans allocJeu de
 ##### L'enumération
 ElementJeu permet d'indiquer une des elements de la structure Jeu
 ```C
-typedef enum { ELEM_JEU_NONE , ELEM_JEU_ID, ELEM_JEU_NOM, ELEM_JEU_TYPE, ELEM_JEU_NB_EXEMPLAIRE_TOTAL, ELEM_JEU_NB_EXEMPLAIRE_DISPO} ElementJeu;
+typedef enum { ELEM_JEU_NONE , ELEM_JEU_ID, ELEM_JEU_NOM, ELEM_JEU_TYPE,
+    ELEM_JEU_NB_EXEMPLAIRE_TOTAL, ELEM_JEU_NB_EXEMPLAIRE_DISPO} ElementJeu;
 ```
 Cette enumération offre au fonctions sur les jeux la capacité d'agir sur les differentes variables des jeux avec plus de simplicité (et de manière uniforme). Toute les variables de Jeu y sont référencées, et "aucune" est représenté par ELEM_JEU_NONE.
 ##### Les fonctions liées
@@ -490,7 +498,8 @@ void triTabJeu(TableauJeu* tabJeu, ElementJeu elementJeu);
 //les fonctions suivantes sont utilisé en interne par triTabJeu
 void _triJeu(Jeu* tSource[], unsigned int nbElem, ElementJeu elementJeu);
 void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest[]);
-void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu, Jeu* tDest[]);
+void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu,
+    Jeu* tDest[]);
 ```
 `triTabJeuInteractif` et `triTabJeu` sont des fonctions fesant l'interface entre les fontions utilisant le tri et `_triJeu`, une fontion de tri par dichotomie.
 
