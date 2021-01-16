@@ -25,8 +25,8 @@ typedef enum {FALSE, TRUE}Bool;
 
 #### Les codes erreurs
 
-Pour simplifier et uniformiser la gestion des codes erreurs, une énumération de codes erreurs a été créé.
-A posteriori nous pensons qu'il aurait été intéressant de créer un fonction affichant les messages appropriés au différent code.
+Pour simplifier et uniformiser la gestion des codes erreurs, une énumération de codes erreurs a été créée.
+A posteriori nous pensons qu'il aurait été intéressant de créer une fonction affichant les messages appropriés aux différentx codes.
 
 ```c
 typedef enum {ERR_OUVERTURE_FICHIER=-10, ERR_ALLOCATION /*-9*/,...} CodeErreur;
@@ -41,7 +41,7 @@ Bool IO_Choix_O_N(char message[]);
 Cette fonction test si les caractères ``O`` (pour oui) ou ``N`` (pour non) sont entrés par l'utilisateur. Le message en paramètre est la question posée sans ``?``.
 
 #### Date du jour
-La date du jour est demandée à l'utilisateur au début du programme pour le bon fonctionnement du de ce dernier. En effet, grâce à cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passer cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner.
+La date du jour est demandée à l'utilisateur au début du programme pour le bon fonctionnement de ce dernier. En effet, grâce à cela, il est possible de transmettre la date du jour à n'importe quelle partie du code en faisant passer cette date par argument lors d’appel de fonctions qui on besoin de cette date pour fonctionner.
 
 ----
 
