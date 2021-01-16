@@ -45,7 +45,7 @@ void afficherListeEmpruntReservation(ListeER liste, FILE* flux,int nb)
 {
   if(flux==stdout)
   {
-      printf("Id\tIdJeu\tIdAdherant\tDate\n");
+      printf("Id\tIdJeu\tIdAdherent\tDate\n");
   } else
   {
     fprintf(flux,"%d\n",nb);
@@ -69,7 +69,7 @@ Arguments :
 */
 void afficherListeERJeu(ListeER liste, unsigned int idJeu)
 {
-  printf("Id\tIdJeu\tIdAdherant\tDate\n");
+  printf("Id\tIdJeu\tIdAdherent\tDate\n");
 
   while(liste!=NULL)
   {
@@ -106,7 +106,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   {
     liste=(ListeER)malloc(sizeof(Element));
     origin=liste;
-    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherant));
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherent));
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
@@ -114,7 +114,7 @@ ListeER chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb)
   {
     liste->suiv=(ListeER)malloc(sizeof(Element));
     liste=liste->suiv;
-    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherant));
+    fscanf(flux,"%u%u%u",&(liste->empRes.id),&(liste->empRes.idJeu),&(liste->empRes.idAdherent));
     liste->empRes.date=lireDate(flux);
     liste->suiv=NULL;
   }
@@ -309,19 +309,19 @@ CodeErreur sauvegarderListeER(ListeER liste, char nomDeFichier[],int nb)
 /*
     rechercherERListe_AdJeu
 Description :
-  Recherche un élément dans la liste selon idAdherant et idJeu et retourne l'id de l'élément.
+  Recherche un élément dans la liste selon idAdherent et idJeu et retourne l'id de l'élément.
 
 Arguments :
   ListeER liste -> liste dans laquel on cherche l'élément.
-  unsigned int idAdherant -> identifiant de l'adherant contenu dans l'élément à rechercher.
+  unsigned int idAdherent -> identifiant de l'adherent contenu dans l'élément à rechercher.
   unsigned int idJeu -> identifiant du jeu contenu dans l'élément à rechercher.
   Bool* trouve -> pointeur vers une variable pour indiquer si l'élément a été trouvé ou non.
 */
-unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherant, unsigned int idJeu, Bool* trouve)
+unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherent, unsigned int idJeu, Bool* trouve)
 {
   while(liste!=NULL)
   {
-    if(liste->empRes.idAdherant==idAdherant && liste->empRes.idJeu == idJeu)
+    if(liste->empRes.idAdherent==idAdherent && liste->empRes.idJeu == idJeu)
     {
       *trouve=TRUE;
       return liste->empRes.id;

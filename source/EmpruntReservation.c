@@ -11,7 +11,7 @@ Argument :
 EmpruntReservation lireEmpruntReservation(FILE* flux)
 {
   EmpruntReservation er;
-  fscanf(flux,"%u%u%u",&(er.id),&(er.idJeu),&(er.idAdherant));
+  fscanf(flux,"%u%u%u",&(er.id),&(er.idJeu),&(er.idAdherent));
   er.date=lireDate(flux);
   return er;
 }
@@ -28,7 +28,7 @@ Argument :
 */
 void afficherEmpruntReservation(EmpruntReservation *er, FILE* flux)
 {
-  fprintf(flux,"%u\t%u\t%u\t\t",er->id,er->idJeu,er->idAdherant);
+  fprintf(flux,"%u\t%u\t%u\t\t",er->id,er->idJeu,er->idAdherent);
   afficherDate(er->date,flux);
   fprintf(flux, "\n");
 }

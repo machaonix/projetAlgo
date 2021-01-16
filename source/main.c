@@ -5,7 +5,7 @@ int main(void)
 {
 	Ludotheque();
 	//testER();
-	//testFonctionAdherant();
+	//testFonctionAdherent();
 	//testFonctionJeu();
 	return 0;
 }
