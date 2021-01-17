@@ -14,6 +14,16 @@ Répartition des tâches:
 Sujet: programme aidant la gestion des adhérents, des emprunts et des réservations d'une ludothèque.
 
 ----
+
+## Compilation du programme
+
+Pour compiler le programme, il faut utiliser la commande suivante à la racine du projet.
+```
+gcc source/*.c -o Ludotheque
+```
+
+----
+
 ## Généralités
 
 #### Le type Booléen
