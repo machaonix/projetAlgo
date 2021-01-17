@@ -214,7 +214,7 @@ CodeErreur sauvegarderAdherent(Adherent tAdherent[], unsigned int nbElem, char n
 ```
 Toutes ces fonctions sont proposées dans le menu et sont toutes opérationnelles. Elles permettent ainsi le bon déroulement du programme. Aucune de ces fonctions n'ont posées problème lors de leur implémentation.
 
-Voici le restes des fonctions qui servent au fonctions implémentées si dessus :
+Voici le reste des fonctions qui servent au fonctions implémentées si dessus :
 ```c
 Adherent lireAdherent(FILE* flux);
 void afficheAdherent(Adherent ad, FILE* flux, Bool entete);
@@ -294,7 +294,7 @@ Le chargement des fichiers d'emprunts et de réservations est assuré par la fon
 ```c
 chargerListeEmpruntReservation(char nomDeFichier[], unsigned int *nb);
 ```
-.
+
 Cette fonction prend en paramètre une chaîne de caractères ``nomDeFichier`` qui sera utilisée pour créer le flux vers le fichier dans lequel sont sauvegardées les données à charger. La fonction prend aussi en paramètre un pointeur vers la variable dans laquelle sera enregistré le nombre d'éléments dans la liste.
 Il faut appeler cette fonction pour chaque liste a créer.
 
@@ -302,7 +302,7 @@ Cette fonction fait appel à la fonction ``lireEmpruntReservation(FILE* flux)`` 
 
 ##### Fonction d'insertion
 
-Pour insérer un élément dans une liste, il faut appeler la fonction
+Pour insérer un élément dans une liste, il faut appeler la fonction suivante.
 ```c
 ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReservation er);
 ```
@@ -352,7 +352,7 @@ Cette fonction écrit une liste dans un fichier dont le nom est donné par la ch
 
 ##### Fin du programme
 
-Tous les éléments des listes sont créés par allocation dynamique. Pour supprimer tous ces éléments, il faut utilisé la fonction suivante
+Tous les éléments des listes sont créés par allocation dynamique. Pour supprimer tous ces éléments, il faut utiliser la fonction suivante
 ```c
 ListeER supprimerListe(ListeER liste);
 ```
@@ -459,7 +459,7 @@ Les fonctions ayant besoin d'un ``TableauJeu`` prennent un pointeur sur un ``Tab
 void initTabJeu(TableauJeu* tabJeu);
 void libererTabJeu(TableauJeu* tabJeu);
 ```
-Ces deux fonctions sont à appelées respectivement à la création et à la fin de vie du ``TableauJeu``.
+Ces deux fonctions sont à appeler respectivement à la création et à la fin de vie du ``TableauJeu``.
 
 ###### Chargement et sauvegarde
 
