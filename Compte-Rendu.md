@@ -92,13 +92,13 @@ Ces deux fonctionnalités d'affichage utilisent une fonction globale.
 ```C
 void GLOBAL_afficherListeERJeu_Interactif(ListeER liste, TableauJeu* tabJeu, Bool isReservation)
 ```
-Permet la recherche d'un jeu pour lequel afficher les réservations ou les emprunts associés.
+Cette fonction permet la recherche d'un jeu pour lequel on souhaite afficher les réservations ou les emprunts associés.
 On fait passer un booléen à la fonction pour savoir s'il s'agit d'afficher des réservations ou des emprunts, de manière à modifier l'affichage en conséquence.
 
 
 ## Gestion des jeux
 ``CHOIX_TRIER_JEU`` ``CHOIX_AJOUTER_JEU``
-Ces deux fonctionnalités s'appuient uniquement sur des fonctions de TableauJeu.
+Ces deux fonctionnalités s'appuient uniquement sur des fonctions de ``TableauJeu``.
 
  ``CHOIX_MODIFIER_SUPPRIMER_JEU``
 Celle ci requiert différents tests sur les emprunts et les réservations pour éviter de corrompre leurs listes respectives.
@@ -188,7 +188,7 @@ Le fichier d'entête (*source/Adherent.h*) débute par un *header guard* affin d
 
 Le fichier source (*source/Adherent.c*) inclue simplement son fichier d'entête et contient ensuite l'implémentation commentée des fonctions prototypées dans le fichier d'entête.
 
-#### La structure `Adherent`
+#### La Structure `Adherent`
 
 ```c
 typedef struct
@@ -237,7 +237,7 @@ Ici, plusieurs fonctions ont été problématiques lors de leur implémentation.
 
 ### Structure emprunt et réservation
 
-Les emprunts et les réservations sont issus de la structure dans ``EmpruntReservation.h``.
+Les emprunts et les réservations sont issus de la structure dans ``source/EmpruntReservation.h`` et les fonctions de traitement de cette structure sont décrites dans ``source/EmpruntReservation.c``.
 ```c
 typedef struct
 {
@@ -263,7 +263,7 @@ Passer le flux en paramètre permet de pouvoir réunir la fonction d'affichage �
 
 ### Listes contenant les emprunts et les réservations
 
-Les emprunts et les réservations sont contenus dans des listes, qui permettent une manipulation plus fluide d'un point de vue mémoires que les tableaux, car une liste n'a pas de taille pré-définie.
+Les emprunts et les réservations sont contenus dans des listes, qui permettent une manipulation plus fluide d'un point de vue mémoires que les tableaux, car une liste n'a pas de taille pré-définie. La structure des liste se trouve dans ``source/ListeEmpruntReservation.h`` et les fonctions des traitements listes sont décrites dans ``source/ListeEmpruntReservation.c``.
 
 ```c
 typedef struct element
@@ -306,7 +306,7 @@ Pour insérer un élément dans une liste, il faut appeler la fonction
 ```c
 ListeER insererEmpruntReservation(ListeER liste, unsigned int *nb, EmpruntReservation er);
 ```
-Elle prend en paramètre la liste dans laquelle on insère l'élément, un pointeur sur le nombre d'élément dans la liste, et l'emprunt ou la reservation à insérer. Cette fonction utilise la fonction
+Elle prend en paramètre la liste dans laquelle on insère l'élément, un pointeur sur le nombre d'élément dans la liste, et l'emprunt ou la réservation à insérer. Cette fonction utilise la fonction
 ```c
 ListeER insererDevantEmpruntReservation(ListeER liste, EmpruntReservation er);
 ```
@@ -319,7 +319,7 @@ ListeER supprimerEmpruntReservation(ListeER liste, unsigned int id, unsigned int
 ListeER supprimerDevantEmpruntReservation(ListeER liste);
 ```
 
-La différence ici c'est qu'on fait passer un l'id de l'élément à supprimer au lieu d'un emprunt ou d'une réservation. On lui fait aussi passer un pointeur vers une variable ``cErr`` pour retourner un code erreur si besoin.
+La différence ici c'est qu'on fait passer l'identifiant de l'élément à supprimer au lieu d'un emprunt ou d'une réservation. On lui fait aussi passer un pointeur vers une variable ``cErr`` pour retourner un code erreur si besoin.
 
 ##### Les fonctions de recherche
 
@@ -329,12 +329,12 @@ unsigned int rechercherIdLibre(ListeER liste);
 unsigned int rechercherListeER_AdJeu(ListeER liste, unsigned int idAdherent, unsigned int idJeu, Bool* trouve);
 unsigned int rechercherListeER_Jeu(ListeER liste, unsigned int idJeu, Bool* trouve);
 ```
-La fonction ``rechercherIdLibre()`` permet de rechercher le premier identifiant libre (inutilisé) de la liste qu'on lui passe, ce qui permet de garder les liste trié par identifiant. Cette identifiant servira à définir un nouvel élément à insérer dans la liste.
+La fonction ``rechercherIdLibre()`` permet de rechercher le premier identifiant libre (inutilisé) de la liste qu'on lui passe, ce qui permet de garder les liste triée par identifiant. Cette identifiant servira à définir un nouvel élément à insérer dans la liste.
 
 La fonction ``rechercherListeER_AdJeu()`` permet de rechercher un élément, selon l'identifiant du jeu emprunté et l'identifiant de l’adhérent qui a emprunté le jeu.
 Cette fonction retourne l'identifiant de l'élément. Elle permet aussi de savoir avec le pointeur ``trouve`` si l'élément a été trouvé ou non.
 
-La fonction ``rechercherListeER_Jeu`` permet de rechercher un élément selon un identifiant de jeu. Cette fonction est surtout utilisé pour savoir si un emprunt ou une réservations existe avec le jeu donné.
+La fonction ``rechercherListeER_Jeu`` permet de rechercher un élément selon un identifiant de jeu. Cette fonction est surtout utilisée pour savoir si un emprunt ou une réservations d'un jeu existe.
 
 ##### Réservation la plus ancienne
 
@@ -367,15 +367,15 @@ Mon objectif principal était de permettre une certaine versatilité en terme d'
 
 ### Petit point sur les fichiers
 Les headers  ``source/TableauJeu.h`` et ``source/Jeu.h`` disposent de header guard. Ils incluent tout deux ``source/CodeErreur.h`` et ``source/Bool.h`` en plus de quelques headers standards.
-``source/TableauJeu.c`` et ``source/Jeu.c`` n'incluent que leur ``.h``respectifs. Ils contiennent les commentaires des fonctions
+``source/TableauJeu.c`` et ``source/Jeu.c`` n'incluent que leur ``.h``respectifs. Ils contiennent les commentaires des fonctions.
 
 ##### Note au lecteur
-Les termes Jeu et structure Jeu seront tout deux utilisés pour designer la structure Jeu. De même pour la structure TableauJeu.
+Les termes ``Jeu`` et ``structure Jeu`` seront tout deux utilisés pour designer la structure ``Jeu``. De même pour la structure ``TableauJeu``.
 
 ### Les fichiers Jeu.h et Jeu.c
 #### Jeu : une structure simple
 ##### La structure
-La structure jeu représente un jeu (et ses exemplaires)
+La structure jeu représente un jeu (et ses exemplaires).
 ```C
 typedef struct
 {
@@ -386,8 +386,8 @@ typedef struct
     unsigned int nbExemplaireDispo;
 } Jeu;
 ```
-La strucure de jeu est composé des éléments requis auquels s'ajoute le nombre d'exemplaires disponibles. Cette variable permet de s'avoir efficacement si un jeu est disponible ou non.
-Le type de jeu (ou categorie) n'est pas contraint pour offrir une place au genres de niche pouvant exister.
+La structure de jeu est composée des éléments requis auxquels s'ajoute le nombre d'exemplaires disponibles. Cette variable permet de savoir efficacement si un jeu est disponible ou non.
+Le type de jeu (ou catégorie) n'est pas contraint pour offrir une place aux genres de niche pouvant exister.
 
 ##### Les fonctions associées
 ```C
@@ -398,21 +398,22 @@ Jeu* nouvJeu(unsigned int id);
 void copyJeu(Jeu* jd, Jeu* js);
 Jeu* allocJeu(void);
 ```
-Les 3 premières fonctions offrent les fonctionnalités basique d'entrée sortie pour la structure Jeu.
-Les 2 dernières concernent plus la gestion des ressources.
-Même si j'essaie de copier le plus rarement possible les jeux, lorsque c'est necessaire il faut que ce soit bien fait. Jeu contenant des chaines de caractères, j'ai crée copyJeu.
-L'allocation mémoire pouvant être sensible je l'ai encapsulé dans allocJeu de manière à ne pas multiplié les possibilité d'erreurs.
+Les trois premières fonctions offrent les fonctionnalités basiques d'entrée et de sortie pour la structure Jeu.
+Les deux dernières concernent plus la gestion des ressources.
+Même si j'essaie de copier le plus rarement possible les jeux, lorsque c'est nécessaire il faut que ce soit bien fait. Jeu contenant des chaînes de caractères, j'ai crée ``copyJeu``.
+L'allocation mémoire pouvant être sensible je l'ai encapsulé dans ``allocJeu`` de manière à ne pas multiplier les possibilités d'erreurs.
 
-#### ElementJeu : une enumération facilitant les opérations
-##### L'enumération
-ElementJeu permet d'indiquer une des elements de la structure Jeu
+#### ElementJeu : une énumération facilitant les opérations
+##### L'énumération
+
+``ElementJeu`` permet d'indiquer un des éléments de la structure Jeu.
 ```C
 typedef enum { ELEM_JEU_NONE , ELEM_JEU_ID, ELEM_JEU_NOM, ELEM_JEU_TYPE,
     ELEM_JEU_NB_EXEMPLAIRE_TOTAL, ELEM_JEU_NB_EXEMPLAIRE_DISPO} ElementJeu;
 ```
-Cette enumération offre au fonctions sur les jeux la capacité d'agir sur les differentes variables des jeux avec plus de simplicité (et de manière uniforme). Toute les variables de Jeu y sont référencées, et "aucune" est représenté par ELEM_JEU_NONE.
+Cette énumération offre au fonctions sur les jeux la capacité d'agir sur les différentes variables des jeux avec plus de simplicité (et de manière uniforme). Toute les variables de Jeu y sont référencées, et "aucune" est représenté par ELEM_JEU_NONE.
 ##### Les fonctions liées
-Ces trois fontions permettent de factoriser le code concernant ElementJeu.
+Ces trois fonctions permettent de factoriser le code concernant ``ElementJeu``.
 ```C
 ElementJeu choisirElementJeu(char utilite[]);
 Bool elementJeuExiste(ElementJeu elementJeu, Bool noneAutorisee);
@@ -425,15 +426,16 @@ CodeErreur entrerValeurElementJeu(Jeu* jeu, ElementJeu elementJeu);
 int jeuCmp(Jeu* j1, Jeu* j2, ElementJeu elementJeu);
 ```
 
-jeuCmp défini l'ordre entre les jeux selon les éléments.
-entrerValeurElementJeu facilite l'entrée d'une valeur pour tous les elements.
+``jeuCmp`` défini l'ordre entre les jeux selon les éléments.
+``entrerValeurElementJeu`` facilite l'entrée d'une valeur pour tous les éléments.
 
 
 ### Les fichiers TableauJeu.h et TableauJeu.c
 
 #### TableauJeu : Un tableau entouré
 ##### La structure
-TableauJeu contient un tableau de jeux et les données necessaires à son fonctionnement
+
+``TableauJeu`` contient un tableau de jeux et les données nécessaires à son fonctionnement.
 ```C
 #define TAILLE_MAX_TAB_JEU 100
 
@@ -445,19 +447,19 @@ typedef struct
 } TableauJeu;
 ```
 Le tableau à proprement parler est un tableau statique de pointeurs vers des Jeu. Sa taille est défini par une macro du préprocesseur (Ce qui permet de l'utiliser dans les fonctions en ayant besoin).
-Nous avons choisi un tableau de pointeurs pour éviter un maximum la copie des Jeu durant les nombreux tris effectué sur le tableau de jeux.
-Le nombre de jeux dans le tableau est stocké dans la variable nbElement.
-TableauJeu contient aussi une variable ElementJeu indiquant si et comment le tableau est ordonné.
+Nous avons choisi un tableau de pointeurs pour éviter un maximum la copie des Jeu durant les nombreux tris effectués sur le tableau de jeux.
+Le nombre de jeux dans le tableau est stocké dans la variable ``nbElement``.
+``TableauJeu`` contient aussi une variable ``ElementJeu`` indiquant si et comment le tableau est ordonné.
 
 ##### Les fonctions sur TableauJeu
-Les fonctions ayant besoin d'un TableauJeu prennent un pointeur sur un TableauJeu de manière à éviter de copier la structure.
+Les fonctions ayant besoin d'un ``TableauJeu`` prennent un pointeur sur un ``TableauJeu`` de manière à éviter de copier la structure.
 
 ###### Initialisation et libération
 ```C
 void initTabJeu(TableauJeu* tabJeu);
 void libererTabJeu(TableauJeu* tabJeu);
 ```
-Ces deux fonctions sont à appeller respectivement à la création et à la fin de vie du TableauJeu.
+Ces deux fonctions sont à appelées respectivement à la création et à la fin de vie du ``TableauJeu``.
 
 ###### Chargement et sauvegarde
 
@@ -465,13 +467,13 @@ Ces deux fonctions sont à appeller respectivement à la création et à la fin 
 CodeErreur chargerTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 CodeErreur sauvegarderTabJeu(TableauJeu* tabJeu, char nomFichier[]);
 ```
-Ces fonctions manipulent les fichiers pour sauvegarder et charger un TableauJeu.
+Ces fonctions manipulent les fichiers pour sauvegarder et charger un ``TableauJeu``.
 
 ###### Initialisation
 ```C
 void UTILE_InitNbJeuDispo(ListeEmprunt liste_Emprunt, TableauJeu* tabJeu);
 ```
-Cette fonction n'est pas une fonction de TableauJeu.h mais une fonction de Ludotheque.h.
+Cette fonction n'est pas une fonction de ``TableauJeu.h`` mais une fonction de ``Ludotheque.h``.
 Elle initialise les nombres d'exemplaires disponibles des différents jeux.
 
 ###### Affichage
@@ -480,7 +482,7 @@ Elle initialise les nombres d'exemplaires disponibles des différents jeux.
 void afficheTabJeu(TableauJeu* tabJeu, FILE* flux);
 void affichePartieTabJeu(TableauJeu* tabJeu, unsigned int begin, unsigned int end, FILE* flux);
 ```
-Ecrit tout ou partie d'un tableau de jeu dans un flux.
+Ces fonctions écrient tout ou partie d'un tableau de jeu dans un flux.
 
 ###### Recherche
 ```C
@@ -491,8 +493,8 @@ unsigned int _rechercherDernierJeu_TabNonTrie(TableauJeu* tabJeu, Jeu* jeu, Elem
 unsigned int _rechercherPremierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 unsigned int _rechercherDernierJeu_TabTrie(TableauJeu* tabJeu, Jeu* jeu, ElementJeu elementJeu, Bool* trouve);
 ```
-Permettent la recherche de jeu dans un tableau.
-Les fonctions débutants par _ sont uniquement présentes pour servir `rechercherJeu`et `rechercherJeuInteractif`.
+Ces fonctions permettent la recherche de jeu dans un tableau.
+Les fonctions débutants par _ sont uniquement présentes pour servir ``rechercherJeu`` et ``rechercherJeuInteractif``.
 
 ###### Tri
 ```C
@@ -504,7 +506,7 @@ void copyTabJeu(Jeu* tSource[], unsigned int debut, unsigned int fin, Jeu* tDest
 void fusionTabJeu(Jeu* tSource1[], unsigned int nbElem1, Jeu* tSource2[], unsigned int nbElem2, ElementJeu elementJeu,
     Jeu* tDest[]);
 ```
-`triTabJeuInteractif` et `triTabJeu` sont des fonctions fesant l'interface entre les fontions utilisant le tri et `_triJeu`, une fontion de tri par dichotomie.
+``triTabJeuInteractif`` et ``triTabJeu`` sont des fonctions faisant l'interface entre les fonctions utilisant le tri et ``_triJeu``, une fonction de tri par dichotomie.
 
 ###### Ajout et délétion
 ```C
@@ -517,5 +519,5 @@ CodeErreur ajouterJeuInteractif(TableauJeu* tabJeu);
 void _decalageAGaucheJeu(TableauJeu* tabJeu, unsigned int debut);
 void _decalageADroiteJeu(TableauJeu* tabJeu, unsigned int debut);
 ```
-Ces fonctions permettent d'ajouter ou de retirer des Jeu du tableau avec ou sans interaction avec l'utilisateur.
-`retirerJeuInteractif` n'est pas utilisé dans ce projet car il est necessaire de faire des tests sur les listes de reservations et d'emprunts.
+Ces fonctions permettent d'ajouter ou de retirer des ``Jeu`` du tableau avec ou sans interaction avec l'utilisateur.
+``retirerJeuInteractif`` n'est pas utilisé dans ce projet car il est nécessaire de faire des tests sur les listes de réservations et d'emprunts.
